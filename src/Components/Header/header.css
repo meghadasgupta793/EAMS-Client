@@ -1,0 +1,108 @@
+header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 8px;
+    --color: #4abb83;
+
+    background: #ffffff;
+}
+
+header .serach-bar {
+    position: relative;
+    width: 25%;
+    display: flex;
+    align-items: center;
+}
+
+header .serach-bar input {
+    padding: 8px 16px;
+    border: 1px solid rgb(82, 82, 82);
+    border-radius: 100px;
+    flex: 1;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+
+header .serach-bar input:focus::placeholder {
+    color: var(--color);
+}
+
+header .serach-bar input:focus {
+    outline: none;
+    border: 1px solid var(--color);
+}
+
+header .serach-bar .icon {
+    position: absolute;
+    right: 8px;
+    font-size: 18px;
+    color: rgb(82, 82, 82);
+}
+
+header .serach-bar input:focus~.icon {
+    color: var(--color);
+}
+
+
+header .tools {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+
+header .tools .icon {
+    color: rgb(82, 82, 82);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+header .tools .icon:hover {
+    color: var(--color);
+}
+
+header .tools .divider {
+    background-color: var(--color);
+    width: 1px;
+    border-radius: 100px;
+    align-self: stretch;
+}
+
+
+
+
+
+
+header .tools .user {
+    position: relative;
+    height: 30px;
+    aspect-ratio: 1;
+    width: 100px;
+   /* border: 1px solid var(--color);  */
+    color: var(--text-color);
+   /* border-radius: 100px;   */
+ 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center the logo vertically */
+    overflow: hidden; /* Prevents image overflow */
+}
+
+header .tools .user img {
+    background-color: #4abb83;
+    height: 100%;
+    width: auto; /* Ensure the image maintains aspect ratio */
+}
+
+header .tools .user:active {
+    scale: 0.97;
+}
+
+header.dark input {
+    color: white;
+}

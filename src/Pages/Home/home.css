@@ -1,0 +1,22 @@
+.home {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #f7f8fa;
+    min-height: 100vh;
+    --dm-bg: #111;
+   
+}
+
+.home.dark {
+    background-color: var(--dm-bg);
+    color: #f7f8fa;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,102 @@
+.LatestAttendance {
+    margin: 10px;
+    margin-top: 2px;
+}
+
+.LatestAttendance .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+   
+    margin-bottom: 10px;
+}
+
+.LatestAttendance .title {
+    font-weight: bold;
+    font-size: 16px; /* Reduced font size */
+   color: var(--text-color); /* Use CSS variable */
+    font-family: Poppins, sans-serif;
+}
+
+.LatestAttendance .paginationControls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.LatestAttendance .paginationControls .loadMore {
+    padding: 4px; /* Reduced padding */
+    font-size: 20px; /* Adjusted font size for icons */
+    color: var(--primary-color); /* Use CSS variable */
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+.LatestAttendance .paginationControls .loadMore:hover {
+    opacity: 0.8;
+}
+
+.LatestAttendance .cardContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; /* Reduced gap */
+}
+
+.LatestAttendance .card {
+    background-color: #f9f9f9;
+
+    padding: 8px; /* Reduced padding */
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1); /* Enhanced 3D shadow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 11px; /* Reduced font size */
+}
+
+.LatestAttendance .card .user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px; /* Reduced gap */
+    margin-bottom: 8px; /* Reduced margin */
+}
+
+.LatestAttendance .card .user img {
+    width: 40px; /* Reduced width */
+    height: 40px; /* Reduced height */
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid #55565b;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.LatestAttendance .card .userText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px; /* Reduced gap */
+}
+
+.LatestAttendance .card .userText .userName {
+    font-weight: 500;
+    font-size: 11px; /* Reduced font size */
+    color: #121c84;
+    text-overflow: ellipsis; /* Handle overflow */
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden; /* Hide overflow */
+    max-width: 100%; /* Ensure text doesn't overflow the card */
+}
+
+.LatestAttendance .card .userText .userNo {
+    font-size: 9px; /* Reduced font size */
+    color: #888;
+}
+
+.LatestAttendance .card .datetime {
+    font-size: 9px; /* Reduced font size */
+    font-weight: 300;
+    color: #666;
+}

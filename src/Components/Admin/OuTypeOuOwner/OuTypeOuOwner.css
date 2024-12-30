@@ -1,0 +1,114 @@
+.OuTypeOuOwner{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    width: 100%;
+}
+
+.OuTypeOuOwner-container {
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.OuTypeOuOwner-grids{
+    display: flex;
+    gap: 20px;
+}
+
+.ouType-table-container{
+    flex: 2;
+    width: 100%;
+    background-color: var(--background-color-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.ouOwner-table-container{
+    flex: 3;
+    width: 100%;
+    background-color: var(--background-color-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+
+
+
+/* Table Headers */
+.ouType-table thead th,
+.ouOwner-table thead th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    background-color: #4abb83;
+    text-align: center;
+}
+
+/* Table Body Rows */
+.ouType-table tbody tr,
+.ouOwner-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+/* Hover Effect on Rows */
+.ouType-table tbody tr:hover,
+.ouOwner-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Odd Row Background Color */
+.ouType-table tbody tr:nth-child(odd),
+.ouOwner-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Table Cell Styling */
+.ouType-table td,
+.ouOwner-table td {
+    font-size: 12px;
+    padding: 8px;
+    text-align: center;
+    color: #35363a;
+}
+
+
+.edit-btn{
+  
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 10px; 
+    margin-right: 16px; /* Add margin to create a gap between the buttons */
+}
+.remove-btn{
+    background: var(--red-gradient);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 10px; 
+  
+}

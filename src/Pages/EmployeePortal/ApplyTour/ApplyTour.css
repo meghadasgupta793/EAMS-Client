@@ -1,0 +1,235 @@
+.applyTour {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.applyTour-Container {
+    padding: 20px;
+    margin: 28px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.applyTour-grids {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.applyTour-table-container,
+.apply-tour-container {
+    flex: 1;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.applyTour-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.tour-details-heading,
+.apply-tour-heading {
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.tour-status-icon-container {
+    font-size: 20px;
+    color: var(--text-color);
+    display: flex;
+    gap: 10px;
+}
+
+.tour-status-header-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+
+.applyTour-status-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.applyTour-status-table thead {
+    background-color: #4abb83;
+}
+
+.applyTour-status-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+    border: 1px solid #4abb83;
+}
+
+.applyTour-status-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.applyTour-status-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.applyTour-status-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.applyTour-status-table tbody tr td {
+    font-size: 12px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 6px;
+    text-align: center;
+}
+
+.apply-tour-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    font-size: 12px;
+    color: #35363a;
+    margin-top: 25px;
+}
+
+.apply-tour-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.apply-tour-row label {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.apply-tour-input {
+    flex: 2;
+    padding: 12px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    transition: box-shadow 0.3s ease;
+}
+
+.action-button {
+    padding: 3px;
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 20px;
+}
+
+.action-button:hover {
+    background: var(--red-gradient);
+}
+
+.apply-tour-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.apply-tour-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.apply-tour-button:hover {
+    background: var(--red-gradient);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .applyTour-Container {
+        margin: 20px;
+        padding: 15px;
+    }
+    
+    .applyTour-grids {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .applyTour-table-container,
+    .apply-tour-container {
+        padding: 10px;
+    }
+
+    .tour-details-heading,
+    .apply-tour-heading {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .applyTour-Container {
+        margin: 15px;
+        padding: 10px;
+    }
+    
+    .applyTour-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .tour-details-heading,
+    .apply-tour-heading {
+        font-size: 16px;
+    }
+
+    .applyTour-grids {
+        flex-direction: column;
+    }
+
+    .apply-tour-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .apply-tour-row label {
+        font-size: 14px;
+    }
+
+    .apply-tour-input {
+        font-size: 14px;
+    }
+
+    .apply-tour-button {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .action-button {
+        font-size: 18px;
+    }
+}

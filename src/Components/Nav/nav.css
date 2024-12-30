@@ -1,0 +1,49 @@
+.nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+
+
+.nav:hover {
+   /* background: #f7f8fa;  */
+    background: #e8f0ea;  
+   
+}
+
+.nav:hover .sidebar-icon {
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    color: white; /* Ensure text/icon color is visible against the background */
+}
+
+h2 {
+    font-size: 15px;
+    font-family: raleway;
+    font-weight: 500;
+    color: #55565b;
+}
+
+.navigation.active h2 {
+    display: none;
+}
+
+.sidebar-icon {
+    font-size: 30px;
+    color: rgb(82, 82, 82);
+    border-radius: 50px;
+    transition: background .2s ease, color .2s ease; /* Smooth transition for background and color */
+}
+
+.sidebar-icon:hover {
+    background: rgb(29, 169, 156);
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}

@@ -1,0 +1,138 @@
+.createEmployee{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+
+    width: 100%;
+  
+}
+
+
+.create-container {
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+}
+
+.createEmployee-content {
+    display: flex;
+}
+
+
+h1{
+    color: var(--text-color);
+}
+.left-section {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.employee-pic{
+    position: relative;
+    width: 200px; /* Adjust the size as needed */
+    height: 200px;
+    border: 2px solid #ccc;
+    border-radius: 10px; /* For rounded corners, if needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9; /* Light background for the frame */
+}
+.employee-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image fits well in the frame */
+    border-radius: 10px;
+}
+
+.camera-icon {
+    position: absolute;
+    bottom: -10px;  /* Positioning the icon at the bottom-right corner */
+    right: -10px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 50%; /* Circle around the icon */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.camera-icon svg {
+    font-size: 24px; /* Adjust the size of the camera icon */
+    color: #4abb83;
+}
+
+
+
+
+.right-section {
+    flex: 3;
+    display: flex;
+    justify-content: space-between;
+}
+
+.middle, .right {
+    flex: 1;
+    padding: 20px;
+}
+
+.middle label, .right label {
+    font-size: 16px;
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.middle input, .right input, .middle select, .right select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.buttons {
+    margin-top: 20px;
+    text-align: center;
+   
+}
+
+.buttons button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+}
+
+.weekoff-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Display 4 days per row */
+    gap: 4px; /* Adjust spacing between each day */
+    margin-top: 10px;
+    border: solid 1px black;
+    padding: 10px;
+}
+
+.day-checkbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-checkbox span {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.day-checkbox input[type="checkbox"] {
+    transform: scale(1.2); /* Make the checkbox bigger */
+    cursor: pointer;
+}
+
+/* You can adjust the gap, font sizes, and other styles as necessary */

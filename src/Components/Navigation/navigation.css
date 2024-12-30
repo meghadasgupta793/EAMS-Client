@@ -1,0 +1,233 @@
+.navigation {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    min-height: 100vh;
+    --color: #4abb83;
+
+    background-color: #ffffff;
+    padding: 5px 10px;
+    overflow: hidden;
+}
+
+.navigation.active {
+    width: max-content;
+}
+
+
+
+
+
+
+
+.navigation .menu {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    margin-left: auto;
+    font-size: 18px;
+    height: 35px;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.navigation.active .menu {
+    position: relative;
+}
+
+
+.navigation .menu.active {
+    rotate: 180deg;
+}
+
+.navigation header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 25px 0 15px;
+    background: rgb(233, 243, 243);
+    border-radius: 14px;
+    margin-bottom: 10px;
+}
+
+.navigation header::after {
+    position: absolute;
+    content: '';
+    height: 1px;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.37);
+    bottom: 0;
+}
+
+.navigation.dark header {
+    background-color: rgba(0, 0, 0, 0.438);
+}
+
+
+
+
+
+.navigation.active header {
+    padding: 0;
+    margin-top: 10px;
+    background-color: transparent;
+}
+
+.navigation.active header ::after .navigation.active header span {
+    display: none;
+}
+
+
+.navigation header .profile {
+    margin: auto;
+    height: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgb(29, 169, 156);
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+
+    border: 2px solid #f7faf8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+
+
+}
+
+.profile-img {
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.navigation.active header .profile {
+    height: 40px;
+    border-radius: 50%;
+}
+
+
+
+
+
+.navigation header span {
+    font-size: 15px;
+}
+
+.navigation .divider {
+    position: relative;
+    margin: 0 auto;
+    height: 1px;
+    width: 80%;
+    background-color: rgba(78, 72, 72, 0.438);
+}
+
+.navigation .bg-waves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* Navigation Links */
+.navigation a {
+
+    text-decoration: none;
+    color: white;
+
+}
+
+
+.nav {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.nav .icon {
+    margin-right: 10px;
+}
+
+
+.dropdown {
+    padding-left: 15px;
+}
+
+.dropdown a {
+    display: block;
+    margin: 2px 0;
+}
+
+.arrow-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+
+
+.nav:hover .arrow-icon {
+    color: #4abb83; /* Change arrow color on hover */
+}
+
+
+/* Additional styles for grandchild arrow icons */
+.grandchild-nav {
+    display: none; /* Initially hide grandchild dropdown */
+}
+
+.nav:hover .grandchild-nav {
+    display: block; /* Show on hover */
+}
+
+.nav.active .arrow-icon {
+    display: inline-block; /* Show arrow icon for active navigation */
+}
+
+/* Style for the grandchild arrow icon */
+.grandchild-arrow-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+    display: none; /* Initially hidden */
+}
+
+.nav:hover .grandchild-arrow-icon {
+    display: inline; /* Show when parent is hovered */
+}
+
+/* Rotate the grandchild arrow icon */
+.nav.active .grandchild-arrow-icon {
+    display: inline-block; 
+}
+
+
+
+
+
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    margin: auto;
+    margin-top: 100px; /* Adjust to position modal correctly */
+}
+
+.modal-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.modal-item:hover {
+    background: #f0f0f0; /* Add hover effect */
+}

@@ -1,0 +1,76 @@
+.MyNotification {
+    position: relative;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.MyNotification-container {
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   
+}
+
+.MyNotification-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.MyNotification-heading {
+    font-size: 24px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.MyNotification-search {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 50%;
+}
+
+.MyNotification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.MyNotification-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.MyNotification-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.MyNotification-item-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 5px;
+}
+
+.MyNotification-item-description {
+    font-size: 14px;
+    color: #555;
+    margin: 0 0 10px;
+}
+
+.MyNotification-item-date {
+    font-size: 12px;
+    color: #888;
+}

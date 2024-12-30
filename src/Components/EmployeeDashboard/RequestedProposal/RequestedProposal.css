@@ -1,0 +1,174 @@
+.requestedProposal-container {
+    width: 100%;
+    padding: 0 8px;
+}
+
+.requestedProposal-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.requestedProposal-heading {
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.requestedProposal-icon-container {
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.toggle-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Applying styles with more specificity */
+.requestedProposal-container .MuiToggleButton-root {
+    font-size: 10px !important;
+    color: #4abb83 !important;
+    border-color: #4abb83 !important;
+    padding: 2px 8px !important;
+    min-width: 0;
+}
+
+/* Style for the selected state */
+.requestedProposal-container .MuiToggleButton-root.Mui-selected {
+    background-color: #4abb83 !important;
+    color: #fff !important;
+}
+
+.MuiToggleButton-root:hover {
+    background-color: rgba(74, 187, 131, 0.1);
+}
+
+.small-icon {
+    font-size: 14px;
+}
+
+.requestedProposal-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.requestedProposal-table thead {
+    background-color: #e8f0ea; 
+}
+
+.requestedProposal-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.20px;
+    color: #55565b;
+    padding: 8px;
+    vertical-align: top;
+    border: none;
+}
+
+.requestedProposal-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.requestedProposal-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.requestedProposal-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.requestedProposal-table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 4px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+.requestedProposal-table tbody tr td:first-child {
+    border-left: none;
+}
+
+.requestedProposal-table tbody tr td:last-child {
+    border-right: none;
+}
+
+.requestedProposal-table tbody tr td .view-btn {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    border-radius: 4px;
+    background: var(--gradient-border);
+    color: white;
+    margin: 2px;
+    padding: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Hover effect */
+.view-btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    background: linear-gradient(90deg, rgba(255, 113, 28, 1) 0%, rgba(247, 66, 49, 1) 50%, rgba(253, 42, 109, 1) 100%) !important;
+    color: #fff !important;
+}
+
+/* Active (pressed) effect */
+.view-btn:active {
+    background: linear-gradient(90deg, rgba(255, 113, 28, 1) 0%, rgba(247, 66, 49, 1) 50%, rgba(253, 42, 109, 1) 100%) !important;
+    transform: translateY(2px) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+
+.modal-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    background-color: white;
+    border: 1px solid var(--text-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow for a softer effect */
+    padding: 16px;
+    outline: none;
+    max-width: 100%; /* Ensure it never exceeds screen width */
+    box-sizing: border-box; /* Include padding in the element's total width/height */
+  }
+
+
+
+
+  /* --- Responsive Styles --- */
+
+/* For tablet screens (width <= 768px) */
+@media (max-width: 768px) {
+    .modal-box {
+      width: 90%; /* Modal takes 90% of the screen width */
+      padding: 12px; /* Reduce padding on tablets */
+    }
+  }
+  
+  /* For mobile screens (width <= 480px) */
+  @media (max-width: 480px) {
+    .modal-box {
+      width: 95%; /* Modal takes 95% of the screen width */
+      padding: 10px; /* Smaller padding for mobile screens */
+    }
+  }

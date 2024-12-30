@@ -1,0 +1,76 @@
+
+.update-Designation {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    width: 100%;
+}
+
+.update-designation-container {
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.update-designation-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.update-designation-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.update-designation-form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.update-designation-form-group input {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.update-designation-form-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.back-btn, .update-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    background: var(--gradient-border);
+    color: white;
+}
+
+.back-btn:hover {
+    background: var(--red-gradient);
+    color: white;
+}
+
+.update-btn:hover, .back-btn:hover {
+    opacity: 0.9;
+}

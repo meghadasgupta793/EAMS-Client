@@ -1,0 +1,156 @@
+/* Overall Page Styling */
+.holidayGroup {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #f7f8fa;
+    min-height: 100vh;
+}
+
+/* Container Styling */
+.holidayGroup-container {
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Top Section for "Create Holiday Group" Button */
+.holiday-addGroup {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+    background-color: var(--background-color-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.holiday-addGroup input{
+    padding: 4px; 
+ 
+}
+.add-group-button {
+    padding: 8px 8px;
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Flexbox for Holiday Group and Holiday List Tables */
+.holidayGroup-grids {
+    display: flex;
+    gap: 20px;
+}
+
+/* Left Side - Holiday Group Table Container */
+.holidayGroup-table-container {
+    flex: 2;
+    width: 100%;
+    background-color: var(--background-color-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Side - Holiday List Table Container */
+.holidaylist-table-container {
+    flex: 3;
+    width: 100%;
+    background-color: var(--background-color-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+/* Table Headers */
+.holidayGroup-table thead th,
+.holidaylist-table thead th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    background-color: #4abb83;
+    text-align: center;
+}
+
+/* Table Body Rows */
+.holidayGroup-table tbody tr,
+.holidaylist-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+/* Hover Effect on Rows */
+.holidayGroup-table tbody tr:hover,
+.holidaylist-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Odd Row Background Color */
+.holidayGroup-table tbody tr:nth-child(odd),
+.holidaylist-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Table Cell Styling */
+.holidayGroup-table td,
+.holidaylist-table td {
+    font-size: 12px;
+    padding: 8px;
+    text-align: center;
+    color: #35363a;
+}
+
+/* Button Container Styling (for buttons inside table cells) */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Button Styling */
+.showHolidays-btn, .removeGroup-btn, .holiday-deselect-btn {
+    padding: 6px 10px;
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Button Colors */
+.removeGroup-btn, .holiday-deselect-btn {
+    background: var(--red-gradient);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    .holidayGroup-grids {
+        flex-direction: column;
+    }
+
+    .holiday-addGroup {
+        justify-content: center;
+    }
+}

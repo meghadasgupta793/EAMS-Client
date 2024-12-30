@@ -1,0 +1,78 @@
+.widgets {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    /* Adjust columns: content on the left, icon on the right */
+
+    gap: 10px;
+    /* Space between the content and icon */
+    padding: 10px;
+    align-items: start;
+    /* Align items to the start */
+}
+
+.widgets-left {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    grid-column: 1 / 2;
+    /* Place the left content in the first column */
+}
+
+.widgets-right {
+    display: flex;
+    justify-content: flex-end;
+    grid-column: 2 / 3;
+    /* Place the icon in the second column */
+    grid-row: 1;
+    /* Ensure it's in the top row */
+}
+
+.widgets-left-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #55565b;
+    font-family: poppins;
+}
+
+.widgets-left-count {
+    font-size: 18px;
+    font-weight: 600;
+    color: #55565b;
+}
+
+.widgets-left-link {
+    font-size: 11px;
+    width: max-content;
+    color: #ffffff;
+    background: rgb(29, 169, 156);
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+    border-radius: 20px;
+    padding: 4px;
+    text-decoration: none;
+    border: 2px solid  #4abb83 ; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+
+
+.widgets-right-icon {
+    font-size: 20px;
+    padding: 5px;
+    background: rgb(29, 169, 156);
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+
+    border-radius: 5px;
+    align-self: flex-start;
+    /* Align icon to the top */
+}
+
+
+.widget-icon {
+    background: rgb(29, 169, 156);
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+    color: #ffffff;
+    border-radius: 5px;
+}

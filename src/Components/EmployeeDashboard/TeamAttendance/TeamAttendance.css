@@ -1,0 +1,216 @@
+/* TeamAttendance.css */
+
+.TeamAttendance {
+    font-family: 'Arial', sans-serif;
+    padding: 8px;
+}
+
+.teamAttendance-heading {
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.teamAttendance-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.teamAttendance-icon-container{
+    font-size: 20px;
+  color: var(--text-color);
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.paginationControls {
+    display: flex;
+    gap: 10px;
+    /* Spacing between buttons */
+}
+
+.loadMore {
+    background-color: #4abb83;
+    /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.loadMore:hover {
+    background-color: #4abb83;
+    /* Darker shade on hover */
+}
+
+.attendanceList {
+    display: grid;
+    gap: 10px;
+    /* Space between items */
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 0;
+
+}
+
+.attendanceItem {
+    display: flex;
+    background-color: white;
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding: 12px;
+    align-items: center; /* Center items vertically */
+    margin-bottom: 0;
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition for hover effect */
+    
+    &:hover {
+        transform: translateY(-4px); /* Lift effect on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 16px 32px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+    }
+    
+}
+
+.attendanceItem:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+
+
+
+
+.attendanceItem:hover {
+    transform: translateY(-2px);
+    /* Lift effect on hover */
+}
+
+.profileImg {
+    width: 50px;
+    /* Fixed width for profile image */
+    height: 50px;
+    /* Fixed height for profile image */
+    border-radius: 50%;
+    /* Circular profile image */
+    margin-right: 15px;
+    /* Spacing between image and text */
+    border: 2px solid #f7faf8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+
+}
+
+.employeeDetails {
+    flex: 1;
+    /* Take remaining space */
+}
+
+.empNo,
+.empName,
+.attendanceStatus,
+.inTime,
+.outTime {
+    margin: 5px 0;
+    /* Consistent margin for text elements */
+    color: #495057;
+    /* Darker text for readability */
+    font-size: 12px;
+}
+
+.empName {
+    font-weight: bold;
+    /* Highlight employee name */
+}
+
+.attendanceStatus {
+    font-style: italic;
+    /* Italicize the attendance status for differentiation */
+}
+
+
+/* TeamAttendance.css - Search Styles */
+
+/* TeamAttendance.css - Search Styles */
+
+.search {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Space between header and search */
+}
+
+.searchInput {
+    padding: 8px 0;
+    /* Vertical padding for input */
+    border: none;
+    /* Remove border */
+    border-bottom: 1px solid #ced4da;
+    /* Underline */
+    border-radius: 0;
+    /* No rounding for underline */
+    margin-right: 8px;
+    /* Space between input and icon */
+    font-size: 14px;
+    /* Font size for readability */
+    transition: border-color 0.3s;
+    /* Smooth transition for border color */
+}
+
+.searchInput:focus {
+    border-bottom: 1px solid #4abb83;
+    /* Change underline color on focus */
+    outline: none;
+    /* Remove outline */
+}
+
+.searchIcon {
+    cursor: pointer;
+margin-top: 8px;
+    color: #55565b;
+ 
+    font-size: 18px;
+  
+    transition: color 0.3s;
+  
+}
+
+.searchIcon:hover {
+    color: #4abb83;
+    /* Darker shade on hover */
+}
+
+
+/* Filter Styles */
+
+
+
+.statusFilter {
+    margin-left: 20px;
+    /* Space between search and filter */
+}
+
+.statusSelect {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    /* Background color for the select */
+    cursor: pointer;
+}
+
+
+/* Add hover effects for better UX */
+.statusSelect:hover,
+.searchInput:hover {
+    border-color: #4abb83;
+    /* Change border color on hover */
+}
+
+.statusSelect:focus,
+.searchInput:focus {
+    outline: none;
+    border-color: #4abb83;
+    /* Change border color when focused */
+}

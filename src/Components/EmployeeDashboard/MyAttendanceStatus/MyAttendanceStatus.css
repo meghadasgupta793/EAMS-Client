@@ -1,0 +1,39 @@
+.myAttendanceStatus {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 5px;
+    border-right: 1px solid #4abb83;
+}
+
+.myAttendanceStatus:nth-child(8) {
+    border-right: none;
+}
+
+.myAttendanceStatus .icon {
+    position: relative;
+    font-size: 28px;
+    padding: 4px;
+    margin: 4px;
+    background: var(--gradient-border);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+}
+
+.myAttendanceStatus .title {
+    font-size: 16px;
+    color: #55565b;
+    font-weight: 400;
+}
+
+
+.myAttendanceStatus .value {
+
+    color: #4abb83;
+    display: flex;
+    gap: 5px;
+}

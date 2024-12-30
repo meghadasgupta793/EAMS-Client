@@ -1,0 +1,82 @@
+.pieChart {
+    padding: 10px;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #55565b;
+    padding-bottom: 20px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #55565b;
+    font-family: poppins;
+   
+}
+
+.bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    margin-left: 60px;
+}
+
+.labels {
+    margin-top: 80px;
+    /* Space between chart and labels */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-family: Poppins, sans-serif;
+    overflow: hidden;
+
+}
+
+.label-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+   margin-top: 15px;
+}
+
+.color-box {
+    width: 10px;
+    height: 10px;
+    border-radius: 4px;
+    margin-right: 10px;
+   
+}
+
+.label-text {
+    font-size: 12px;
+    color: #55565b;
+}
+
+
+/* Hide the default PieChart labels */
+.MuiPieChart-label {
+    display: none !important;
+}
+
+
+/* Hide all text labels in the PieChart */
+.chart-container g text {
+    display: none !important;
+}
+
+/* Hide all default color blocks in the PieChart */
+.chart-container g rect
+{
+    display: none !important;
+}

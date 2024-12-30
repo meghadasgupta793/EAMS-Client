@@ -1,0 +1,211 @@
+/* RequestAction container */
+.req-RequestAction {
+    font-family: 'Roboto', sans-serif;
+    margin: 20px;
+    color: #333;
+
+}
+
+/* Container for the top boxes using CSS Grid */
+.req-requestAction-top-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Creates 3 equal columns */
+    gap: 20px;
+    /* Adds space between the boxes */
+    margin-bottom: 30px;
+}
+
+/* Box Styling */
+.req-req-box {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fafafa;
+    transition: transform 0.3s ease-in-out;
+    /* Smooth hover effect */
+}
+
+.req-req-box:hover {
+    transform: translateY(-5px);
+    /* Lift effect on hover */
+}
+
+.req-h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: var(--text-color);
+    background: var(--header-background);
+    /* Blue background for titles */
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.req-p {
+    font-size: 14px;
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+.req-span {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Bottom buttons styling */
+.req-bottom-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 40px;
+    gap: 20px;
+    /* Adds space between buttons */
+}
+
+/* Styling for the buttons */
+.req-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    /* Round button size */
+    height: 50px;
+    color: #fff;
+}
+
+/* Apply white color to icons inside buttons */
+.req-btn .MuiSvgIcon-root {
+    color: white;
+}
+
+
+.req-forward-btn,
+.req-edit-btn {
+    background: var(--gradient-border);
+    /* Green for Forward */
+    color: white;
+}
+
+.req-reject-btn ,
+.req-delete-btn {
+    background: var(--red-gradient);
+    /* Red for Reject */
+    color: white;
+}
+
+.req-approve-btn {
+    background: var(--gradient-border);
+    /* Blue for Approve */
+    color: white;
+}
+
+.req-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    /* Slight scale effect on hover */
+}
+
+.req-btn:active {
+    transform: scale(0.98);
+    /* Button presses down when clicked */
+}
+
+/* --- Responsive Styles --- */
+
+
+
+/* For tablet screens (width <= 768px) */
+@media (max-width: 768px) {
+    .req-RequestAction {
+        overflow-x: auto; /* Enables horizontal scroll */
+        padding: 10px; /* Optional: Add padding if needed */
+    }
+
+    .req-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        width: 100%; /* Make buttons full-width on mobile */
+        height: auto; /* Adjust height to fit text */
+        border-radius: 8px; /* Optionally round the edges */
+    }
+    .req-requestAction-top-box {
+        grid-template-columns: 1fr;
+        /* Stack boxes in one column on tablets */
+        gap: 15px;
+    }
+
+    .req-req-box {
+        padding: 15px;
+        font-size: 14px;
+        /* Slightly smaller font size for better fit */
+    }
+
+    .req-h2 {
+        font-size: 18px;
+        padding: 8px;
+    }
+
+    .req-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        width: 100%;
+        /* Make buttons full-width on smaller screens */
+    }
+
+    .req-bottom-buttons {
+        flex-direction: column;
+        /* Stack buttons vertically */
+        gap: 10px;
+    }
+}
+
+/* For mobile screens (width <= 480px) */
+@media (max-width: 480px) {
+    .req-RequestAction {
+        overflow-x: auto; /* Enables horizontal scroll */
+    }
+    .req-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        width: 100%; /* Make buttons full-width on mobile */
+        height: auto; /* Adjust height to fit text */
+        border-radius: 8px; /* Optionally round the edges */
+    }
+
+    .req-requestAction-top-box {
+        grid-template-columns: 1fr;
+        /* Stack boxes in one column on mobile */
+        gap: 10px;
+    }
+
+    .req-req-box {
+        padding: 10px;
+        font-size: 12px;
+        /* Adjust text size for better readability on mobile */
+    }
+
+    .req-h2 {
+        font-size: 16px;
+        padding: 6px;
+    }
+
+    .req-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        width: 100%;
+        /* Full-width buttons */
+    }
+
+    .req-bottom-buttons {
+        flex-direction: column;
+        /* Stack buttons vertically */
+        gap: 8px;
+    }
+}

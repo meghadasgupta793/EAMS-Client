@@ -1,0 +1,128 @@
+/* LogIn.css */
+
+.login {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: url("/images/bg.jpeg");
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.login::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    /* Inherits the background image */
+    filter: blur(8px);
+    /* Adjust blur level as needed */
+    z-index: 0;
+}
+
+.login-title {
+    text-align: center;
+    padding: 50px 0 20px;
+    color: #fff;
+    font-size: 36px;
+    z-index: 1;
+    /* Place above the blur */
+}
+
+
+.login-title h1 {
+    text-align: center;
+    color: #fff; 
+}
+
+
+
+
+.login-container {
+    display: flex;
+    width: 50%;
+    height: 400px;
+    background-color: #1eb39a;
+    margin: 0 auto;
+    border: 2px solid #fff;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+    /* Ensure it is above the blurred background */
+}
+
+.login-left {
+    float: left;
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    background: url("/images/bg.jpeg");
+    background-size: cover;
+}
+
+.login-right {
+    float: right;
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    /* Adjust as needed for styling */
+}
+
+
+.login-form-box {
+    width: 100%;
+    padding: 80px 40px;
+    box-sizing: border-box;
+    height: 400px;
+    background: #fff;
+}
+
+.login-form-box p {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    color: #55565b;
+}
+
+.login-form-box input {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.login-form-box input[type="text"],
+.login-form-box input[type="password"] {
+    border: none;
+    border-bottom: 2px solid #4abb83;
+    outline: none;
+    height: 40px;
+}
+
+.login-form-box input[type="text"]:focus,
+.login-form-box input[type="password"]:focus {
+    border-bottom: 2px solid #55565b;
+}
+
+.login-form-box input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    background: #55565b;
+    cursor: pointer;
+}
+
+.login-form-box input[type="submit"]:hover {
+    background: #4abb83;
+}

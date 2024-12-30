@@ -1,0 +1,210 @@
+.anniversaries-container {
+  width: 100%;
+  padding: 0 8px;
+}
+
+.employee-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f7faf8;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+
+
+}
+
+.employee-middle {
+  flex-grow: 1;
+  padding-left: 10px;
+}
+
+.employee-name {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+  color: #888;
+}
+
+.anniversary-date {
+  font-size: 10px;
+  color: #888;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.anniversaries-container .MuiToggleButton-root {
+  font-size: 10px !important;
+  color: #4abb83 !important;
+  border-color: #4abb83 !important;
+  padding: 2px 8px !important;
+  min-width: 0;
+}
+
+.anniversaries-container .MuiToggleButton-root.Mui-selected {
+  background-color: #4abb83 !important;
+  color: #fff !important;
+}
+
+.MuiToggleButton-root:hover {
+  background-color: rgba(74, 187, 131, 0.1);
+}
+
+.small-icon {
+  font-size: 14px;
+}
+
+.anniversari-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.anniversari-heading {
+  font-size: 20px;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.anniversari-icon-container {
+  font-size: 20px;
+  color: var(--text-color);
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.anniversaries-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.anniversaries-table thead {
+  background-color: #e8f0ea;
+}
+
+.anniversaries-table thead tr th {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.20px;
+  color: #55565b;
+  padding: 8px;
+  vertical-align: top;
+  border: none;
+}
+
+.anniversaries-table tbody tr {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.anniversaries-table tbody tr:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.anniversaries-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.anniversaries-table tbody tr td {
+  font-size: 12px;
+  letter-spacing: 0.35px;
+  font-weight: normal;
+  color: #35363a;
+  padding: 4px;
+  text-align: center;
+  border-top: none;
+  border-bottom: none;
+}
+
+.anniversaries-table tbody tr td:first-child {
+  border-left: none;
+}
+
+.anniversaries-table tbody tr td:last-child {
+  border-right: none;
+}
+
+.anniversaries-container .pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.anniversaries-container .pagination-btn {
+  cursor: pointer;
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.anniversaries-container .pagination-btn:hover {
+  color: #000;
+}
+
+.anniversaries-container span {
+  font-size: 16px;
+  margin: 0 5px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .anniversari-heading {
+      font-size: 18px;
+  }
+
+  .anniversaries-table thead tr th {
+      font-size: 12px;
+      padding: 6px;
+  }
+
+  .anniversaries-table tbody tr td {
+      font-size: 10px;
+      padding: 3px;
+  }
+
+  .employee-name {
+      font-size: 10px;
+  }
+
+  .toggle-buttons {
+      gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .anniversari-heading {
+      font-size: 16px;
+  }
+
+  .anniversaries-table thead tr th {
+      font-size: 10px;
+      padding: 4px;
+  }
+
+  .anniversaries-table tbody tr td {
+      font-size: 9px;
+      padding: 2px;
+  }
+
+  .employee-img {
+      width: 25px;
+      height: 25px;
+  }
+
+  .pagination-container .pagination-btn {
+      font-size: 12px;
+  }
+
+  .anniversaries-container span {
+      font-size: 14px;
+  }
+}

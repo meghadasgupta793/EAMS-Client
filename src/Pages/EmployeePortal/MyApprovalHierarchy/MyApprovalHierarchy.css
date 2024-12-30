@@ -1,0 +1,141 @@
+.myApprovalHierarchy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.myApprovalHierarchy-Container {
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.myApprovalHierarchy-grids {
+   display: flex; 
+    justify-content: space-between;  
+    gap: 20px;
+}
+
+.myApprovalHierarchy-repotedTo-table-container,
+.myApprovalHierarchy-repotedby-table-container {
+    flex: 1;
+    width: 100%;
+    background-color: var(--background-color-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.myApprovalHierarchy-repotedTo-header-container,
+.myApprovalHierarchy-repotedBy-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.myApprovalHierarchy-repotedTo-heading,
+.myApprovalHierarchy-repotedBy-heading {
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.myApprovalHierarchy-repotedTo-icon-container,
+.myApprovalHierarchy-repotedBy-icon-container {
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+    
+     display: flex;
+    
+    gap: 10px;
+}
+
+.myApprovalHierarchy-repotedTo-header-icon,
+.myApprovalHierarchy-repotedBy-header-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+
+.myApprovalHierarchy-repotedTo-header-icon:hover,
+.myApprovalHierarchy-repotedBy-header-icon:hover {
+    color: var(--primary-color);
+}
+
+.myApprovalHierarchy-repotedTo-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+
+.myApprovalHierarchy-repotedTo-table thead,
+.myApprovalHierarchy-repotedBy-table thead {
+    background-color: #4abb83;
+}
+
+.myApprovalHierarchy-repotedTo-table thead tr th,
+.myApprovalHierarchy-repotedBy-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+    border: 1px solid #4abb83;
+    background-color: #4abb83;
+}
+
+.myApprovalHierarchy-repotedTo-table tbody tr,
+.myApprovalHierarchy-repotedBy-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Soft shadow on each row */
+    border-radius: 8px;
+    /* Optional: Rounded corners */
+    transition: box-shadow 0.3s ease;
+    /* Smooth transition on hover */
+}
+
+.myApprovalHierarchy-repotedTo-table tbody tr:hover,
+.myApprovalHierarchy-repotedBy-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Stronger shadow on hover */
+}
+
+.myApprovalHierarchy-repotedTo-table tbody tr:nth-child(odd),
+.myApprovalHierarchy-repotedBy-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+    /* Light gray background for odd rows */
+}
+
+.myApprovalHierarchy-repotedTo-table tbody tr td,
+.myApprovalHierarchy-repotedBy-table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 6px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+.myApprovalHierarchy-repotedTo-table tbody tr td:first-child,
+.myApprovalHierarchy-repotedBy-table tbody tr td:first-child {
+    border-left: none;
+}
+
+.myApprovalHierarchy-repotedTo-table tbody tr td:last-child,
+.myApprovalHierarchy-repotedBy-table tbody tr td:last-child {
+    border-right: none;
+}

@@ -1,0 +1,96 @@
+.update-holiday {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    width: 100%;
+}
+
+.update-holiday-container {
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+h1 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.holiday-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.update-holiday-form {
+    margin-bottom: 15px;
+}
+
+.update-holiday-form-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.update-holiday-form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.update-holiday-form-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.back-btn, .update-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    background: var(--gradient-border);
+    color: white;
+}
+
+.back-btn:hover {
+    background: var(--red-gradient);
+    color: white;
+}
+
+/* Responsive Styles for screens smaller than 768px */
+@media (max-width: 768px) {
+    .update-holiday-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .update-holiday-container {
+        margin: 20px;
+    }
+
+    .update-holiday-form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .back-btn, .update-btn {
+        width: 100%;
+        padding: 15px;
+    }
+}

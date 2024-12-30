@@ -1,0 +1,271 @@
+.applyAttendance {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.applyAttendance-container {
+    padding: 20px;
+    margin: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.applyAttendance-left-content,
+.applyAttendance-right-content {
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Camera Frame for Live Feed */
+.camera-frame {
+    width: 400px;
+    height: 300px;
+    background-color: #e8f0ea;
+    border: 2px dashed #4abb83;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+/* Employee Capture Photo Frame */
+.employee-photo-frame {
+    display: flex;
+    width: 220px;
+    height: 220px;
+    background-color: #e8f0ea;
+    border: 2px dashed #4abb83;
+    margin: 0 auto 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.employee-photo-frame img {
+    width: 200px;
+    height: 200px;
+}
+
+/* Instruction text */
+.instruction-text {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Attendance Options - Toggle Buttons */
+.attendance-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.attendance-options label {
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Remark Input Textarea */
+.remark-input {
+    width: 100%;
+    height: 100px;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Apply Attendance Button */
+.apply-attendance-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.apply-attendance-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.apply-attendance-button:hover {
+    background: var(--red-gradient);
+}
+
+/* Attendance Options Toggle Button Group */
+.attendance-options {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.attendance-options .MuiToggleButtonGroup-root {
+    display: flex;
+    gap: 10px;
+}
+
+.attendance-options .MuiToggleButton-root {
+    width: 40px;
+    height: 40px;
+    color: #555;
+    transition: background-color 0.3s ease;
+}
+
+.attendance-options .MuiToggleButton-root.Mui-selected {
+    color: #fff;
+    background: var(--gradient-border);
+}
+
+.attendance-options .MuiToggleButton-root:hover {
+    background-color: #e0e0e0;
+}
+
+/* Location and Remark layout */
+.remarkAndLocation {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}
+
+/* Location Container for Displaying Location Information */
+.Location-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+/* Alert container */
+.alert {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .applyAttendance-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin: 20px;
+    }
+
+    .camera-frame {
+        width: 100%;
+        height: auto;
+    }
+
+    .employee-photo-frame {
+        width: 180px;
+        height: 180px;
+    }
+
+    .employee-photo-frame img {
+        width: 160px;
+        height: 160px;
+    }
+
+    .attendance-options .MuiToggleButton-root {
+        width: 35px;
+        height: 35px;
+    }
+
+    .remarkAndLocation {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .Location-container,
+    .remark-input {
+        width: 100%;
+    }
+
+    .apply-attendance-button {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .applyAttendance {
+        padding: 10px;
+    }
+
+    .applyAttendance-container {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .camera-frame,
+    .employee-photo-frame {
+        width: 100%;
+        height: auto;
+    }
+
+    .employee-photo-frame img {
+        width: 100%;
+        height: auto;
+    }
+
+    .attendance-options {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .apply-attendance-button {
+        width: 100%;
+    }
+
+    .remarkAndLocation {
+        grid-template-columns: 1fr;
+    }
+
+    .Location-container,
+    .remark-input {
+        font-size: 12px;
+    }
+}

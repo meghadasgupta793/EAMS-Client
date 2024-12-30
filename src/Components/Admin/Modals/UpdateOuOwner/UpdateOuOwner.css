@@ -1,0 +1,78 @@
+.backGround-Wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(192, 207, 200, 0.7);
+}
+
+.updateOuOwner-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 101;
+    width: 300px;
+}
+
+.updateOuOwner-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.updateOuOwner-heading {
+    font-size: 20px;
+    margin: 0;
+}
+
+.ouOwner-action-btn {
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    padding: 4px 6px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ouOwner-cancel-btn {
+    background: var(--red-gradient);
+}
+
+.updateOuOwner-form-container {
+    margin: 20px 0;
+}
+
+.ouOwner-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.ouOwner-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button-section {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin-top: 20px;
+}
+
+.ouOwner-save-btn {
+    background: var(--gradient-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}

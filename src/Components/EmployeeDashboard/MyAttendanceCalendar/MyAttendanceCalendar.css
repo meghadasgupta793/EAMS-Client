@@ -1,0 +1,119 @@
+.calendar-container {
+    padding: 8px; /* Reduced padding for the calendar container */
+}
+
+.calendar-header {
+    display: flex; /* Flexbox layout for the header */
+    justify-content: space-between; /* Space between header items */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 8px; /* Reduced bottom margin for spacing */
+    color: black;
+}
+
+.calendar-day-name {
+    text-align: center; /* Center text in day name cells */
+    font-weight: bold; /* Bold text for day names */
+    font-size: 0.7rem; /* Smaller font size */
+    color: black;
+}
+
+.calendar-title {
+    text-align: center; /* Center title text */
+    margin-bottom: 20px; /* Reduced margin below title */
+    padding-bottom: 8px; /* Reduced padding for space */
+    font-size: 0.9rem; /* Smaller font size for the calendar title */
+    display: block; /* Ensures it behaves like a block element */
+    color: black;
+}
+
+.calendar-day {
+    position: relative; /* Set position relative for hover effects */
+    padding: 2px; /* Further reduced padding inside each day cell */
+    text-align: center; /* Center text in day cells */
+    border: 1px solid #ddd; /* Light gray border for cells */
+    border-radius: 4px; /* Rounded corners */
+    min-height: 10px; /* Reduced minimum height for day cells */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+    color: black;
+
+
+
+    width: 10px; /* Explicit width for day cells */
+
+
+
+
+}
+
+/* Odd child cells background color */
+.calendar-day:nth-child(odd) {
+    background-color: #f0f0f0; /* Light grey for odd cells */
+}
+
+.attendance-present {
+    background-color: green; /* Green background for present */
+    color: white; /* White text color */
+}
+
+.attendance-absent {
+    background-color: red; /* Red background for absent */
+    color: white; /* White text color */
+}
+
+.attendance-late {
+    background-color: orange; /* Orange background for late */
+    color: white; /* White text color */
+}
+.attendance-WO {
+    background-color:#9E9E9E; /* Orange background for late */
+    color: white; /* White text color */
+}
+.attendance-HO {
+    background-color: #9C27B0; /* Orange background for late */
+    color: white; /* White text color */
+}
+.attendance-LV {
+    background-color:#3F51B5; /* Orange background for late */
+    color: white; /* White text color */
+}
+.attendance-partial {
+    background-color: #FFC107; /* Orange background for late */
+    color: white; /* White text color */
+}
+.attendance-TR {
+    background-color:#00BCD4; /* Orange background for late */
+    color: white; /* White text color */
+}
+
+.day-number {
+    font-size: 0.6rem; /* Smaller font size for day numbers */
+}
+
+.attendance-status {
+    font-size: 0.5rem; /* Smaller font size for attendance status */
+}
+
+/* Hover detail box */
+.attendance-details-hover {
+    position: absolute; /* Absolute positioning */
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background with transparency */
+    color: white; /* White text color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 4px; /* Padding */
+    z-index: 1; /* Ensure it appears above other elements */
+    margin-top: 2px; /* Reduced margin to separate from the cell */
+    text-align: center; /* Center text */
+    font-size: 0.6rem; /* Smaller font size */
+    min-width: 100px;
+}
+
+/* Additional styling to visually separate date and status */
+.calendar-day .day-number {
+    display: block; /* Display date as a block element */
+    font-weight: bold; /* Make the date bold */
+}
+
+.calendar-day .attendance-status {
+    display: block; /* Display status as a block element */
+    margin-top: 2px; /* Reduced space between date and status */
+}

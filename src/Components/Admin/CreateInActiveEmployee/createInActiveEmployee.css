@@ -1,0 +1,141 @@
+.createInActiveEmployee {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    width: 100%;
+}
+
+.createInActiveEmployee-Container {
+    padding: 20px;
+    margin: 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.middle-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 38px;
+    margin-bottom: 20px; /* Space below the middle section */
+}
+
+.InActiveEmployee-left-section {
+    flex: 1; /* Left section for Employee Photo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.InActive-employee-pic {
+    position: relative;
+    width: 200px; /* Adjust as needed */
+    height: 200px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+.InActive-employee-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.camera-icon {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.camera-icon svg {
+    font-size: 24px;
+    color: #4abb83;
+}
+
+.createInActiveEmployee-form {
+    flex: 2; /* Right section for the form */
+    
+}
+
+.InActiveEmployee-right-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.InActiveEmployee-top-section,
+.InActiveEmployee-bottom-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px; /* Space between top and bottom sections */
+}
+
+.InActiveEmployee-form-group {
+    flex: 1; /* Equal width for all form groups */
+    margin-right: 10px; /* Space between input fields */
+}
+
+.InActiveEmployee-form-group:last-child {
+    margin-right: 0; /* Remove margin from the last element */
+}
+
+.InActiveEmployee-form-group label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.InActiveEmployee-form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+}
+
+textarea.InActiveEmployee-form-control {
+    height: 80px;
+    resize: none;
+}
+
+/* Submit button */
+.submit-section {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    margin-top: 20px; /* Space above the button */
+}
+
+.submit-btn {
+
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.submit-btn:hover {
+    background-color: #3a9a6e;
+}

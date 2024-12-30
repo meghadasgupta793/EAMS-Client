@@ -1,0 +1,56 @@
+.myProfile {
+    text-align: center;
+    background-color: #f9f9f9; /* Background color for the profile section */
+}
+
+.profile-svg {
+    margin: 0;
+    padding: 0;
+    height: 140px;
+    width: 100%;
+}
+
+.profile-info {
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 20px; /* Space around profile info */
+    padding-right: 20px; /* Space around profile info */
+    padding-bottom: 20px; /* Space around profile info */
+}
+
+.emp {
+    margin-bottom: 15px; /* Space below the photo */
+}
+
+.emp-photo {
+    width: 100px; /* Set width for employee photo */
+    height: 100px; /* Set height for employee photo */
+    border-radius: 50%; /* Make photo circular */
+    object-fit: cover; /* Cover to maintain aspect ratio */
+    border: 2px solid #f7faf8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+
+
+}
+
+.emp-details {
+    font-family: Arial, sans-serif; /* Font style for the details */
+    text-align: left; /* Align text to the left */
+}
+
+.detail {
+    display: flex; /* Use flexbox to arrange label and value */
+    justify-content: space-between; /* Space between label and value */
+    margin: 5px 0; /* Space between each detail */
+}
+
+.label {
+    font-weight: bold; /* Make label bold */
+    color: #333; /* Color for the labels */
+}
+
+.value {
+    color: #666; /* Color for the values */
+}

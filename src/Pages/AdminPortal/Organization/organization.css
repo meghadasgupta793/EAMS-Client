@@ -1,0 +1,14 @@
+.organization{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    --dm-bg:#111;
+}
+
+.organization.dark{
+    background-color: var(--dm-bg);
+    color: white;
+}
