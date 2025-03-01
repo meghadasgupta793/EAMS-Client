@@ -1,6 +1,6 @@
 // secrect.js
 const config = {
-  url: import.meta.env.VITE_API_URL || 'http://localhost:3005',
+  url: 'http://localhost:3005'  || 'https://pro1.smart-punch.com',
   MODEL_URL: '/models',
   ImgUrl: import.meta.env.VITE_EMPLOYEE_IMG_URL || 'http://localhost:3005/images/Employee',
   VisitorImgUrl: import.meta.env.VITE_VISITOR_IMG_URL || 'http://localhost:3005/images/visitor',
