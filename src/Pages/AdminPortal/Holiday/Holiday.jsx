@@ -14,10 +14,14 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { exportToExcel } from '../../../Components/Utils/excelUtils'; // Adjust the import path
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useDeleteHolidayMutation, useGetAllHolidaysQuery } from '../../../Redux/api/admin/holidayApi';
 
 const ITEMS_PER_PAGE = 6;
 
 const Holiday = () => {
+    const { data, error, isLoading } = useGetAllHolidaysQuery();
+    const [deleteHoliday] = useDeleteHolidayMutation();
+
     const [searchActive, setSearchActive] = useState(false);
     const [searchQueries, setSearchQueries] = useState({
         festivalName: '',
@@ -26,17 +30,6 @@ const Holiday = () => {
     });
     const [page, setPage] = useState(1); // Pagination state
 
-    const data = [
-        { festivalName: 'New Year', fromDate: '01-01-2024', toDate: '01-01-2024' },
-        { festivalName: 'Holi', fromDate: '03-29-2024', toDate: '03-29-2024' },
-        { festivalName: 'Diwali', fromDate: '11-12-2024', toDate: '11-12-2024' },
-        { festivalName: 'Christmas', fromDate: '12-25-2024', toDate: '12-25-2024' },
-        { festivalName: 'Independence Day', fromDate: '08-15-2024', toDate: '08-15-2024' },
-        { festivalName: 'Republic Day', fromDate: '01-26-2024', toDate: '01-26-2024' },
-        { festivalName: 'Durga Puja', fromDate: '09-09-2024', toDate: '09-09-2024' },
-        // Add more holiday data here
-    ];
-
     const handleSearchChange = (e, field) => {
         setSearchQueries(prevQueries => ({
             ...prevQueries,
@@ -44,10 +37,11 @@ const Holiday = () => {
         }));
     };
 
-    const filteredData = data.filter(item =>
-        item.festivalName.toLowerCase().includes(searchQueries.festivalName.toLowerCase()) &&
-        item.fromDate.includes(searchQueries.fromDate) &&
-        item.toDate.includes(searchQueries.toDate)
+    // Make sure data exists before calling filter
+    const filteredData = (data?.data || []).filter(item =>
+        item.Name.toLowerCase().includes(searchQueries.festivalName.toLowerCase()) &&
+        item.StartDate.includes(searchQueries.fromDate) &&
+        item.EndDate.includes(searchQueries.toDate)
     );
 
     // Pagination logic
@@ -79,8 +73,17 @@ const Holiday = () => {
         navigate('/newHoliday'); // Navigate to create new Holiday page
     };
 
-    const goToUpdateHoliday = () => {
-        navigate('/updateHoliday'); // Navigate to update Holiday page
+    const goToUpdateHoliday = (id) => {
+        navigate(`/updateHoliday/${id}`); // Navigate to update Holiday page with the holiday id
+    };
+
+    const handleDeleteHoliday = async (id) => {
+        try {
+            await deleteHoliday(id);
+            alert('Holiday deleted successfully');
+        } catch (err) {
+            alert('Error deleting holiday');
+        }
     };
 
     return (
@@ -118,64 +121,76 @@ const Holiday = () => {
                     </div>
                 </div>
 
-                <table className='holiday-table'>
-                    <thead>
-                        <tr>
-                            {searchActive ? (
-                                <>
-                                    <th>
-                                        <input
-                                            type="text"
-                                            value={searchQueries.festivalName}
-                                            onChange={(e) => handleSearchChange(e, 'festivalName')}
-                                            placeholder="Search Festival Name"
-                                        />
-                                    </th>
-                                    <th>
-                                        <input
-                                            type="text"
-                                            value={searchQueries.fromDate}
-                                            onChange={(e) => handleSearchChange(e, 'fromDate')}
-                                            placeholder="Search From Date"
-                                        />
-                                    </th>
-                                    <th>
-                                        <input
-                                            type="text"
-                                            value={searchQueries.toDate}
-                                            onChange={(e) => handleSearchChange(e, 'toDate')}
-                                            placeholder="Search To Date"
-                                        />
-                                    </th>
-                                </>
-                            ) : (
-                                <>
-                                    <th>Name of the Festival</th>
-                                    <th>From Date</th>
-                                    <th>To Date</th>
-                                </>
-                            )}
-                            {/* Only show Action column if search is not active */}
-                            {!searchActive && <th>Action</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {paginatedData.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.festivalName}</td>
-                                <td>{item.fromDate}</td>
-                                <td>{item.toDate}</td>
-                                {/* Only render Action column if search is not active */}
-                                {!searchActive && (
-                                    <td>
-                                        <BorderColorIcon className='action-btn update-btn' onClick={goToUpdateHoliday} />
-                                        <DeleteForeverIcon className='action-btn delete-btn' />
-                                    </td>
+                {isLoading ? (
+                    <p>Loading holidays...</p>
+                ) : error ? (
+                    <p>Error loading holidays.</p>
+                ) : (
+                    <table className='holiday-table'>
+                        <thead>
+                            <tr>
+                                {searchActive ? (
+                                    <>
+                                        <th>
+                                            <input
+                                                type="text"
+                                                value={searchQueries.festivalName}
+                                                onChange={(e) => handleSearchChange(e, 'festivalName')}
+                                                placeholder="Search Festival Name"
+                                            />
+                                        </th>
+                                        <th>
+                                            <input
+                                                type="text"
+                                                value={searchQueries.fromDate}
+                                                onChange={(e) => handleSearchChange(e, 'fromDate')}
+                                                placeholder="Search From Date"
+                                            />
+                                        </th>
+                                        <th>
+                                            <input
+                                                type="text"
+                                                value={searchQueries.toDate}
+                                                onChange={(e) => handleSearchChange(e, 'toDate')}
+                                                placeholder="Search To Date"
+                                            />
+                                        </th>
+                                    </>
+                                ) : (
+                                    <>
+                                        <th>Name of the Festival</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                    </>
                                 )}
+                                {/* Only show Action column if search is not active */}
+                                {!searchActive && <th>Action</th>}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {paginatedData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.Name}</td>
+                                    <td>{new Date(item.StartDate).toLocaleDateString()}</td>
+                                    <td>{new Date(item.EndDate).toLocaleDateString()}</td>
+                                    {/* Only render Action column if search is not active */}
+                                    {!searchActive && (
+                                        <td>
+                                            <BorderColorIcon
+                                                className='action-btn update-btn'
+                                                onClick={() => goToUpdateHoliday(item.ID)} // Pass the holiday ID to the update function
+                                            />
+                                            <DeleteForeverIcon
+                                                className='action-btn delete-btn'
+                                                onClick={() => handleDeleteHoliday(item.ID)} // Pass item ID to deleteHoliday
+                                            />
+                                        </td>
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
 
                 {/* Pagination Controls */}
                 <div className='pagination-container'>

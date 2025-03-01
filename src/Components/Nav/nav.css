@@ -7,28 +7,30 @@
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
-    transition: background-color .2s ease;
+    transition: background-color 0.2s ease;
 }
 
-
-
 .nav:hover {
-   /* background: #f7f8fa;  */
-    background: #e8f0ea;  
-   
+    background: #e8f0ea;
 }
 
 .nav:hover .sidebar-icon {
-    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+    background: linear-gradient(
+        90deg,
+        rgba(29, 169, 156, 1) 0%,
+        rgba(74, 187, 131, 1) 50%,
+        rgba(125, 207, 97, 1) 100%
+    );
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-    color: white; /* Ensure text/icon color is visible against the background */
+    color: white;
 }
 
 h2 {
     font-size: 15px;
-    font-family: raleway;
+    font-family: 'Raleway', sans-serif;
     font-weight: 500;
     color: #55565b;
+    transition: opacity 0.2s ease; /* Smooth transition for text visibility */
 }
 
 .navigation.active h2 {
@@ -39,11 +41,76 @@ h2 {
     font-size: 30px;
     color: rgb(82, 82, 82);
     border-radius: 50px;
-    transition: background .2s ease, color .2s ease; /* Smooth transition for background and color */
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .sidebar-icon:hover {
-    background: rgb(29, 169, 156);
-    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+    background: linear-gradient(
+        90deg,
+        rgba(29, 169, 156, 1) 0%,
+        rgba(74, 187, 131, 1) 50%,
+        rgba(125, 207, 97, 1) 100%
+    );
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Media Queries for Responsiveness */
+
+/* For tablets and small laptops */
+@media (max-width: 1024px) {
+    .nav {
+        padding: 10px 16px;
+        gap: 10px;
+    }
+
+    h2 {
+        font-size: 14px;
+    }
+
+    .sidebar-icon {
+        font-size: 26px;
+    }
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+    .nav {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+
+    h2 {
+        font-size: 13px;
+    }
+
+    .sidebar-icon {
+        font-size: 24px;
+    }
+}
+
+/* For very small mobile devices */
+@media (max-width: 480px) {
+    .nav {
+        padding: 6px 10px;
+        gap: 6px;
+    }
+
+    h2 {
+        font-size: 12px;
+    }
+
+    .sidebar-icon {
+        font-size: 22px;
+    }
+}
+
+/* Optional: Hide text on very small screens */
+@media (max-width: 360px) {
+    h2 {
+        display: none;
+    }
+
+    .nav {
+        justify-content: center; /* Center the icon when text is hidden */
+    }
 }

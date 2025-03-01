@@ -1,0 +1,134 @@
+.checkIn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.checkIn-container {
+    padding: 20px;
+    margin: 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.checkIn-heading {
+    color: rgb(82, 82, 82);
+}
+
+/* Form Styling */
+.checkIn-container fieldset {
+    border: 2px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.checkIn-container legend {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2a8654;
+    text-align: left;
+    padding-left: 10px;
+   
+}
+
+
+
+
+.checkIn-form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Visitor Photo Section */
+.checkIn-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkIn-frame {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.checkIn-frame img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.checkIn-Visitor-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+/* Right Side - Form Fields */
+.checkIn-form-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.checkIn-input-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkIn-input-field label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.checkIn-input-field input,
+.checkIn-input-field select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.checkIn-input-field input:focus,
+.checkIn-input-field select:focus {
+    border-color: green;
+    outline: none;
+}
+
+.checkIn-btn{
+    background: var(--gradient-border);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 16px;
+}
+
+.checkIn-btn:hover {
+    background: var(--red-gradient);
+}

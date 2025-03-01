@@ -10,24 +10,121 @@
 }
 
 .MyLateRegularization-container {
-    padding: 20px;
-    margin: 20px;
+   
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 28px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
 }
 
-.MyLateRegularization-header-container {
+.MyLateRegularization-grids{
+    display: flex;
+    align-items: stretch; /* Ensures both items stretch to the same height */
+    gap: 20px;
+}
+
+.MyLateRegularization-late-table-container,
+.MyLateRegularization-form {
+    flex: 1; /* Makes both sections take equal width */
+    display: flex;
+    flex-direction: column; /* Ensures content stacks vertically inside */
+    justify-content: space-between; /* Space distribution inside each container */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.MyLateRegularization-late-table-header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
 
-.MyLateRegularization-heading {
+.MyLateRegularization-late-table-heading {
     font-size: 24px;
     color: var(--text-color);
     margin: 0;
 }
+
+.MyLateRegularization-late-table-icon-container{
+    font-size: 20px;
+    color: var(--text-color);
+    display: flex;
+    gap: 10px;
+}
+
+.MyLateRegularization-late-table-header-icon{
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+.MyLateRegularization-late-Table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+
+.MyLateRegularization-late-Table thead {
+    background-color: #4abb83;
+}
+
+.MyLateRegularization-late-Table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+    border: 1px solid #4abb83;
+}
+
+.MyLateRegularization-late-Table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.MyLateRegularization-late-Table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.MyLateRegularization-late-Table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.MyLateRegularization-late-Table tbody tr td {
+    font-size: 12px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 6px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .MyLateRegularization-new-request {
     padding: 10px 20px;
@@ -89,13 +186,6 @@
     color: red;
 }
 
-.MyLateRegularization-form {
-    margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: #fdfdfd;
-}
 
 .MyLateRegularization-date-time {
     display: flex;

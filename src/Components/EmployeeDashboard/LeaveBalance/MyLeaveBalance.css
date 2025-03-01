@@ -1,16 +1,18 @@
-
-.myLvBalance-table-container{
+.myLvBalance-table-container {
     width: 100%;
-    
+    padding: 10px; /* Added padding for better spacing */
+    box-sizing: border-box; /* Ensure padding is included in the element's dimensions */
 }
 
-.myLvBalance-header-container{
+.myLvBalance-header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    gap: 10px; /* Add gap between items */
 }
 
-.myLvBalance-heading{
+.myLvBalance-heading {
     font-size: 20px;
     color: var(--text-color);
     margin: 0;
@@ -22,7 +24,6 @@
     margin: 0;
     display: flex;
     gap: 10px;
-
 }
 
 .applyLeave-icon {
@@ -35,15 +36,14 @@
     color: var(--primary-color);
 }
 
-.myLv-table{
+.myLv-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
-
 }
 
 .myLv-table thead {
-    background-color: #e8f0ea; 
+    background-color: #e8f0ea;
 }
 
 .myLv-table thead tr th {
@@ -54,27 +54,21 @@
     padding: 8px;
     vertical-align: top;
     border: none;
-  
 }
 
 .myLv-table tbody tr {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Soft shadow on each row */
     border-radius: 8px;
-    /* Optional: Rounded corners */
     transition: box-shadow 0.3s ease;
-    /* Smooth transition on hover */
 }
 
 .myLv-table tbody tr:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Stronger shadow on hover */
 }
 
 .myLv-table tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
-    /* Light gray background for odd rows */
 }
 
 .myLv-table tbody tr td {
@@ -84,26 +78,23 @@
     color: #35363a;
     padding: 6px;
     text-align: center;
-   
     border-top: none;
     border-bottom: none;
 }
 
 .myLv-table tbody tr td:first-child {
     border-left: none;
-    /* Remove border from first column */
 }
 
 .myLv-table tbody tr td:last-child {
     border-right: none;
-    /* Remove border from last column */
 }
 
 .myLvBalance-table-container .pagination-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 10px; /* Increased margin for better spacing */
 }
 
 .myLvBalance-table-container .pagination-btn {
@@ -120,4 +111,54 @@
 .pagination-container span {
     font-size: 16px;
     margin: 0 5px;
+}
+
+/* Responsive Styles for Tablet and Mobile */
+@media (max-width: 768px) {
+    .myLvBalance-header-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .myLvBalance-heading {
+        font-size: 18px; /* Slightly smaller font size */
+    }
+
+    .myLv-table thead tr th {
+        font-size: 12px; /* Smaller font size for table headers */
+    }
+
+    .myLv-table tbody tr td {
+        font-size: 10px; /* Smaller font size for table data */
+    }
+
+    .applyLeave-icon {
+        font-size: 20px; /* Smaller icon size */
+    }
+
+    .pagination-container span {
+        font-size: 14px; /* Smaller font size for pagination */
+    }
+}
+
+@media (max-width: 480px) {
+    .myLvBalance-heading {
+        font-size: 16px; /* Even smaller font size for mobile */
+    }
+
+    .myLv-table thead tr th {
+        font-size: 10px; /* Smaller font size for table headers */
+    }
+
+    .myLv-table tbody tr td {
+        font-size: 8px; /* Smaller font size for table data */
+    }
+
+    .applyLeave-icon {
+        font-size: 18px; /* Even smaller icon size */
+    }
+
+    .pagination-container span {
+        font-size: 12px; /* Even smaller font size for pagination */
+    }
 }

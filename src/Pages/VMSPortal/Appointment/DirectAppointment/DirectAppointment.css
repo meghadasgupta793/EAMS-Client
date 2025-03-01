@@ -1,0 +1,203 @@
+/* General Layout */
+.direct-appointment {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.direct-appointment-form-wrapper {
+    padding: 20px;
+    margin: 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.direct-appointment-heading{
+    color: rgb(82, 82, 82)
+}
+
+.direct-appointment-image-upload-frame {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.direct-appointment-image-upload-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: rgb(82, 82, 82);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.direct-appointment-uploaded-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Form Styling */
+fieldset {
+    border: 2px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+legend {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Container for form fields */
+.direct-appointment-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.direct-appointment-input-field {
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.direct-appointment-input-field input,
+.direct-appointment-input-field textarea,
+.direct-appointment-input-field select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.direct-appointment-input-field textarea {
+    height: 80px;
+    resize: none;
+}
+
+.direct-appointment-input-field select {
+    height: 40px;
+}
+
+.direct-appointment-input-field input:focus,
+.direct-appointment-input-field textarea:focus,
+.direct-appointment-input-field select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.direct-appointment-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.create-appointment-btn {
+   background: var(--gradient-border);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.create-appointment-btn:hover {
+    background: var(--red-gradient);
+}
+
+
+.direct-appointment-input-field .react-select-container {
+    width: 100%;
+    
+}
+
+.direct-appointment-input-field .react-select__control {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    padding: 0;
+    margin-top: 4px;
+}
+
+.direct-appointment-input-field .react-select__menu {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+
+
+.direct-appointment-camera-icon {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background-color: white;
+    padding: 6px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.direct-appointment-camera-icon svg {
+    font-size: 22px;
+    color: #4abb83;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .direct-appointment-form-wrapper {
+        margin: 20px;
+        padding: 16px;
+    }
+
+    .direct-appointment-image-upload-frame {
+        width: 80px;
+        height: 80px;
+    }
+
+    .direct-appointment-form-row {
+        grid-template-columns: 1fr;
+    }
+}

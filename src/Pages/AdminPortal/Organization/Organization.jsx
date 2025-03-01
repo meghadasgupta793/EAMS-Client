@@ -7,9 +7,9 @@ import OrganizationDataTable from '../../../Components/Admin/OrganizationDataTab
 import OuTemplate from '../../../Components/Admin/OuTemplate/OuTemplate'
 
 const Organization = () => {
-    const { DarkTheme } = useContext(ThemeContext)
+
     return (
-        <div className={`organization ${DarkTheme && "dark"}`}>
+        <div className='organization'>
             <Header />
           
             <OrganizationDataTable />

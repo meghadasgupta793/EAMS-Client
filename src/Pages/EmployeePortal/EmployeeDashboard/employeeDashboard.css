@@ -56,6 +56,7 @@
     .emp-box2 {
         grid-column: span 2;
         grid-row: span 1;
+        flex-direction: column; /* Stack items vertically */
     }
 
     .emp-box3,
@@ -68,8 +69,33 @@
     }
 }
 
+/* Responsive Styles for Mobile (Screen width 480px and below) */
+@media (max-width: 480px) {
+    .emp-dashboard {
+        grid-template-columns: 1fr; /* Single column layout */
+        gap: 8px;
+        margin: 10px; /* Reduce margin for smaller screens */
+    }
 
+    .emp-box1,
+    .emp-box2,
+    .emp-box3,
+    .emp-box4,
+    .emp-box5,
+    .emp-box6,
+    .emp-box7,
+    .emp-box8 {
+        grid-column: span 1;
+    }
 
+    .emp-box2 {
+        flex-direction: column; /* Ensure items are stacked vertically */
+    }
+
+    .emp-box {
+        padding: 8px; /* Reduce padding for smaller screens */
+    }
+}
 
 /* Modal Box Styling */
 .modal-box {
@@ -101,7 +127,6 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    
 }
 
 .custom-modal {
@@ -109,44 +134,20 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 800px;
+    width: 90%; /* Adjust width for smaller screens */
+    max-width: 800px; /* Maximum width */
     background-color: white;
     border: 1px solid var(--text-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow for a softer effect */
     padding: 16px;
     outline: none;
-    max-width: 100%; /* Ensure it never exceeds screen width */
     box-sizing: border-box; /* Include padding in the element's total width/height */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Responsive Styles for Mobile (Screen width 480px and below) */
+/* Responsive Modal for Mobile */
 @media (max-width: 480px) {
-    .emp-dashboard {
-        grid-template-columns: 1fr; /* Single column layout */
-        gap: 8px;
-    }
-
-    .emp-box1,
-    .emp-box2,
-    .emp-box3,
-    .emp-box4,
-    .emp-box5,
-    .emp-box6,
-    .emp-box7,
-    .emp-box8 {
-        grid-column: span 1;
+    .custom-modal {
+        width: 95%; /* Increase width for smaller screens */
+        padding: 12px; /* Reduce padding for smaller screens */
     }
 }

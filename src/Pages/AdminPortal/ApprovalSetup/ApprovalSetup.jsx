@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './approvalSetup.css';
 import Header from '../../../Components/Header/Header';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Tooltip from '@mui/material/Tooltip';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { useGetReportingListsQuery } from '../../../Redux/api/admin/approvalSetupApi';
+import config from '../../../secrect';
+import { useGetEmpInfoByeIDQuery } from '../../../Redux/api/admin/employeeApi';
+import AddReportingHeadOrReportee from '../../../Components/Modal/AdminModal/AddReportingHeadOrReportee/AddReportingHeadOrReportee'; // Import the modal component
 
 const dummyEmployee = {
     photo: '/images/kharush.png',
@@ -14,60 +23,61 @@ const dummyEmployee = {
     ou: 'Development'
 };
 
-const reportingToList = [
-    { empPhoto: '/images/kharush.png', name: 'Nidhu Ram Mondal', empNo: 'EMP001', designation: 'Manager', department: 'HR' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP002', designation: 'Accountant', department: 'Finance' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP003', designation: 'Accountant', department: 'Finance' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP004', designation: 'Accountant', department: 'Finance' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP005', designation: 'Accountant', department: 'Finance' },
-];
-
-const reportingByList = [
-    { empPhoto: '/images/kharush.png', name: 'Mark Davis', empNo: 'EMP003', designation: 'Developer', department: 'IT' },
-    { empPhoto: '/images/kharush.png', name: 'Emma Johnson', empNo: 'EMP004', designation: 'Marketing Specialist', department: 'Marketing' },
-    { empPhoto: '/images/kharush.png', name: 'Mark Davis', empNo: 'EMP005', designation: 'Developer', department: 'IT' },
-    { empPhoto: '/images/kharush.png', name: 'Emma Johnson', empNo: 'EMP006', designation: 'Marketing Specialist', department: 'Marketing' },
-    { empPhoto: '/images/kharush.png', name: 'Mark Davis', empNo: 'EMP007', designation: 'Developer', department: 'IT' },
-    { empPhoto: '/images/kharush.png', name: 'Emma Johnson', empNo: 'EMP008', designation: 'Marketing Specialist', department: 'Marketing' },
-    { empPhoto: '/images/kharush.png', name: 'Mark Davis', empNo: 'EMP009', designation: 'Developer', department: 'IT' },
-    { empPhoto: '/images/kharush.png', name: 'Emma Johnson', empNo: 'EMP010', designation: 'Marketing Specialist', department: 'Marketing' }
-];
-
 const ITEMS_PER_PAGE = 2;
 
+const PaginationControls = ({ page, handlePrevious, handleNext, endIndex, totalItems }) => (
+    <div className="pagination-container">
+        {page > 1 && (
+            <IconButton onClick={handlePrevious}>
+                <KeyboardDoubleArrowLeftIcon className="pagination-btn" />
+            </IconButton>
+        )}
+        <span>{page}</span>
+        {endIndex < totalItems && (
+            <IconButton onClick={handleNext}>
+                <KeyboardDoubleArrowRightIcon className="pagination-btn" />
+            </IconButton>
+        )}
+    </div>
+);
+
 const ApprovalSetup = () => {
+    const { id } = useParams();
+    const { data, error, isLoading } = useGetReportingListsQuery(id);
+    const { data: empData, error: errorempData, isLoading: isempDataLoading } = useGetEmpInfoByeIDQuery(id);
+    const employeeData = empData?.data || dummyEmployee;
+
+    const { ImgUrl } = config;
+    const reportingToList = data?.reportingToList || [];
+    const reportingByList = data?.reportingByList || [];
+
     const [searchTo, setSearchTo] = useState('');
     const [searchBy, setSearchBy] = useState('');
     const [pageTo, setPageTo] = useState(1);
     const [pageBy, setPageBy] = useState(1);
+    const [modalOpen, setModalOpen] = useState(false); // State to manage modal visibility
 
-    // Filtered lists based on search ReportTo
+    const handleModalOpen = () => setModalOpen(true);
+    const handleModalClose = () => setModalOpen(false);
+
     const filteredReportingToList = reportingToList.filter(employee =>
         employee.name.toLowerCase().includes(searchTo.toLowerCase())
     );
 
-
-    // Filtered lists based on search ReportTo
     const filteredReportingByList = reportingByList.filter(employee =>
         employee.name.toLowerCase().includes(searchBy.toLowerCase())
     );
 
-    // Pagination for Reporting To
     const startIndexTo = (pageTo - 1) * ITEMS_PER_PAGE;
     const endIndexTo = startIndexTo + ITEMS_PER_PAGE;
-
     const paginatedDataTo = filteredReportingToList.slice(startIndexTo, endIndexTo);
 
-
-    
-    // Pagination for Reporting By
     const startIndexBy = (pageBy - 1) * ITEMS_PER_PAGE;
     const endIndexBy = startIndexBy + ITEMS_PER_PAGE;
     const paginatedDataBy = filteredReportingByList.slice(startIndexBy, endIndexBy);
 
-
     const handleNextTo = () => {
-        if (startIndexTo + ITEMS_PER_PAGE < filteredReportingToList.length) {
+        if (endIndexTo < filteredReportingToList.length) {
             setPageTo((prev) => prev + 1);
         }
     };
@@ -79,7 +89,7 @@ const ApprovalSetup = () => {
     };
 
     const handleNextBy = () => {
-        if (startIndexBy + ITEMS_PER_PAGE < filteredReportingByList.length) {
+        if (endIndexBy < filteredReportingByList.length) {
             setPageBy((prev) => prev + 1);
         }
     };
@@ -90,12 +100,8 @@ const ApprovalSetup = () => {
         }
     };
 
-
-
-
-
-
-
+    if (isLoading || isempDataLoading) return <div>Loading...</div>;
+    if (error || errorempData) return <div>Error: {error?.message || errorempData?.message}</div>;
 
     return (
         <div className="approvalSetup">
@@ -105,27 +111,42 @@ const ApprovalSetup = () => {
 
                 <div className="top-employee-container">
                     <div className="top-employee-card">
-                        <img src={dummyEmployee.photo} alt="Employee" />
+                        <img
+                            src={employeeData.PictureName ? `${ImgUrl}/${employeeData.PictureName}` : '/images/default.png'}
+                            className="employee-photo"
+                            alt="Employee"
+                        />
+
                         <div className="employee-info">
-                            <h3>{dummyEmployee.name}</h3>
-                            <p>{dummyEmployee.department}</p>
-                            <p>{dummyEmployee.designation}</p>
-                            <p>{dummyEmployee.ou}</p>
+                            <h3>{employeeData.EmpNo}</h3>
+                            <h3>{employeeData.EmployeeName}</h3>
+                            <p>{employeeData.Department}</p>
+                            <p>{employeeData.Designation}</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="bottom-section">
-                    <div className="reporting-box left-box">
-                        <div className='header-container'>
-                            <h3>Reporting To</h3>
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                value={searchTo}
-                                onChange={(e) => setSearchTo(e.target.value)}
-                            />
-                            <button className='add-btn'>Add</button>
+                    <div className="reporting-box reporting-to-box">
+                        <div className='reporting-to-header-container'>
+                            <h3 className='reporting-to-heading'>Reporting To</h3>
+                            <div className='reporting-to-icon-container'>
+                                <Tooltip title='Search'>
+                                    <IconButton >
+                                        <SearchIcon className='reporting-to-header-icon' />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Export  Details in Excel'>
+                                    <IconButton >
+                                        <CloudDownloadIcon className='reporting-to-header-icon' />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Add Reporting Head'>
+                                    <IconButton onClick={handleModalOpen}>
+                                        <AddCircleOutlineIcon className='reporting-to-header-icon' />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
                         </div>
                         <table className="reportingTo-table">
                             <thead>
@@ -135,53 +156,72 @@ const ApprovalSetup = () => {
                                     <th>EmpNo</th>
                                     <th>Designation</th>
                                     <th>Department</th>
+                                    <th>Level</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {paginatedDataTo.map((employee) => (
-                                    <tr key={employee.empNo}>
-                                        <td><img src={employee.empPhoto} className='employee-photo' alt="Employee" /></td>
-                                        <td>{employee.name}</td>
-                                        <td>{employee.empNo}</td>
-                                        <td>{employee.designation}</td>
-                                        <td>{employee.department}</td>
-                                        <td>
-                                            <DeleteForeverIcon className='delete-btn' />
+                                {paginatedDataTo.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6" className="empty-message">
+                                            You are still not reporting to anyone.
                                         </td>
                                     </tr>
-                                ))}
+                                ) : (
+                                    paginatedDataTo.map((employee) => (
+                                        <tr key={employee.empNo}>
+                                            <td>
+                                                <img
+                                                    src={employee.empPhoto ? `${ImgUrl}/${employee.empPhoto}` : '/images/default.png'}
+                                                    className="employee-photo"
+                                                    alt="Employee"
+                                                />
+                                            </td>
+                                            <td>{employee.name}</td>
+                                            <td>{employee.empNo}</td>
+                                            <td>{employee.designation}</td>
+                                            <td>{employee.department}</td>
+                                            <td>{employee.level}</td>
+                                            <td>
+                                                <DeleteForeverIcon className='delete-btn' onClick={() => handleDeleteEmployee(employee.empNo)} />
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
-                        {/* Pagination Controls */}
-                        <div className="pagination-container">
-                            {pageTo > 1 && (
-                                <IconButton onClick={handlePreviousTo}>
-                                    <KeyboardDoubleArrowLeftIcon className="pagination-btn" />
-                                </IconButton>
-                            )}
-                            <span>{pageTo}</span>
-                            {endIndexTo < reportingToList.length && (
-                                <IconButton onClick={handleNextTo}>
-                                    <KeyboardDoubleArrowRightIcon className="pagination-btn" />
-                                </IconButton>
-                            )}
-                        </div>
+                        {filteredReportingToList.length > ITEMS_PER_PAGE && (
+                            <PaginationControls
+                                page={pageTo}
+                                handlePrevious={handlePreviousTo}
+                                handleNext={handleNextTo}
+                                endIndex={endIndexTo}
+                                totalItems={filteredReportingToList.length}
+                            />
+                        )}
                     </div>
 
-                    <div className="reporting-box right-box">
-                        <div className='header-container'>
-                            <h3>Reporting By</h3>
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                value={searchBy}
-                                onChange={(e) => setSearchBy(e.target.value)}
-                            />
-                            <button className='add-btn'>Add</button>
+                    <div className="reporting-box reporting-by-box">
+                        <div className='reporting-by-header-container'>
+                            <h3 className='reporting-by-heading'>Reporting By</h3>
+                            <div className='reporting-by-icon-container'>
+                                <Tooltip title='Search'>
+                                    <IconButton >
+                                        <SearchIcon className='reporting-by-header-icon' />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Export  Details in Excel'>
+                                    <IconButton >
+                                        <CloudDownloadIcon className='reporting-by-header-icon' />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Add Reportee'>
+                                    <IconButton onClick={handleModalOpen}>
+                                        <AddCircleOutlineIcon className='reporting-by-header-icon' />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
                         </div>
-
-
                         <table className="reportingBy-table">
                             <thead>
                                 <tr>
@@ -190,41 +230,53 @@ const ApprovalSetup = () => {
                                     <th>EmpNo</th>
                                     <th>Designation</th>
                                     <th>Department</th>
+                                    <th>Level</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {paginatedDataBy.map((employee, index) => (
-                                    <tr key={index}>
-                                        <td><img src={employee.empPhoto} className='employee-photo' alt="Employee" /></td>
-                                        <td>{employee.name}</td>
-                                        <td>{employee.empNo}</td>
-                                        <td>{employee.designation}</td>
-                                        <td>{employee.department}</td>
-                                        <td>
-                                            <DeleteForeverIcon className='delete-btn' />
+                                {paginatedDataBy.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6" className="empty-message">
+                                            You don't have any reportee.
                                         </td>
                                     </tr>
-                                ))}
+                                ) : (
+                                    paginatedDataBy.map((employee) => (
+                                        <tr key={employee.empNo}>
+                                            <td>
+                                                <img
+                                                    src={employee.empPhoto ? `${ImgUrl}/${employee.empPhoto}` : '/images/default.png'}
+                                                    className="employee-photo"
+                                                    alt="Employee"
+                                                />
+                                            </td>
+                                            <td>{employee.name}</td>
+                                            <td>{employee.empNo}</td>
+                                            <td>{employee.designation}</td>
+                                            <td>{employee.department}</td>
+                                            <td>{employee.level}</td>
+                                            <td>
+                                                <DeleteForeverIcon className='delete-btn' onClick={() => handleDeleteEmployee(employee.empNo)} />
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
-                        {/* Pagination Controls */}
-                        <div className="pagination-container">
-                            {pageBy > 1 && (
-                                <IconButton onClick={handlePreviousBy}>
-                                    <KeyboardDoubleArrowLeftIcon className="pagination-btn" />
-                                </IconButton>
-                            )}
-                            <span>{pageTo}</span>
-                            {endIndexBy < reportingByList.length && (
-                                <IconButton onClick={handleNextBy}>
-                                    <KeyboardDoubleArrowRightIcon className="pagination-btn" />
-                                </IconButton>
-                            )}
-                        </div>
+                        {filteredReportingByList.length > ITEMS_PER_PAGE && (
+                            <PaginationControls
+                                page={pageBy}
+                                handlePrevious={handlePreviousBy}
+                                handleNext={handleNextBy}
+                                endIndex={endIndexBy}
+                                totalItems={filteredReportingByList.length}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
+            <AddReportingHeadOrReportee open={modalOpen} handleClose={handleModalClose} />
         </div>
     );
 };

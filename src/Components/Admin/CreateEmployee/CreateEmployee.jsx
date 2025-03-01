@@ -1,269 +1,367 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './createEmployee.css';
 import Header from '../../Header/Header';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import EmployeeImg from '../Modals/EmployeeImg/EmployeeImg';
+import CropPhoto from '../../../Components/PhotoModal/CropPhoto/CropPhoto';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCropImage } from '../../../Redux/slice/cropImageSlice';
+import { useGetAllDepartmentQuery } from '../../../Redux/api/admin/departmentApi';
+import { useGetAllDesignationQuery } from '../../../Redux/api/admin/designationApi';
+import { useGetAllBatchQuery } from '../../../Redux/api/admin/bacthApi';
+import { useGetAllCategoryQuery } from '../../../Redux/api/admin/categoryApi';
+import { useGetAllOuQuery } from '../../../Redux/api/admin/ouApi';
+import { useGetAllHolidayGroupQuery, useGetAllHolidaysQuery } from '../../../Redux/api/admin/holidayApi';
+import { useGetAllAutoShiftGroupQuery, useGetAllShiftsQuery } from '../../../Redux/api/admin/shiftApi';
+import { useCreateEmployeeMutation } from '../../../Redux/api/admin/employeeApi';
+
 
 const CreateEmployee = () => {
-    // Arrays for select dropdown options
-    const departments = ['IT', 'Dev', 'Production'];
-    const designations = ['Manager', 'Security', 'Developer'];
-    const shiftTypes = ['Fixed', 'Flexi', 'Auto'];
-    const shifts = ['Day-Shift', 'Afternoon-Shift', 'Night-Shift'];
-    const autoShiftGroups = ['ABCD', 'AMN', 'DDH'];
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        return () => {
+            dispatch(clearCropImage());
+        };
+    }, [dispatch]);
+
+    const image = useSelector((state) => state.cropImage.image);
+    const [createEmployee, { isLoading, error }] = useCreateEmployeeMutation();
+
+    const { data: departmentData, departmenterror, isdepartmentLoading } = useGetAllDepartmentQuery();
+    const { data: designationsData, designationserror, isdesignationsLoading } = useGetAllDesignationQuery();
+    const { data: batchesData, batcheserror, isbatchesLoading } = useGetAllBatchQuery();
+    const { data: categoriesData, categorieserror, iscategoriesLoading } = useGetAllCategoryQuery();
+    const { data: organizationsData, organizationserror, isorganizationsLoading } = useGetAllOuQuery();
+    const { data: holidayGroupsData, holidayGroupserror, isholidayGroupsLoading } = useGetAllHolidayGroupQuery();
+
+    const { data: shiftData, shifterror, isshiftLoading } = useGetAllShiftsQuery();
+    const { data: autoShiftData, autoShiferror, isautoShifLoading } = useGetAllAutoShiftGroupQuery();
+
+    const departments = departmentData?.data || [];
+    const designations = designationsData?.data || [];
+    const batches = batchesData?.data || [];
+    const categories = categoriesData?.data || [];
+    const organizations = organizationsData?.data || [];
+    const holidayGroups = holidayGroupsData?.data || [];
+    const shifts = shiftData?.data || [];
+    const autoShiftGroups = autoShiftData?.data || [];
+
+    if (isshiftLoading || isdepartmentLoading || isdesignationsLoading || isbatchesLoading || iscategoriesLoading || isorganizationsLoading || isholidayGroupsLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (shifterror || departmenterror || designationserror || batcheserror || categorieserror || organizationserror || holidayGroupserror) {
+        return <div>Error loading data</div>;
+    }
+
+    const shiftTypes = [
+        { "id": 1, "Name": "Fixed" },
+        { "id": 2, "Name": "Flexi" },
+        { "id": 3, "Name": "Auto" }
+    ]
+
+
+
+ 
+
     const weekoffs = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const holidayGroups = ['WestBengalHoliday', 'NorthSideHoliday', 'EastSideHoliday'];
-
-    const [step, setStep] = useState(1); // To keep track of the current step
-
-    // State variables for form fields
-    const [employeeName, setEmployeeName] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobileNo, setMobileNo] = useState("");
-    const [employeeNo, setEmployeeNo] = useState("");
-    const [idNo, setIdNo] = useState("");
-    const [organization, setOrganization] = useState("");
-    const [selectedWeekoffs, setSelectedWeekoffs] = useState([]);
-    const [selectedShiftType, setSelectedShiftType] = useState('Fixed'); // State for Shift Type
-
-
-    const handleWeekoffChange = (day) => {
-        if (selectedWeekoffs.includes(day)) {
-            setSelectedWeekoffs(selectedWeekoffs.filter(weekoff => weekoff !== day));
-        } else {
-            setSelectedWeekoffs([...selectedWeekoffs, day]);
-        }
-    };
-
-    const handleShiftTypeChange = (e) => {
-        setSelectedShiftType(e.target.value); // Update shift type state
-    };
-
-    const handleNext = () => {
-        if (step < 3) {
-            setStep(step + 1);
-        }
-    };
-
-    const handlePrevious = () => {
-        if (step > 1) {
-            setStep(step - 1);
-        }
-    };
-
-   
-
-    // State for modal visibility
+    const [step, setStep] = useState(1);
+    const [selectedShiftType, setSelectedShiftType] = useState('1');
+    const handleShiftTypeChange = (e) => setSelectedShiftType(e.target.value);
+    const handleNext = () => step < 3 && setStep(step + 1);
+    const handlePrevious = () => step > 1 && setStep(step - 1);
     const [isemployeeImgModalOpen, setIsEmployeeImgModalOpen] = useState(false);
-
-    // Functions to open and close the modal
     const openModal = () => setIsEmployeeImgModalOpen(true);
     const closeModal = () => setIsEmployeeImgModalOpen(false);
+    const [formData, setFormData] = useState({
+        EmployeeName: '',
+        Email: '',
+        PhoneNo: '',
+        EmpNo: '',
+        IdNo: '',
+        OUID: '',
+        DateOfJoin: '',
+        PFNumber: '',
+        ESINumber: '',
+        AadhaarNo: '',
+        Address: '',
+        ValidUpTo: '',
+        DepartmentID: '',
+        DesignationID: '',
+        BatchID: '',
+        CategoryID: '',
+        HolidayGroupID: '',
+        Shift: '',
+        NonShiftGroup: '',
+        LateApplicable: 1,
+        ShiftEarlyAsExtra: 1,
+        SinglePunchAllowed: 1,
+        OverTimeApplicable: 1,
+        CalculateWorkHour: '',
+        CreatedBy: 1,
+        Weekoffs: [],
+
+    });
+
+    const base64ToFile = (base64String, fileName) => {
+        let arr = base64String.split(",");
+        let mime = arr[0].match(/:(.*?);/)[1];
+        let bstr = atob(arr[1]);
+        let n = bstr.length;
+        let u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], fileName, { type: mime });
+    };
+
+    const handleSubmit = async () => {
+        const weekOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const weekoffsBinary = weekOrder
+            .map(day => formData.Weekoffs.includes(day) ? '1' : '0')
+            .join('');
+
+        const submissionData = new FormData();
+        Object.keys(formData).forEach((key) => {
+            if (key !== 'Weekoffs') {
+                submissionData.append(key, formData[key]);
+            }
+        });
+
+        submissionData.append("Weekoffs", weekoffsBinary);
+        submissionData.append("ShiftType", selectedShiftType);
+
+        if (image) {
+            let finalImage = image;
+            if (typeof image === "string" && image.startsWith("data:image")) {
+                finalImage = base64ToFile(image, "employee_photo.png");
+            }
+            submissionData.append("Photo", finalImage);
+        }
+
+        try {
+            const response = await createEmployee(submissionData).unwrap(); // Ensures we only process success here
+
+            alert(response.message); // Show success alert
+
+            // Ensure user clicks "OK" before proceeding
+            setTimeout(() => {
+                navigate('/employee');
+            }, 0); // Ensures navigation happens after the alert closes
+
+        } catch (err) {
+            console.error("Error creating employee:", err);
+
+            // Ensure only one error alert is shown
+            if (err?.data?.message) {
+                alert(err?.data?.error);
+            } else {
+                alert("Error Creating Employee");
+            }
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        console.log(`Changed: ${name} → ${value}`);
+    
+        if (type === "checkbox") {
+            setFormData((prevData) => ({
+                ...prevData,
+                Weekoffs: checked
+                    ? [...new Set([...prevData.Weekoffs, value])]
+                    : prevData.Weekoffs.filter((day) => day !== value),
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+    };
+
+    const renderSelectOptions = (options) => {
+        return options.length > 0 ? options.map((option, index) => (
+            <option key={index} value={option.ID || option.id || option.Code || option}>
+                {option.OUName || option.Name || option.name || option}
+            </option>
+        )) : <option>No data available</option>;
+    };
+    useEffect(() => {
+        setFormData((prevData) => ({
+            ...prevData,
+            OUID: organizations.length > 0 ? organizations[0].ID || organizations[0] : prevData.OUID,
+            DepartmentID: departments.length > 0 ? departments[0].ID || departments[0] : prevData.DepartmentID,
+            DesignationID: designations.length > 0 ? designations[0].ID || designations[0] : prevData.DesignationID,
+            BatchID: batches.length > 0 ? batches[0].ID || batches[0] : prevData.BatchID,
+            CategoryID: categories.length > 0 ? categories[0].ID || categories[0] : prevData.CategoryID,
+            Shift: shifts.length > 0 ? shifts[0].Code || shifts[0] : prevData.Shift,
+            NonShiftGroup: autoShiftGroups.length > 0 ? autoShiftGroups[0].id || autoShiftGroups[0] : prevData.NonShiftGroup,
+            HolidayGroupID: holidayGroups.length > 0 ? holidayGroups[0].id || holidayGroups[0] : prevData.HolidayGroupID,
+        }));
+    }, [organizations, departments, designations, batches, categories, shifts, autoShiftGroups, holidayGroups]);
 
 
-
-
-
-
-
-
-
+    console.log(formData)
 
     return (
         <div className='createEmployee'>
             <Header />
             <div className='create-container'>
-                {step === 1 && <h1>Employee Information</h1>}
-                {step === 2 && <h1>Employment Details</h1>}
-                {step === 3 && <h1>Attendance Information</h1>}
-
+                <h1>{step === 1 ? "Employee Information" : step === 2 ? "Employment Details" : "Attendance Information"}</h1>
                 <div className='createEmployee-content'>
                     <div className='left-section'>
-                        {/* Employee Photo Section */}
                         <div className='employee-pic'>
-                            <img src='/images/profile.png' alt='Employee' />
+                            {image ? <img src={image} alt='Employee' /> : <img src='/images/profile.png' alt='Employee' />}
                             <div className='camera-icon' onClick={openModal}>
                                 <CameraAltIcon />
                             </div>
+
                         </div>
                     </div>
-
                     <div className='right-section'>
-                        {/* First Step - Employee Information */}
                         {step === 1 && (
                             <>
                                 <div className='middle'>
                                     <label>Employee Name:</label>
-                                    <input
-                                        type='text'
-                                        value={employeeName}
-                                        onChange={(e) => setEmployeeName(e.target.value)}
-                                    />
+                                    <input type='text' name='EmployeeName' value={formData.EmployeeName} onChange={handleInputChange} />
 
                                     <label>Email:</label>
-                                    <input
-                                        type='email'
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
+                                    <input type='email' name='Email' value={formData.Email} onChange={handleInputChange} />
 
                                     <label>Mobile No:</label>
-                                    <input
-                                        type='tel'
-                                        value={mobileNo}
-                                        onChange={(e) => setMobileNo(e.target.value)}
-                                    />
-                                </div>
-                                <div className='right'>
+                                    <input type='tel' name='PhoneNo' value={formData.PhoneNo} onChange={handleInputChange} />
+
                                     <label>Employee No:</label>
-                                    <input
-                                        type='text'
-                                        value={employeeNo}
-                                        onChange={(e) => setEmployeeNo(e.target.value)}
-                                    />
+                                    <input type='text' name='EmpNo' value={formData.EmpNo} onChange={handleInputChange} />
 
                                     <label>ID No:</label>
-                                    <input
-                                        type='text'
-                                        value={idNo}
-                                        onChange={(e) => setIdNo(e.target.value)}
-                                    />
+                                    <input type='text' name='IdNo' value={formData.IdNo} onChange={handleInputChange} />
 
                                     <label>Organization:</label>
-                                    <input
-                                        type='text'
-                                        value={organization}
-                                        onChange={(e) => setOrganization(e.target.value)}
-                                    />
+                                    <select name='OUID' value={formData.OUID} onChange={handleInputChange}>
+                                        {renderSelectOptions(organizations)}
+                                    </select>
                                 </div>
                             </>
                         )}
 
-                        {/* Second Step - Employment Details */}
                         {step === 2 && (
                             <>
                                 <div className='middle'>
-                                    <label>Date of Join: </label>
-                                    <input type='date' />
-
+                                    <label>Date of Join:</label>
+                                    <input type='date' name='DateOfJoin' value={formData.DateOfJoin} onChange={handleInputChange} />
                                     <label>PF Number:</label>
-                                    <input type='text' />
+                                    <input type='text' name='PFNumber' value={formData.PFNumber} onChange={handleInputChange} />
 
                                     <label>ESI Number:</label>
-                                    <input type='text' />
+                                    <input type='text' name='ESINumber' value={formData.ESINumber} onChange={handleInputChange} />
+
+
+                                    <label>Aadhaar No:</label>
+                                    <input type='text' name='AadhaarNo' value={formData.AadhaarNo} onChange={handleInputChange} />
 
                                     <label>Address:</label>
-                                    <input type='text' />
+                                    <input type='text' name='Address' value={formData.Address} onChange={handleInputChange} />
+
                                 </div>
                                 <div className='right'>
+                                    <label>Valid Up To:</label>
+                                    <input type='date' name='ValidUpTo' value={formData.ValidUpTo} onChange={handleInputChange} />
                                     <label>Department:</label>
-                                    <select>
-                                        {departments.map((dept, index) => (
-                                            <option key={index} value={dept}>
-                                                {dept}
-                                            </option>
-                                        ))}
+                                    <select name='DepartmentID' value={formData.DepartmentID} onChange={handleInputChange}>
+                                        {renderSelectOptions(departments)}
                                     </select>
-
                                     <label>Designation:</label>
-                                    <select>
-                                        {designations.map((desig, index) => (
-                                            <option key={index} value={desig}>
-                                                {desig}
-                                            </option>
-                                        ))}
+                                    <select name='DesignationID' value={formData.DesignationID} onChange={handleInputChange}>
+                                        {renderSelectOptions(designations)}
+                                    </select>
+                                    <label>Batch:</label>
+                                    <select name='BatchID' value={formData.BatchID} onChange={handleInputChange}>
+                                        {renderSelectOptions(batches)}
+                                    </select>
+                                    <label>Category:</label>
+                                    <select name='CategoryID' value={formData.CategoryID} onChange={handleInputChange}>
+                                        {renderSelectOptions(categories)}
                                     </select>
 
-                                    <label>Batch:</label>
-                                    <input type='text' />
-                                    <label>Category:</label>
-                                    <input type='text' />
                                 </div>
                             </>
                         )}
 
-                        {/* Third Step - Attendance Information */}
                         {step === 3 && (
                             <>
                                 <div className='middle'>
-                                <label>Shift Type:</label>
-                                    <select value={selectedShiftType} onChange={handleShiftTypeChange}>
+                                    <label>Shift Type:</label>
+
+                                    <select name='ShiftType' value={selectedShiftType} onChange={handleShiftTypeChange}>
                                         {shiftTypes.map((shiftType, index) => (
-                                            <option key={index} value={shiftType}>
-                                                {shiftType}
-                                            </option>
+                                            <option key={shiftType.id} value={shiftType.id}>{shiftType.Name}</option>
                                         ))}
                                     </select>
-
-                                    {/* Conditionally render based on Shift Type */}
-                                    {selectedShiftType === 'Fixed' && (
+                                    {selectedShiftType === '1' && (
                                         <>
                                             <label>Choose Shift:</label>
-                                            <select>
-                                                {shifts.map((shift, index) => (
-                                                    <option key={index} value={shift}>
-                                                        {shift}
-                                                    </option>
-                                                ))}
+                                            <select name='Shift'
+                                                value={formData.Shift}
+                                                onChange={handleInputChange} >
+                                                {renderSelectOptions(shifts)}
                                             </select>
+
                                         </>
                                     )}
-
-                                    {selectedShiftType === 'Auto' && (
+                                    {selectedShiftType === '3' && (
                                         <>
                                             <label>Auto Shift Group:</label>
-                                            <select>
-                                                {autoShiftGroups.map((group, index) => (
-                                                    <option key={index} value={group}>
-                                                        {group}
-                                                    </option>
-                                                ))}
+                                            <select name='AutoShiftGroup'
+                                                value={formData.NonShiftGroup}
+                                                onChange={handleInputChange} >
+                                                {renderSelectOptions(autoShiftGroups)}
                                             </select>
+
                                         </>
                                     )}
-
-                                    {/* Hide both Choose Shift and Auto Shift Group for Flexi */}
-                                    {selectedShiftType === 'Flexi' && null}
+                                    {selectedShiftType === '2' && null}
                                 </div>
                                 <div className='right'>
-                                <label>Weekoff:</label>
+                                    <label>Weekoff:</label>
                                     <div className='weekoff-container'>
-                                        {weekoffs.map((day, index) => (
-                                            <div key={index} className='day-checkbox'>
+                                        {weekoffs.map((day) => (
+                                            <div key={day} className='day-checkbox'>
                                                 <span>{day}</span>
                                                 <input
                                                     type='checkbox'
+                                                    name='Weekoffs'
                                                     value={day}
-                                                    checked={selectedWeekoffs.includes(day)}
-                                                    onChange={() => handleWeekoffChange(day)}
+                                                    checked={formData.Weekoffs?.includes(day) || false}
+                                                    onChange={handleInputChange}
                                                 />
                                             </div>
                                         ))}
                                     </div>
-
                                     <label>Holiday Group:</label>
-                                    <select>
-                                        {holidayGroups.map((holiday, index) => (
-                                            <option key={index} value={holiday}>
-                                                {holiday}
-                                            </option>
-                                        ))}
+                                    <select name='HolidayGroup'
+                                        value={formData.HolidayGroupID}
+                                        onChange={handleInputChange} >
+                                        {renderSelectOptions(holidayGroups)}
                                     </select>
+
                                 </div>
                             </>
                         )}
                     </div>
                 </div>
 
-                {/* Navigation Buttons */}
                 <div className='buttons'>
                     {step > 1 && <button onClick={handlePrevious}>Previous</button>}
                     {step < 3 && <button onClick={handleNext}>Next</button>}
-                    {step === 3 && <button>Create</button>}
+                    {step === 3 && <button onClick={handleSubmit}>Create</button>}
                 </div>
             </div>
-             {/* Render the modal conditionally */}
-             {isemployeeImgModalOpen && <EmployeeImg closeModal={closeModal} />}
+            {isemployeeImgModalOpen && <CropPhoto closeModal={closeModal} />}
         </div>
     );
 };

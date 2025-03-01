@@ -1,0 +1,152 @@
+
+  /* Visitor Kiosk Container */
+  .visitor-kiosk-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .visitor-kiosk-container h1, .visitor-kiosk-container h2 {
+    color: #2d3a4f;
+  }
+  
+  .visitor-kiosk-container p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Welcome Screen */
+  .visitor-kiosk-container .visitor-kiosk-welcome-screen {
+    text-align: center;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-option-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-option-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Pre-Registered Section */
+  .visitor-kiosk-container .visitor-kiosk-pre-registered-section {
+    text-align: center;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-verification-methods {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-verification-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-verification-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* Verification Section (QR or Face) */
+  .visitor-kiosk-container .visitor-kiosk-verification-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-scan-frame {
+    width: 300px;
+    height: 300px;
+    border: 2px dashed #28a745;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .visitor-kiosk-container .scan-frame-content {
+    color: #28a745;
+    font-size: 16px;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-submit-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-submit-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* New Visitor Section */
+  .visitor-kiosk-container .visitor-kiosk-new-visitor-section {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-input-field {
+    width: 80%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-input-field[type="file"] {
+    border: none;
+  }
+  
+  .visitor-kiosk-container .upload-label {
+    background-color: #28a745;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-submit-btn {
+    background-color: #28a745;
+    margin-top: 20px;
+  }
+  
+  .visitor-kiosk-container .visitor-kiosk-submit-btn:hover {
+    background-color: #218838;
+  }
+  

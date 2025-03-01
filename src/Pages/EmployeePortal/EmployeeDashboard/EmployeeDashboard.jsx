@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import './employeeDashboard.css'
-import { ThemeContext } from '../../../ThemeContext'
+
 import Header from '../../../Components/Header/Header'
 import MyAttendanceStatus from '../../../Components/EmployeeDashboard/MyAttendanceStatus/MyAttendanceStatus'
 
@@ -19,11 +19,12 @@ import TodayIcon from '@mui/icons-material/Today';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import TourIcon from '@mui/icons-material/Tour';
 import EmployeeOneMonthStatus from '../../../Components/Modal/EmployeeModal/EmployeeOneMonthStatus/EmployeeOneMonthStatus'
-
+import { UserContext } from '../../../StoreContext/UserContext';
 
 const EmployeeDashboard = () => {
+   const { userRole } = useContext(UserContext);
 
-  const { DarkTheme } = useContext(ThemeContext)
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -51,9 +52,14 @@ const EmployeeDashboard = () => {
     };
   }, [isModalOpen]);
 
+  if (userRole !== 'employee') {
+    return <div className='no-permission'>You do not have permission to access this dashboard.</div>;
+  }
 
 
   return (
+
+  
     <div className='employeeDashboard'>
       <Header />
 

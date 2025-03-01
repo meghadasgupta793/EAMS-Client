@@ -1,0 +1,239 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.InvitationsOverviewModal-container {
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 450px;
+}
+
+.InvitationsOverviewModal-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #55565b;
+    padding-bottom: 20px;
+}
+
+.InvitationsOverviewModal-heading {
+    font-weight: bold;
+    font-size: 20px;
+    color: #55565b;
+    font-family: Poppins, sans-serif;
+}
+
+.InvitationsOverviewModal-icon-container {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.InvitationsOverviewModal-icon-container .MuiIconButton-root {
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    border-radius: 50%;
+}
+
+.InvitationsOverviewModal-icon-container .MuiIconButton-root:hover {
+    background: var(--gradient-border);
+    color: white;
+    transform: scale(1.1);
+}
+
+.InvitationsOverviewModal-icon-container .MuiIconButton-root:active {
+    transform: scale(1);
+}
+
+.InvitationsOverviewModal-Table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.InvitationsOverviewModal-Table thead {
+    background: var(--primary-color);
+}
+
+.InvitationsOverviewModal-Table thead tr th {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.20px;
+    color: #ffffff;
+    padding: 8px;
+    vertical-align: top;
+    border: none;
+}
+
+.InvitationsOverviewModal-Table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+    height: 36px;
+}
+
+.InvitationsOverviewModal-Table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.InvitationsOverviewModal-Table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.InvitationsOverviewModal-Table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 2px 4px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+.InvitationsOverviewModal-Table tbody tr td img.worker-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.InvitationsOverviewModal-Table tbody tr td .approve-btn {
+    background: var(--gradient-border);
+    color: white !important;  /* Ensure the icon color is white */
+    margin-right: 6px;
+}
+
+.MuiMenuItem-root .approve-btn {
+    background: var(--gradient-border);
+    color: white !important;  /* Ensure the icon color is white */
+    padding: 2px;
+}
+
+.MuiMenuItem-root .reject-btn {
+    background: var(--red-gradient);
+    color: white !important;  /* Ensure the icon color is white */
+    padding: 2px;
+}
+
+.InvitationsOverviewModal-Table tbody tr td .action-btn {
+    width: 25px;
+    height: 25px;
+    line-height: 35px;
+    display: inline-block;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    font-size: 20px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #555;
+    margin: 2px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-btn {
+    cursor: pointer;
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.pagination-btn:hover {
+    color: #000;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.popup-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.popup-buttons button {
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.popupText{
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+.confirm-btn {
+    background: var(--gradient-border);
+    color: white;
+}
+
+.cancel-btn {
+    background: var(--red-gradient);
+    color: white;
+}

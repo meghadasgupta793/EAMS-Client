@@ -6,71 +6,92 @@ import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddHolidayInHolidayGroup from "../../../Components/Admin/Modals/AddHolidayInHolidayGroup/AddHolidayInHolidayGroup";
+import { useCreateHolidayGroupMutation, useDeleteHolidayGroupMutation, useGetAllHolidayGroupQuery, useUnAssignHolidayFromAHolidayGroupMutation } from "../../../Redux/api/admin/holidayApi";
 
 const HolidayGroup = () => {
-    const [holidayGroups, setHolidayGroups] = useState([
-        {
-            name: "West Bengal",
-            holidays: [
-                { name: "Durga Puja", fromDate: "09-09-2024", toDate: "09-09-2024" },
-                { name: "Poila Baisakh", fromDate: "14-04-2024", toDate: "14-04-2024" },
-                { name: "Rabindra Jayanti", fromDate: "09-05-2024", toDate: "09-05-2024" }
-            ]
-        },
-        {
-            name: "Mumbai",
-            holidays: [
-                { name: "Ganesh Chaturthi", fromDate: "09-09-2024", toDate: "09-09-2024" },
-                { name: "Diwali", fromDate: "12-11-2024", toDate: "12-11-2024" }
-            ]
-        },
-        {
-            name: "Hyderabad",
-            holidays: [
-                { name: "Bathukamma", fromDate: "30-09-2024", toDate: "30-09-2024" },
-                { name: "Bonalu", fromDate: "21-07-2024", toDate: "21-07-2024" }
-            ]
-        },
-        {
-            name: "Chennai",
-            holidays: [
-                { name: "Pongal", fromDate: "14-01-2024", toDate: "14-01-2024" },
-                { name: "Deepavali", fromDate: "12-11-2024", toDate: "12-11-2024" },
-                { name: "Maha Shivaratri", fromDate: "09-03-2024", toDate: "09-03-2024" }
-            ]
-        }
-    ]);
-
+    const { data, error, isLoading } = useGetAllHolidayGroupQuery();
+    const [createHolidayGroup, { isLoading: isCreating }] = useCreateHolidayGroupMutation();
+    const [unassingHolidayFromGroup, { isLoading: isUnassining }] = useUnAssignHolidayFromAHolidayGroupMutation();
+    const [deleteHolidayGroup] = useDeleteHolidayGroupMutation();
     const [showHolidayListModal, setShowHolidayListModal] = useState(false);
-    const closeHolidayListModal = () => setShowHolidayListModal(false);
-
-
     const [selectedHolidays, setSelectedHolidays] = useState([]);
     const [newGroupName, setNewGroupName] = useState('');
+    const [selectedHolidayGroupId, setSelectedHolidayGroupId] = useState(null);
+    const [selectedHolidayGroupName, setSelectedHolidayGroupName] = useState('');
 
-    const handleShowHolidays = (holidays) => {
+    // Handle modal close
+    const closeHolidayListModal = () => setShowHolidayListModal(false);
+
+    // Handle showing holidays for a selected group
+    const handleShowHolidays = (holidays, groupName, Groupid) => {
         setSelectedHolidays(holidays);
+        setSelectedHolidayGroupName(groupName);  // ✅ Now correctly setting the group name
+        setSelectedHolidayGroupId(Groupid);
     };
 
+
+    console.log(selectedHolidayGroupId)
+    // Handle group name input change
     const handleGroupNameChange = (e) => {
         setNewGroupName(e.target.value);
     };
 
-    const handleAddGroup = () => {
+    // Handle creating a new holiday group
+    const handleAddGroup = async () => {
         if (newGroupName.trim()) {
-            const newGroup = { name: newGroupName.trim(), holidays: [] };
-            setHolidayGroups([...holidayGroups, newGroup]);
-            setNewGroupName(''); // Clear the input field after adding
+            try {
+                await createHolidayGroup({ Name: newGroupName.trim() }).unwrap();
+                setNewGroupName(''); // Clear input after successful creation
+            } catch (error) {
+                console.error("Error creating holiday group:", error);
+            }
         }
     };
+
+    // Function to unassign holiday
+    const handleUnAssignHoliday = async (HolidayID, GroupID) => {
+        try {
+            await unassingHolidayFromGroup({
+                GroupID,
+                HolidayID
+            }).unwrap();
+            alert("Holiday unassigned successfully!");
+
+
+            // Remove the holiday from the list after unassignment
+            setSelectedHolidays((prev) => prev.filter((holiday) => holiday.id !== HolidayID));
+        } catch (err) {
+            console.error("Error unassigning holiday:", err);
+            alert("Failed to unassign holiday.");
+        }
+    };
+
+
+
+    /////handleDeleteHolidayGroup
+    const handleDeleteHolidayGroup = async (id) => {
+        try {
+            const response = await deleteHolidayGroup(id).unwrap(); // Ensure proper handling
+            alert(response.message); // Show success message
+        } catch (err) {
+            // Check if the error contains a response message from the API
+            if (err?.data?.message) {
+                alert(err.data.message); // Display specific API error message
+            } else {
+                alert("Error deleting HolidayGroup"); // Generic fallback message
+            }
+        }
+    };
+
+
 
     return (
         <div className='holidayGroup'>
             <Header />
             <div className='holidayGroup-container'>
-
                 {/* Top Section for Adding a New Group */}
                 <div className='holiday-addGroup'>
+
                     <input
                         type="text"
                         id="group-name"
@@ -78,65 +99,94 @@ const HolidayGroup = () => {
                         value={newGroupName}
                         onChange={handleGroupNameChange}
                         placeholder="Enter Holiday Group Name"
+                        disabled={isCreating}
                     />
-                    <button className='add-group-button' onClick={handleAddGroup}>Create</button>
+                    <button
+                        className='add-group-button'
+                        onClick={handleAddGroup}
+                        disabled={isCreating}
+                    >
+                        {isCreating ? "Creating..." : "Create"}
+                    </button>
                 </div>
 
                 {/* Center Grid - Two side-by-side sections */}
                 <div className='holidayGroup-grids'>
 
-                    {/* Left side - HolidayGroup Table */}
+                    {/* Left Side - Holiday Group Table */}
                     <div className='holidayGroup-table-container'>
-                        <h3>Holiday Group List</h3>
-                        <table className="holidayGroup-table">
-                            <thead>
-                                <tr>
-                                    <th>Group Name</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {holidayGroups.map((holidayGroup) => (
-                                    <tr key={holidayGroup.name}>
-                                        <td>{holidayGroup.name}</td>
-                                        <td>
-                                            <div className="button-container">
-                                                <Tooltip title="Add Holiday To this Group" arrow>
-                                                    <IconButton className="showHolidays-btn" style={{ padding: 4 }}
-                                                        onClick={() => setShowHolidayListModal(true)}
-                                                    >
-                                                        <AddIcon fontSize="small" style={{ color: 'white' }} />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip title="Show Holidays" arrow>
-                                                    <IconButton
-                                                        className="showHolidays-btn" style={{ padding: 4 }}
+                        <h3 className="holidayGroup-title">Holiday Group List</h3>
 
-                                                        onClick={() => handleShowHolidays(holidayGroup.holidays)}
-                                                    >
-                                                        <VisibilityIcon fontSize="small" style={{ color: 'white' }} />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip title="Delete Group" arrow>
-                                                    <IconButton className="removeGroup-btn"
-                                                        style={{ padding: 4 }}>
-                                                        <DeleteIcon fontSize="small" style={{ color: 'white' }} />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </div>
-                                        </td>
+                        {isLoading ? (
+                            <p>Loading holiday groups...</p>
+                        ) : error ? (
+                            <p>Error fetching holiday groups</p>
+                        ) : (
+                            <table className="holidayGroup-table">
+                                <thead>
+                                    <tr><th>GroupID</th>
+                                        <th>Group Name</th>
+                                        <th>Action</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {data?.data?.map((holidayGroup) => (
+                                        <tr key={holidayGroup.id}> {/* Using ID as key */}
+                                            <td>{holidayGroup.id}</td> {/* GroupID */}
+                                            <td>{holidayGroup.name}</td> {/* GroupName */}
+                                            <td>
+                                                <div className="button-container">
+                                                    <Tooltip title="Add Holiday To this Group" arrow>
+                                                        <IconButton className="showHolidays-btn"
+                                                            style={{ padding: 4 }}
+                                                            onClick={() => {
+                                                                setSelectedHolidayGroupId(holidayGroup.id); // Set Group ID
+                                                                setShowHolidayListModal(true);
+                                                            }}
+                                                        >
+                                                            <AddIcon fontSize="small" style={{ color: 'white' }} />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title="Show Holidays" arrow>
+                                                        <IconButton
+                                                            className="showHolidays-btn"
+                                                            style={{ padding: 4 }}
+                                                            onClick={() => handleShowHolidays(holidayGroup.holidays, holidayGroup.name, holidayGroup.id)} // ✅ Pass both holidays & group name
+                                                        >
+                                                            <VisibilityIcon fontSize="small" style={{ color: 'white' }} />
+                                                        </IconButton>
+
+
+
+                                                    </Tooltip>
+                                                    <Tooltip title="Delete Group" arrow>
+                                                        <IconButton className="removeGroup-btn"
+                                                            style={{ padding: 4 }}>
+                                                            <DeleteIcon fontSize="small"
+                                                                onClick={() => handleDeleteHolidayGroup(holidayGroup.id)}
+                                                                style={{ color: 'white' }} />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
 
-                    {/* Right side - Holiday List Table */}
+                    {/* Right Side - Holiday List Table */}
                     <div className="holidaylist-table-container">
-                        <h3>Holiday List</h3>
+                        <div className="holidaylist-Header-container">
+                            <h3 className="holidaylist-title">Holiday List For</h3>
+                            <h3 className="holidaylist-groupName">{selectedHolidayGroupName || "Select a group"}</h3>
+
+                        </div>
                         <table className="holidaylist-table">
                             <thead>
                                 <tr>
+                                    <th>HolidayId</th>
                                     <th>Festival Name</th>
                                     <th>From Date</th>
                                     <th>To Date</th>
@@ -144,41 +194,54 @@ const HolidayGroup = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {selectedHolidays.length > 0 ? (
-                                    selectedHolidays.map((holiday, index) => (
-                                        <tr key={index}>
-
-                                            <td>{holiday.name}</td>
-                                            <td>{holiday.fromDate}</td>
-                                            <td>{holiday.toDate}</td>
-                                            <td>
-
-                                                <Tooltip title="Remove Holiday From Group" arrow>
-                                                    <IconButton className="holiday-deselect-btn"
-                                                        style={{ padding: 4 }}>
-                                                        <DeleteIcon fontSize="small" style={{ color: 'white' }} />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </td>
+                                {selectedHolidayGroupName && selectedHolidayGroupName !== "Select a group" ? (
+                                    selectedHolidays.length > 0 ? (
+                                        selectedHolidays.map((holiday) => (
+                                            <tr key={holiday.id}> {/* Using HolidayID as key */}
+                                                <td>{holiday.id}</td> {/* HolidayID */}
+                                                <td>{holiday.name}</td> {/* Festival Name */}
+                                                <td>{holiday.fromDate}</td> {/* From Date */}
+                                                <td>{holiday.toDate}</td> {/* To Date */}
+                                                <td>
+                                                    <Tooltip title="Remove Holiday From Group" arrow>
+                                                        <IconButton
+                                                            className="deselect-btn"
+                                                            onClick={() => handleUnAssignHoliday(holiday.id, selectedHolidayGroupId)}
+                                                            disabled={isUnassining}
+                                                            style={{ padding: 4 }}
+                                                        >
+                                                            <DeleteIcon fontSize="small" style={{ color: 'white' }} />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="5">No holiday is found for this selected holiday group</td>
                                         </tr>
-                                    ))
+                                    )
                                 ) : (
                                     <tr>
-                                        <td colSpan="4">Select a holiday group to see holidays</td>
+                                        <td colSpan="5">Select a holiday group to see holidays</td>
                                     </tr>
                                 )}
                             </tbody>
+
                         </table>
                     </div>
                 </div>
             </div>
+
+            {/* Modal for Adding Holidays */}
             {showHolidayListModal && (
                 <AddHolidayInHolidayGroup
-                    closeModal={closeHolidayListModal}  // Pass the closeModal function to the modal
+                    closeModal={closeHolidayListModal}
+                    id={selectedHolidayGroupId}  // Pass the selected HolidayGroupId
+                    HolidayGroupName={selectedHolidayGroupName}
                 />
             )}
         </div>
-
     );
 };
 

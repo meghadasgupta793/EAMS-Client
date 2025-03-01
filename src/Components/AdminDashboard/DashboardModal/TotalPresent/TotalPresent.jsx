@@ -7,72 +7,19 @@ import CloseIcon from '@mui/icons-material/Close';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import Tooltip from '@mui/material/Tooltip';
+import Modal from '@mui/material/Modal'; // Import Modal component
+import Box from '@mui/material/Box'; // Box to help with styling and centering
 
 const ITEMS_PER_PAGE = 3;
 
-const TotalPresent = ({ onClose, open }) => {
-  if (!open) return null; // Don't render the modal if it's not open
-
-  // Sample data for total present employees
-  const data = [
-    {
-      empPhoto: '/images/profile.png',
-      empNo: 'E001',
-      empName: 'John Doe',
-      department: 'HR',
-      designation: 'Manager',
-      organization: 'ABC Corp',
-      attendanceTime: '09:00 AM',
-    },
-    {
-      empPhoto: '/images/kharush.png',
-      empNo: 'E002',
-      empName: 'Jane Smith',
-      department: 'Finance',
-      designation: 'Analyst',
-      organization: 'XYZ Inc',
-      attendanceTime: '09:05 AM',
-    },
-    {
-      empPhoto: '/images/kharush.png',
-      empNo: 'E003',
-      empName: 'Jane Smith',
-      department: 'Finance',
-      designation: 'Analyst',
-      organization: 'XYZ Inc',
-      attendanceTime: '09:05 AM',
-    },
-    {
-      empPhoto: '/images/kharush.png',
-      empNo: 'E004',
-      empName: 'Jane Smith',
-      department: 'Finance',
-      designation: 'Analyst',
-      organization: 'XYZ Inc',
-      attendanceTime: '09:05 AM',
-    },
-    {
-      empPhoto: '/images/kharush.png',
-      empNo: 'E005',
-      empName: 'Jane Smith',
-      department: 'Finance',
-      designation: 'Analyst',
-      organization: 'XYZ Inc',
-      attendanceTime: '09:05 AM',
-    },
-    //
-    //
-    //
-    // Add more employee data...
-  ];
-
+const TotalPresent = ({ open, onClose, data }) => {
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
 
   const filteredData = data.filter(item =>
-    item.empNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.empName.toLowerCase().includes(searchQuery.toLowerCase())
+    (item.EmpNo && item.EmpNo.toString().toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (item.EmpName && item.EmpName.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -96,93 +43,107 @@ const TotalPresent = ({ onClose, open }) => {
   };
 
   const handleExport = () => {
-    // Implement your export logic here
     console.log("Exporting data...");
   };
 
   return (
-    <div className='backGround-Wrapper' >
-      <div className='totalPresent-container' onClick={(e) => e.stopPropagation()}>
-        <div className='header-container'>
-          <h1 className='heading'>Present List</h1>
-          <div className='icon-container'>
-            <Tooltip title="Search">
-              <IconButton onClick={() => setSearchActive(!searchActive)}>
-                <SearchIcon className='header-icon' />
+    <Modal
+      open={open}
+      onClose={onClose}
+      aria-labelledby="total-present-modal"
+      aria-describedby="modal-to-view-present-list"
+    >
+      <Box className='total-present-modal-container'>
+        <div className='totalPresent-container'>
+          <div className='total-present-header-container'>
+            <h1 className='total-present-heading'>Present List</h1>
+            <div className='total-present-icon-container'>
+              <Tooltip title="Search">
+                <IconButton onClick={() => setSearchActive(!searchActive)}>
+                  <SearchIcon className='total-present-header-icon' />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Export Employee Details in Excel">
+                <IconButton onClick={handleExport}>
+                  <FileDownloadIcon className='total-present-header-icon' />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Close">
+                <IconButton onClick={onClose}>
+                  <CloseIcon className='total-present-header-icon' />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+
+          {searchActive && (
+            <input
+              type="text"
+              placeholder="Search by Employee No or Name"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          )}
+
+          <table className='total-present-table'>
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Emp No</th>
+                <th>Emp Name</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Organization</th>
+                <th>Date</th>
+                <th>InTime</th>
+                <th>OutTime</th>
+                <th>WorkHour</th>
+                <th>Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.length > 0 ? (
+                paginatedData.map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                      <img src={item.photo || 'default-photo.jpg'} className='employee-photo' alt="Employee" />
+                    </td>
+                    <td>{item.EmpNo}</td>
+                    <td>{item.EmpName}</td>
+                    <td>{item.Department}</td>
+                    <td>{item.Designation}</td>
+                    <td>{item.Organization}</td>
+                    <td>{item.Date}</td>
+                    <td>{item.InTime}</td>
+                    <td>{item.OutTime}</td>
+                    <td>{item.WorkHour}</td>
+                    <td>{item.Remark}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="11">No employees found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+
+          <div className='pagination-container'>
+            {page > 1 && (
+              <IconButton onClick={handlePrevious}>
+                <KeyboardDoubleArrowLeftIcon className='pagination-btn' />
               </IconButton>
-            </Tooltip>
-            <Tooltip title="Export Employee Details in Excel">
-              <IconButton onClick={handleExport}>
-                <FileDownloadIcon className='header-icon' />
+            )}
+            <span>{page}</span>
+            {endIndex < filteredData.length && (
+              <IconButton onClick={handleNext}>
+                <KeyboardDoubleArrowRightIcon className='pagination-btn' />
               </IconButton>
-            </Tooltip>
-            <Tooltip title="Close">
-              <IconButton onClick={onClose} >
-                <CloseIcon className='header-icon' />
-              </IconButton>
-            </Tooltip>
+            )}
           </div>
         </div>
-
-        {searchActive && (
-          <input
-            type="text"
-            placeholder="Search by Employee No or Name"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        )}
-
-        <table className='total-present-table'>
-          <thead>
-            <tr>
-              <th>Photo</th>
-              <th>Emp No</th>
-              <th>Emp Name</th>
-              <th>Department</th>
-              <th>Designation</th>
-              <th>Organization</th>
-              <th>Attendance Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.length > 0 ? (
-              paginatedData.map((item, index) => (
-                <tr key={index}>
-                  <td><img src={item.empPhoto} className='employee-photo' alt="Employee" /></td>
-                  <td>{item.empNo}</td>
-                  <td>{item.empName}</td>
-                  <td>{item.department}</td>
-                  <td>{item.designation}</td>
-                  <td>{item.organization}</td>
-                  <td>{item.attendanceTime}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7">No employees found.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-
-        <div className='pagination-container'>
-                    {page > 1 && (
-                        <IconButton onClick={handlePrevious}>
-                            <KeyboardDoubleArrowLeftIcon className='pagination-btn' />
-                        </IconButton>
-                    )}
-                    <span>{page}</span>
-                    {endIndex < filteredData.length && (
-                        <IconButton onClick={handleNext}>
-                            <KeyboardDoubleArrowRightIcon className='pagination-btn' />
-                        </IconButton>
-                    )}
-                </div>
-
-
-      </div>
-    </div>
+      </Box>
+    </Modal>
   );
 };
 

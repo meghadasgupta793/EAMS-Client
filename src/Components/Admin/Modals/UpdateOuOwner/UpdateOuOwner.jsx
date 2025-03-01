@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
-import SaveIcon from '@mui/icons-material/Save'; // Import the Save icon
-import CancelIcon from '@mui/icons-material/Cancel'; // Import the Cancel icon
-import Tooltip from '@mui/material/Tooltip'; // Import Tooltip component
-import './UpdateOuOwner.css'; // Ensure to create corresponding CSS
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Tooltip from '@mui/material/Tooltip';
+import './UpdateOuOwner.css';
+import { useUpdateOuOwnerMutation } from '../../../../Redux/api/admin/ouApi';
 
 const UpdateOuOwner = ({ closeUpdateOuOwnerModal, ouOwner }) => {
-    // State for each input field initialized with ownerData
-    const [name, setName] = useState(ouOwner.name || '');
-    const [mobileNo, setMobileNo] = useState(ouOwner.mobile || '');
-    const [email, setEmail] = useState(ouOwner.email || '');
-    const [secondaryEmail, setSecondaryEmail] = useState(ouOwner.secondaryEmail || '');
+    const [updateOuOwner, { isLoading: isUpdating, error }] = useUpdateOuOwnerMutation();
+    
+    const [id] = useState(ouOwner.ID || '');
+    const [Name, setName] = useState(ouOwner.Name || '');
+    const [MobNo, setMobNo] = useState(ouOwner.MobNo || '');
+    const [EmailID, setEmailID] = useState(ouOwner.EmailID || '');
+    const [SecondaryEmailID, setSecondaryEmailID] = useState(ouOwner.SecondaryEmailID || '');
 
-    const handleSave = () => {
-        // Logic for saving the updated OuOwner data
-        const updatedOwnerData = {
-            name,
-            mobileNo,
-            email,
-            secondaryEmail,
-        };
-        console.log("OuOwner updated:", updatedOwnerData);
-        // You might want to call an API to persist the changes here.
-        closeUpdateOuOwnerModal(); // Close modal after saving
+    const handleUpdate = async () => {
+        try {
+            await updateOuOwner({ id, Name, MobNo, EmailID, SecondaryEmailID }).unwrap();
+            closeUpdateOuOwnerModal(); // Close modal on success
+        } catch (err) {
+            console.error("Failed to update OU Owner:", err);
+        }
     };
 
     return (
@@ -31,7 +30,6 @@ const UpdateOuOwner = ({ closeUpdateOuOwnerModal, ouOwner }) => {
                 <div className='updateOuOwner-header-container'>
                     <h1 className='updateOuOwner-heading'>Update OuOwner</h1>
 
-                    {/* Tooltip for Cancel button */}
                     <Tooltip title="Back to OuOwner List" placement="top">
                         <button className="ouOwner-action-btn ouOwner-cancel-btn" onClick={closeUpdateOuOwnerModal}>
                             <CancelIcon />
@@ -39,53 +37,62 @@ const UpdateOuOwner = ({ closeUpdateOuOwnerModal, ouOwner }) => {
                     </Tooltip>
                 </div>
 
+                {error && <p className="error-message">Failed to update. Try again.</p>}
+
                 <div className="updateOuOwner-form-container">
                     <label htmlFor="name" className="ouOwner-label">Name</label>
                     <input
                         type="text"
                         id="name"
-                        value={name}
+                        value={Name}
                         onChange={(e) => setName(e.target.value)}
                         className="ouOwner-input"
                         placeholder="Enter Name"
+                        disabled={isUpdating}
                     />
 
                     <label htmlFor="mobileNo" className="ouOwner-label">Mobile No</label>
                     <input
                         type="text"
                         id="mobileNo"
-                        value={mobileNo}
-                        onChange={(e) => setMobileNo(e.target.value)}
+                        value={MobNo}
+                        onChange={(e) => setMobNo(e.target.value)}
                         className="ouOwner-input"
                         placeholder="Enter Mobile No"
+                        disabled={isUpdating}
                     />
 
                     <label htmlFor="email" className="ouOwner-label">Email</label>
                     <input
                         type="email"
                         id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={EmailID}
+                        onChange={(e) => setEmailID(e.target.value)}
                         className="ouOwner-input"
                         placeholder="Enter Email"
+                        disabled={isUpdating}
                     />
 
                     <label htmlFor="secondaryEmail" className="ouOwner-label">Secondary Email</label>
                     <input
                         type="email"
                         id="secondaryEmail"
-                        value={secondaryEmail}
-                        onChange={(e) => setSecondaryEmail(e.target.value)}
+                        value={SecondaryEmailID}
+                        onChange={(e) => setSecondaryEmailID(e.target.value)}
                         className="ouOwner-input"
                         placeholder="Enter Secondary Email"
+                        disabled={isUpdating}
                     />
                 </div>
 
                 <div className='button-section'>
-                    {/* Tooltip for Save button */}
                     <Tooltip title="Save OuOwner" placement="top">
-                        <button className="ouOwner-action-btn ouOwner-save-btn" onClick={handleSave}>
-                            <SaveIcon />
+                        <button 
+                            className="ouOwner-action-btn ouOwner-save-btn" 
+                            onClick={handleUpdate} 
+                            disabled={isUpdating} 
+                        >
+                            {isUpdating ? "Saving..." : <SaveIcon />}
                         </button>
                     </Tooltip>
                 </div>

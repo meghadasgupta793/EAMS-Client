@@ -1,0 +1,228 @@
+.as-status {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.as-table-container{
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.as-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.as-heading {
+    font-size: 20px;
+    color: #55565b;
+    margin: 0;
+}
+
+.as-icon-container {
+    display: flex;
+    gap: 10px;
+}
+
+.as-header-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+
+.as-header-icon:hover {
+    color: #089bab;
+}
+
+.as-table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.as-table thead {
+    background: var(--primary-color);
+}
+
+.as-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+}
+
+
+
+.as-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+
+
+.as-table tbody tr td {
+    font-size: 10px; /* Smaller font size */
+    letter-spacing: 0.25px; /* Reduced letter-spacing */
+    font-weight: normal;
+    color: #35363a;
+    padding: 4px 8px; /* Reduced padding */
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+
+
+.as-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.as-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.as-table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 6px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+.as-table tbody tr td:first-child {
+    border-left: none;
+}
+
+.as-table tbody tr td:last-child {
+    border-right: none;
+}
+
+.as-table tbody tr td .action-btn {
+    width: 22px; /* Smaller action button */
+    height: 22px;
+    display: inline-block;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px; /* Smaller icon size */
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #555;
+    margin: 2px;
+    padding: 4px;
+}
+
+.as-table tbody tr td .update-btn {
+    background: var(--gradient-border);
+    color: white;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.as-table tbody tr td .delete-btn {
+    background: var(--red-gradient);
+    color: white;
+    cursor: pointer;
+}
+
+.delete-btn,
+.update-btn:hover {
+    opacity: 0.9;
+}
+
+.as-table th input {
+    width: 100%; /* Ensure input fields stretch across the column but don't overflow */
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.pagination-btn {
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 24px;
+    color: #555;
+}
+
+.pagination-btn:hover {
+    color: #000;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+
+.visitor-img {
+    width: 30px; /* Adjust the size as needed */
+    height: 30px;
+    border-radius: 50%; /* Circular image */
+    object-fit: cover; /* Ensures the image scales properly */
+    background-color: #e8f0ea;
+    border: 2px solid #4abb83;
+    margin: 0 auto; /* Centers the image in its cell */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.visitor-img:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhances the hover effect */
+}
+
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .date-field .date-label {
+    font-size: 10px;
+    margin-bottom: 5px;
+    color: #333; /* Dark color for labels */
+  }
+  
+  .date-field .date-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    width: 100px;
+  }
+  
+  .date-field .date-input:focus {
+    outline: none;
+    border-color: #3f51b5; /* Highlight color on focus */
+  }
+  
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer; /* Change cursor to indicate it's clickable */
+  }
+  
+
+  

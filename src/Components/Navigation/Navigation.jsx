@@ -1,4 +1,6 @@
 import React, { useContext, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleSidebar } from '../../Redux/slice/sidebarSlice';
 import './navigation.css';
 import { Link } from 'react-router-dom';
 import Nav from '../Nav/Nav';
@@ -23,7 +25,20 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import MessageIcon from '@mui/icons-material/Message';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import FingerprintIcon from '@mui/icons-material/Fingerprint';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import FaxIcon from '@mui/icons-material/Fax';
+import GroupsIcon from '@mui/icons-material/Groups';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import CameraFrontIcon from '@mui/icons-material/CameraFront';
+import SecurityIcon from '@mui/icons-material/Security';
+import HistoryIcon from '@mui/icons-material/History';
+import PersonIcon from '@mui/icons-material/Person';
+import EventNoteIcon from '@mui/icons-material/EventNote';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+
 import { UserContext } from '../../StoreContext/UserContext';
+import config from '../../secrect';
 import Modal from '@mui/material/Modal';
 
 const menuItems = {
@@ -33,9 +48,10 @@ const menuItems = {
             icon: PeopleAltIcon,
             children: [
                 { name: 'EmployeeMasters', path: '/employee', icon: PeopleAltIcon },
-                { name: 'InActiveEmployee', path: '/inActiveEmployee', icon: PersonOffIcon },
                 { name: 'Department', path: '/department', icon: CorporateFareIcon },
                 { name: 'Designation', path: '/designation', icon: AssignmentIndIcon },
+                { name: 'Category', path: '/category', icon: AssignmentIndIcon },
+                { name: 'Batch', path: '/batch', icon: AssignmentIndIcon },
                 { name: 'Organization', path: '/organization', icon: AdminPanelSettingsIcon },
             ],
         },
@@ -47,6 +63,7 @@ const menuItems = {
                 { name: 'Rotational shift schemes', path: '/autoShiftScheme', icon: EventRepeatIcon },
                 { name: 'HolidayList', path: '/holiday', icon: TimeToLeaveIcon },
                 { name: 'Holiday Group', path: '/holidayGroup', icon: TimeToLeaveIcon },
+                { name: 'Manual Attendance', path: '/manualAttendance', icon: EditCalendarIcon },
             ],
         },
         {
@@ -62,8 +79,18 @@ const menuItems = {
             name: 'Assignment',
             icon: AssignmentTurnedInIcon,
             children: [
-                { name: 'Manual Attendance', path: '/manualAttendance', icon: EditCalendarIcon },
-                { name: 'Black List', path: '/blackList', icon: ReportProblemIcon },
+                { name: 'InActiveEmployee', path: '/inActiveEmployee', icon: PersonOffIcon },
+                { name: 'Blocked Employee List', path: '/blackList', icon: ReportProblemIcon },
+            ],
+        },
+        {
+            name: 'Device Management',
+            icon: FingerprintIcon,
+            children: [
+                { name: 'Device Dashboard', path: '/device-dashboard', icon: FingerprintIcon },
+                { name: 'Unassign Device List', path: '/unassign-device-list', icon: PointOfSaleIcon },
+                { name: 'Device List', path: '/device-list', icon: FaxIcon },
+                { name: 'Device Group', path: '/device-group', icon: FaxIcon },
             ],
         },
         {
@@ -84,13 +111,52 @@ const menuItems = {
                 { name: 'Message', path: '/message', icon: MessageIcon },
             ],
         },
+        {
+            name: 'Visitor Management',
+            icon: SettingsIcon,
+            children: [
+                { name: 'VMS Dashboard', path: '/VMSDashboard', icon: HomeIcon },
+                { name: 'Appointment Status', path: '/appointment-status', icon: PointOfSaleIcon },
+                { name: 'Invite Visitor', path: '/invite-appointment', icon: SupervisorAccountIcon },
+                { name: 'Direct Visitor', path: '/direct-appointment', icon: AssignmentIndIcon },
+                { name: 'Kiosk Visitor', path: '/kiosk-appointment', icon: CameraFrontIcon },
+            ],
+        },
     ],
     employee: [
-       
         { name: 'MyApprovalHierarchy', path: '/MyApprovalHierarchy', icon: AccountTreeIcon },
+        { name: 'MyTeams', path: '/my-teams', icon: Diversity3Icon },
         { name: 'MyAttendanceReport', path: '/my-attendance-report', icon: CorporateFareIcon },
         { name: 'Notification', path: '/notification', icon: NotificationsActiveIcon },
         { name: 'Message', path: '/message', icon: MessageIcon },
+    ],
+    vms: [
+        {
+            name: 'Apointment',
+            icon: FingerprintIcon,
+            children: [
+                { name: 'Appointment Status', path: '/appointment-status', icon: PointOfSaleIcon },
+                { name: 'Invite Visitor', path: '/invite-appointment', icon: SupervisorAccountIcon },
+                { name: 'Direct Visitor', path: '/direct-appointment', icon: AssignmentIndIcon },
+                { name: 'Kiosk Visitor', path: '/kiosk-appointment', icon: CameraFrontIcon },
+            ],
+        },
+        {
+            name: 'Visitor History',
+            icon: HistoryIcon,
+            children: [
+                { name: 'Visit Logs', path: '/visit-logs', icon: HistoryIcon },
+                { name: 'Repeat Visitors', path: '/repeat-visitors', icon: PersonIcon },
+            ],
+        },
+        {
+            name: 'Reports',
+            icon: BarChartIcon,
+            children: [
+                { name: 'Visitor Report', path: '/visitor-report', icon: EventNoteIcon },
+                { name: 'Appointment Report', path: '/appointment-report', icon: EventRepeatIcon },
+            ],
+        },
     ],
 };
 
@@ -100,19 +166,25 @@ const modalItems = {
         { name: 'Attendance Configuration', icon: WatchLaterIcon },
         { name: 'Leave', icon: TimeToLeaveIcon },
         { name: 'Assignment', icon: AssignmentTurnedInIcon },
-        { name: 'ESS', icon: BarChartIcon },
+        { name: 'Device Management', icon: FingerprintIcon },
+        { name: 'Visitor Management', icon: GroupsIcon },
+        { name: 'Reports', icon: BarChartIcon },
+    ],
+    vms: [
+        { name: 'Apointment', icon: PointOfSaleIcon },
+        { name: 'Kiosk Visitor', icon: CameraFrontIcon },
         { name: 'Reports', icon: BarChartIcon },
     ],
 };
 
 const Navigation = () => {
-    const { userRole } = useContext(UserContext);
+    const { userRole, userInfo } = useContext(UserContext);
     const [nav, setNav] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const [selectedModule, setSelectedModule] = useState(null); // State for selected module
-  
-
-  
+    const [selectedModule, setSelectedModule] = useState(null);
+    const { ImgUrl } = config;
+    const dispatch = useDispatch();
+    const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
 
     const handleModalOpen = () => {
         setOpenModal(true);
@@ -127,39 +199,50 @@ const Navigation = () => {
         handleModalClose();
     };
 
+    const handleOpenInNewTab = (path) => {
+        window.open(path, '_blank');
+    };
+
     const getMenuItems = () => {
-        // For employee role, always return all items
         if (userRole === 'employee') {
             return menuItems.employee;
         }
 
-        // For admin role, return children of the selected module
-        if (selectedModule) {
+        if (userRole === 'admin' && selectedModule) {
             const foundModule = menuItems.admin.find((menu) => menu.name === selectedModule.name);
             return foundModule ? foundModule.children : [];
         }
 
-        return []; // Initially no admin menu items are shown
+        if (userRole === 'vms' && selectedModule) {
+            const foundModule = menuItems.vms.find((menu) => menu.name === selectedModule.name);
+            return foundModule ? foundModule.children : [];
+        }
+
+        return [];
     };
 
     return (
-        <div className={`navigation ${nav ? "active" : ""}`}>
-            <div className={`menu ${nav ? "active" : ""}`} onClick={() => setNav(prevState => !prevState)}>
-                <MenuOpenIcon className='menu-icon' />
-            </div>
+        <div className={`navigation ${isSidebarOpen ? "active" : ""}`}>
             <header>
-                <div className='profile'>
-                    <img src='/images/profile.png' alt='user-img' className='profile-img' />
+                <div className="profile">
+                    <img src={`${userInfo?.Picture ? `${ImgUrl}/${userInfo.Picture}` : 'images/profile.png'}`} alt="user-img" className="profile-img" />
                 </div>
-                <span>{userRole === 'admin' ? 'Admin' : 'Employee'}</span>
+                <span>
+                    {userRole === 'admin'
+                        ? 'Admin'
+                        : userRole === 'vms'
+                            ? 'VMS'
+                            : 'Employee'}
+                </span>
+                <h4 className='nav-empno'>EmpNo: {userInfo?.EmpNo || 'N/A'}</h4>
+                <p className='nav-empName'>Name: {userInfo?.EmployeeName || 'N/A'}</p>
             </header>
-            {/* Render Dashboard link */}
-            <Link to={userRole === 'admin' ? "/" : "/EmployeeDashboard"}>
-                <Nav title={userRole === 'admin' ? "Admin Dashboard" : "Employee Dashboard"} Icon={HomeIcon} />
+
+            <Link to={userRole === 'admin' ? "/" : userRole === 'vms' ? "/" : "/"}>
+                <Nav title={userRole === 'admin' ? "Admin Dashboard" : userRole === 'vms' ? "VMS Dashboard" : "Employee Dashboard"} Icon={HomeIcon} />
             </Link>
 
-            {/* Show View Modules only for admin */}
-            {userRole === 'admin' && (
+            {(userRole === 'admin' || userRole === 'vms') && (
                 <div onClick={handleModalOpen}>
                     <Nav title="View Modules" Icon={ViewModuleIcon} />
                 </div>
@@ -167,25 +250,31 @@ const Navigation = () => {
 
             <div className='divider'></div>
 
-            {/* Render menu items based on role and selected module */}
             {getMenuItems().map((item, index) => (
-                <Link key={index} to={item.path}>
-                    <Nav title={item.name} Icon={item.icon} />
-                </Link>
+                item.path === '/kiosk-appointment' ? (
+                    <div key={index} onClick={() => handleOpenInNewTab(item.path)}>
+                        <Nav title={item.name} Icon={item.icon} />
+                    </div>
+                ) : (
+                    <Link key={index} to={item.path}>
+                        <Nav title={item.name} Icon={item.icon} />
+                    </Link>
+                )
             ))}
 
             <div className='divider'></div>
-         
-            {/* Modal for selecting module */}
+
             <Modal open={openModal} onClose={handleModalClose}>
                 <div className="modal-content">
                     <h2>Select Module</h2>
-                    {modalItems.admin.map((item, idx) => (
-                        <div key={idx} className="modal-item" onClick={() => handleItemSelect(item)}>
-                            <item.icon className="sidebar-icon" />
-                            <span>{item.name}</span>
-                        </div>
-                    ))}
+                    {(userRole === 'admin' || userRole === 'vms') && (
+                        (userRole === 'admin' ? modalItems.admin : modalItems.vms).map((item, idx) => (
+                            <div key={idx} className="modal-item" onClick={() => handleItemSelect(item)}>
+                                <item.icon className="sidebar-icon" />
+                                <span>{item.name}</span>
+                            </div>
+                        ))
+                    )}
                 </div>
             </Modal>
         </div>

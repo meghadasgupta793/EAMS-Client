@@ -1,15 +1,32 @@
 import React, { useState } from 'react';
-import SaveIcon from '@mui/icons-material/Save'; // Import the Save icon
-import CancelIcon from '@mui/icons-material/Cancel'; // Import the Cancel icon
-import Tooltip from '@mui/material/Tooltip'; // Import Tooltip component
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Tooltip from '@mui/material/Tooltip';
 import './CreateOuType.css';
+import { useCreateOuTypeMutation } from '../../../../Redux/api/admin/ouApi';
 
 const CreateOuType = ({ closeOuTypeModal }) => {
     const [ouType, setOuType] = useState(''); // State to handle OuType input
+    const [createOuType, { isLoading, error }] = useCreateOuTypeMutation(); 
 
-    const handleSave = () => {
-        // Logic for saving the OuType
-        console.log("OuType saved:", ouType);
+    // Handle input change
+    const handleChange = (e) => {
+        setOuType(e.target.value);
+    };
+
+    // Handle save button click
+    const handleSave = async () => {
+        if (!ouType.trim()) {
+            alert("OuType cannot be empty!"); 
+            return;
+        }
+
+        try {
+            await createOuType({ OUType: ouType }).unwrap();
+            closeOuTypeModal(); // Close modal on success
+        } catch (err) {
+            console.error("Failed to create OuType:", err);
+        }
     };
 
     return (
@@ -32,18 +49,23 @@ const CreateOuType = ({ closeOuTypeModal }) => {
                     <input
                         type="text"
                         id="ouType"
-                        value={ouType}
-                        onChange={(e) => setOuType(e.target.value)}
                         className="ouType-input"
                         placeholder="Enter OuType"
+                        value={ouType}
+                        onChange={handleChange}
                     />
+                    {error && <p className="error-message">Failed to create OuType</p>}
                 </div>
 
                 <div className='button-section'>
                     {/* Tooltip for Save button */}
                     <Tooltip title="Save OuType" placement="top">
-                        <button className="ouType-action-btn ouType-save-btn" onClick={handleSave}>
-                            <SaveIcon />
+                        <button 
+                            className="ouType-action-btn ouType-save-btn" 
+                            onClick={handleSave}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Saving..." : <SaveIcon />}
                         </button>
                     </Tooltip>
                 </div>

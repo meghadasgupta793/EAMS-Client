@@ -14,7 +14,7 @@ const data = [
 ];
 
 const barColors = ['#1da99c', '#7dcf61', '#4abb83', '#8be0b9'];
-
+const barKeys = ["present", "absent", "wo", "onLeave"];
 const AdminDashboardBarChart = () => {
   return (
     <div style={{ width: '100%', height: '100%' }}>
@@ -27,16 +27,21 @@ const AdminDashboardBarChart = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="date"
-            tickFormatter={(tick) => new Date(tick).toLocaleDateString()}
+            tickFormatter={(tick) => {
+              if (!tick) return "";
+              try {
+                return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(tick));
+              } catch (error) {
+                return tick;
+              }
+            }}
           />
-          <YAxis />
+          <YAxis tickFormatter={(value) => value ?? 0} />
           <Tooltip />
           <Legend />
-          <Bar dataKey="present" stackId="a" fill={barColors[0]} /> {/* Deep Blue */}
-          <Bar dataKey="absent" stackId="a" fill={barColors[1]} /> {/* Medium Blue */}
-          <Bar dataKey="wo" stackId="a" fill={barColors[2]} />    {/* Soft Grey-Blue */}
-          <Bar dataKey="onLeave" stackId="a" fill={barColors[3]} /> {/* Light Grey */}
-
+          {barKeys.map((key, index) => (
+            <Bar key={key} dataKey={key} stackId="a" fill={barColors[index % barColors.length]} /> // Dynamically rendering bars
+          ))}
 
         </BarChart>
       </ResponsiveContainer>

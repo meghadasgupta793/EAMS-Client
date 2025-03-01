@@ -1,0 +1,401 @@
+/* Existing CSS */
+.myTeam {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.myTeam-container {
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.myTeam-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #55565b;
+    padding-bottom: 20px;
+}
+
+.myTeam-heading {
+    font-weight: bold;
+    font-size: 20px;
+    color: #55565b;
+    font-family: Poppins;
+}
+
+.myTeam-icon-container {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.myTeam-icon-container .MuiIconButton-root {
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    border-radius: 50%;
+}
+
+.myTeam-icon-container .MuiIconButton-root:hover {
+    background: var(--icon-green-gradient);
+    color: white;
+    transform: scale(1.1);
+}
+
+.myTeam-icon-container .MuiIconButton-root:active {
+    transform: scale(1);
+}
+
+
+/* Search Box Styles */
+.search-box {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Position the search input to the left of the search icon */
+.search-input {
+    position: absolute;
+    right: 100%;              /* Place it immediately to the left of the icon */
+    margin-right: 10px;       /* Provide some space between the input and icon */
+    top: 50%;                 /* Vertically center the input */
+    transform: translateY(-50%) translateX(-10px); /* Start slightly offset for a smooth transition */
+    width: 150px;             /* Adjust width as needed */
+    padding: 4px 0;
+    border: none;
+    border-bottom: 2px solid #4abb83;
+    font-size: 14px;
+    background-color: transparent;
+    outline: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;               /* Initially hidden */
+}
+
+.search-input::placeholder {
+    color: #aaa;
+}
+
+/* When search is visible, adjust the opacity and remove the offset */
+.search-box.active .search-input {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.search-icon {
+    color: #55565b;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+    color: #4abb83;
+}
+
+
+
+
+
+.myTeam-Table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.myTeam-Table thead {
+    background: var(--primary-color);
+}
+
+.myTeam-Table thead tr th {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.20px;
+    color: #ffffff;
+    padding: 8px;
+    vertical-align: top;
+    border: none;
+}
+
+.myTeam-Table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+    height: 36px;
+}
+
+.myTeam-Table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.myTeam-Table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.myTeam-Table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 2px 4px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+.myTeam-Table tbody tr td:first-child {
+    border-left: none;
+}
+
+.myTeam-Table tbody tr td:last-child {
+    border-right: none;
+}
+
+.myTeam-Table tbody tr td .MuiIconButton-root {
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    border-radius: 50%;
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+}
+
+.myTeam-Table tbody tr td .MuiIconButton-root:hover {
+    background: var(--red-gradient);
+    color: white;
+    transform: scale(1.1);
+}
+
+.myTeam-Table tbody tr td .MuiIconButton-root:active {
+    transform: scale(1);
+}
+
+.myTeam-Table tbody tr td .action-btn {
+    width: 25px;
+    height: 25px;
+    line-height: 35px;
+    display: inline-block;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    font-size: 20px;
+    color: #555;
+    margin: 2px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.myTeam-Table tbody tr td .mark-attendance-btn {
+    background: var(--red-gradient);
+    color: white;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-btn {
+    cursor: pointer;
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.pagination-btn:hover {
+    color: #000;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+/* Media Queries for Responsiveness */
+
+@media (max-width: 768px) {
+    .myTeam-Table, .myTeam-Table tbody, .myTeam-Table tr, .myTeam-Table td {
+        display: block;
+        width: 100%;
+    }
+
+    .myTeam-container {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .myTeam-header-container {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .myTeam-heading {
+        font-size: 18px;
+    }
+
+    .myTeam-icon-container {
+        gap: 5px;
+    }
+
+    .myTeam-header-icon {
+        font-size: 20px;
+    }
+
+    .myTeam-Table {
+        display: block;
+        width: 100%;
+    }
+
+    .myTeam-Table thead {
+        display: none; /* Hide thead on small screens */
+    }
+
+    .myTeam-Table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+        height: 100%;
+    }
+
+    .myTeam-Table tbody tr td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding: 8px;
+        border-bottom: 1px solid #ddd; /* Add a border between rows */
+    }
+
+    .myTeam-Table tbody tr td:last-child {
+        border-bottom: none; /* Remove border for the last row */
+    }
+
+    /* Add headers using ::before pseudo-element and CSS counters */
+    .myTeam-Table tbody {
+        counter-reset: row-header; /* Initialize counter */
+    }
+
+    .myTeam-Table tbody tr td::before {
+        content: attr(data-label); /* Fallback for data-label */
+        font-weight: 600;
+        color: #4abb83; /* Match the header color */
+        width: 120px; /* Fixed width for the header */
+        flex-shrink: 0; /* Prevent the header from shrinking */
+        margin-right: 10px; /* Space between header and data */
+    }
+
+    /* Dynamically generate headers using CSS counters */
+    .myTeam-Table tbody tr td:nth-child(1)::before {
+        content: "Photo:";
+    }
+
+    .myTeam-Table tbody tr td:nth-child(2)::before {
+        content: "Emp No:";
+    }
+
+    .myTeam-Table tbody tr td:nth-child(3)::before {
+        content: "Emp Name:";
+    }
+
+    .myTeam-Table tbody tr td:nth-child(4)::before {
+        content: "Department:";
+    }
+
+    .myTeam-Table tbody tr td:nth-child(5)::before {
+        content: "Designation:";
+    }
+
+    .myTeam-Table tbody tr td:nth-child(6)::before {
+        content: "InTime:";
+    }
+
+    .myTeam-Table tbody tr td:nth-child(7)::before {
+        content: "OutTime:";
+    }
+
+    .myTeam-Table tbody tr td:nth-child(8)::before {
+        content: "Action:";
+    }
+
+    .employee-photo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .pagination-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    
+    .search-input {
+        position: relative;
+        width: 100%;
+        opacity: 1;
+        transform: none;
+        text-align: center;
+        margin-right: 0;
+    }
+    
+    .search-box.active .search-input {
+        opacity: 1;
+        transform: none;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .myTeam-heading {
+        font-size: 16px;
+    }
+
+    .myTeam-header-icon {
+        font-size: 18px;
+    }
+
+    .myTeam-Table tbody tr td {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .myTeam-Table tbody tr td::before {
+        width: 100px; /* Adjust width for smaller screens */
+    }
+
+    .employee-photo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .search-box {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-input {
+        width: 90%;
+        font-size: 12px;
+    }
+}

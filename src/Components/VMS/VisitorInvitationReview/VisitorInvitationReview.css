@@ -1,0 +1,98 @@
+.visitor-invitation-review-card {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .visitor-invitation-review-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .visitor-invitation-review-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .visitor-invitation-review-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .visitor-invitation-review-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .visitor-invitation-review-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .visitor-invitation-review-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .visitor-invitation-review-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .visitor-invitation-review-button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .visitor-invitation-review-button {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .visitor-invitation-review-button.accept {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .visitor-invitation-review-button.accept:hover {
+    background-color: #218838;
+  }
+  
+  .visitor-invitation-review-button.decline {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .visitor-invitation-review-button.decline:hover {
+    background-color: #c82333;
+  }
+  
+  .visitor-invitation-review-status {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  

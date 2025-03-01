@@ -15,127 +15,405 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.page-title {
-    text-align: center;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.middle-section {
+.createInActiveEmployee-header-container {
+    padding: 20px;
     display: flex;
     justify-content: space-between;
-    margin-top: 38px;
-    margin-bottom: 20px; /* Space below the middle section */
+    align-items: flex-start;
+    gap: 15px;
+    /* Reduced gap */
+    margin-bottom: 8px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.InActiveEmployee-left-section {
-    flex: 1; /* Left section for Employee Photo */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.org-wrapper,
+.createInActiveEmployee-dept-wrapper,
+.createInActiveEmployee-emp-wrapper,
+.createInActiveEmployee-emp-name-wrapper {
+    width: 100%;
+    /* Ensure each section takes the full available width */
 }
 
-.InActive-employee-pic {
+.org-heading {
+    font-weight: 200;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+    background: #c2d1c9;
+}
+
+.dept-heading,
+.emp-heading,
+.emp-name-heading {
+    font-weight: 200;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+    background: #c2d1c9;
+    max-width: 250px;
+    /* Reduced width for dropdown */
+
+}
+
+
+.createInActiveEmployee-dept-container,
+.createInActiveEmployee-emp-container,
+.createInActiveEmployee-emp-name-container {
+    max-width: 250px;
+    /* Reduced width for dropdown */
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: whitesmoke;
+    color: black;
+    padding: 8px 10px;
+    max-height: 80px;
+    /* Reduced height */
+    box-sizing: border-box;
+}
+
+.org-container {
+    background-color: whitesmoke;
+    color: black;
+    padding: 8px 10px;
+    max-width: 600px;
+    /* Reduced width */
+    min-width: 300px;
+    /* Reduced width */
+    max-height: 120px;
+    /* Reduced height for better fit */
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.react-select__control {
+    min-height: 10px;
+    padding: 2px;
+    font-size: 12px;
+    border-radius: 4px;
+    width: 250px;
+}
+
+.react-select__single-value,
+.react-select__placeholder,
+.react-select__option {
+    font-size: 10px;
+}
+
+.react-select__indicator {
+    padding: 2px;
+    font-size: 10px;
+}
+
+.react-select__multi-value {
+    font-size: 8px;
+    padding: 4px 6px;
+}
+
+.org {
+    list-style: none;
+    cursor: pointer;
+    margin: 4px 0;
     position: relative;
-    width: 200px; /* Adjust as needed */
-    height: 200px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
+}
+
+.org>ul {
+    padding-left: 10px;
+    display: none;
+}
+
+.org-open>ul {
+    display: block;
+}
+
+.org-item {
     display: flex;
-    justify-content: center;
     align-items: center;
+}
+
+.plus-button {
+    height: 16px;
+    width: 16px;
+    text-align: center;
+    line-height: 14px;
+    background: var(--gradient-border);
+    color: white;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.org-checkbox {
+    margin-right: 10px;
+}
+
+.org-name {
+    flex: 1;
+    text-align: left;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--gradient-border);
+}
+
+
+.dept-dropdown,
+.emp-name-dropdown,
+.emp-dropdown {
+    font-size: 12px;
+}
+
+/* Container for the search button */
+.createInActiveEmployee-header-searchbtn-container {
+    display: flex;
+    justify-content: flex-end;
+    /* Align the search button to the right */
+    margin-top: 20px;
+    /* Add some margin at the top */
+}
+
+/* Style for the search button */
+.createInActiveEmployee-header-searchbtn {
+    padding: 8px 16px;
+    /* Add padding to make the button more clickable */
+    font-size: 14px;
+    /* Adjust font size for the button */
+    background: var(--gradient-border);
+    /* Green background for the button */
+    color: white;
+    /* White text color */
+    border: none;
+    /* Remove the default border */
+    border-radius: 4px;
+    /* Slightly rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    transition: background-color 0.3s ease;
+    /* Smooth transition for background color */
+}
+
+/* Hover effect for the search button */
+.createInActiveEmployee-header-searchbtn:hover {
+    background: var(--red-gradient);
+    color: white;
+}
+
+.createInActiveEmployee-header-searchbtn:hover {
+    opacity: 0.9;
+}
+
+.createInActiveEmployee-Table-container {
+    padding: 20px 20px 0px 20px;
+
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+}
+
+.createInActiveEmployee-table-heading {
+    font-size: 18px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.createInActiveEmployee-Table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+
+.createInActiveEmployee-Table thead {
+    background-color: #4abb83;
+}
+
+.createInActiveEmployee-Table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+    border: 1px solid #4abb83;
+}
+
+.createInActiveEmployee-Table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.createInActiveEmployee-Table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.createInActiveEmployee-Table tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
 
-.InActive-employee-pic img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
+.createInActiveEmployee-Table tbody tr td {
+    font-size: 10px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 2px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
 }
 
-.camera-icon {
-    position: absolute;
-    bottom: -10px;
-    right: -10px;
-    background-color: white;
-    padding: 5px;
-    border-radius: 50%;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+.createInActiveEmployee-Table tbody tr td:first-child {
+    border-left: none;
 }
 
-.camera-icon svg {
-    font-size: 24px;
-    color: #4abb83;
+.createInActiveEmployee-Table tbody tr td:last-child {
+    border-right: none;
 }
 
-.createInActiveEmployee-form {
-    flex: 2; /* Right section for the form */
-    
+.createInActiveEmployee-Table tbody tr td .action-btn {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #555;
+    margin: 2px;
+    padding: 4px;
 }
 
-.InActiveEmployee-right-section {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
 
-.InActiveEmployee-top-section,
-.InActiveEmployee-bottom-section {
+
+
+.createInActiveEmployee-reson-remark-container {
+    padding: 20px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px; /* Space between top and bottom sections */
+    align-items: flex-start;
+    gap: 15px;
+    /* Reduced gap */
+    margin-bottom: 20px;
+    margin-top: 8px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.InActiveEmployee-form-group {
-    flex: 1; /* Equal width for all form groups */
-    margin-right: 10px; /* Space between input fields */
-}
-
-.InActiveEmployee-form-group:last-child {
-    margin-right: 0; /* Remove margin from the last element */
-}
-
-.InActiveEmployee-form-group label {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.InActiveEmployee-form-control {
+.createInActiveEmployee-reason,
+.createInActiveEmployee-remark,
+.createInActiveEmployee-inActiveOn {
     width: 100%;
-    padding: 10px;
+
+}
+
+.reason-heading {
+    font-weight: 200;
     font-size: 14px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-top: 5px;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+    background: #c2d1c9;
 }
 
-textarea.InActiveEmployee-form-control {
-    height: 80px;
-    resize: none;
+.remak-heading {
+    font-weight: 200;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+    background: #c2d1c9;
+
 }
 
-/* Submit button */
-.submit-section {
+.inActive-heading {
+    font-weight: 200;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+    background: #c2d1c9;
+
+}
+
+.reason-container {
+
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: whitesmoke;
+    color: black;
+    padding: 8px 10px;
+    max-height: 80px;
+    box-sizing: border-box;
+}
+
+.remark-container {
+
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: whitesmoke;
+    color: black;
+    padding: 8px 10px;
+    max-height: 80px;
+    box-sizing: border-box;
+}
+
+.inActive-container {
     display: flex;
-    justify-content: center; /* Centers the button horizontally */
-    margin-top: 20px; /* Space above the button */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: whitesmoke;
+    color: black;
+    padding: 8px 10px;
+    max-height: 80px;
+    box-sizing: border-box;
 }
 
-.submit-btn {
 
-    margin: 0 10px;
-    padding: 10px 20px;
-    cursor: pointer;
+
+
+.reason-dropdown,
+.remark-textarea,
+.inactiveon-date {
+    padding: 2px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.inactiveon-date,
+.remark-textarea {
+    border: 1px solid hsl(0, 0%, 80%);
+    padding: 10px;
+}
+
+
+.remark-textarea {
+    height: 40px;
+}
+
+.confirm-button {
+    padding: 10px;
     background: var(--gradient-border);
     color: white;
     border: none;
-    font-size: 16px;
-    border-radius: 4px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.submit-btn:hover {
-    background-color: #3a9a6e;
+.confirm-button:hover {
+    background-color: #45a049;
 }

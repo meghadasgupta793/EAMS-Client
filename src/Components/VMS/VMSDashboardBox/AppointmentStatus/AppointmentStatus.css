@@ -1,0 +1,107 @@
+/* Parent Container */
+.appointmentStatus-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-family: Poppins, sans-serif;
+}
+
+/* Title */
+.appointmentStatus-title {
+    text-align: center;
+    margin-bottom: 20px;
+    /* Added consistent spacing below the title */
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(82, 82, 82);
+}
+
+/* Flexbox Layout */
+.appointmentStatus-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    /* Uniform spacing between items */
+    padding: 2px 0;
+    /* Top and bottom padding for better spacing */
+}
+
+/* Individual Status Box */
+.appointmentStatus-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 2px;
+    /* Spacing between icon, title, and value */
+    border-right: 1px solid var(--primary-color);
+    text-align: center;
+}
+
+/* Remove Right Border for Last Box */
+.appointmentStatus-item.appointmentStatus-no-border {
+    border-right: none;
+}
+
+/* Icon Styling */
+.appointmentStatus-icon {
+    font-size: 28px;
+    padding: 3px;
+    /* Adjusted padding for better visual balance */
+    margin-bottom: 8px;
+    /* Consistent spacing between the icon and text */
+
+    background: var(--gradient-border);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+}
+
+/* Title Styling */
+.appointmentStatus-titleText {
+    font-size: 16px;
+    color: rgb(82, 82, 82);
+    font-weight: 400;
+    margin-bottom: 5px;
+    /* Consistent spacing between title and value */
+}
+
+
+
+
+
+
+/* Value Styling */
+.appointmentStatus-value {
+    font-size: 20px;
+    color: rgb(82, 82, 82);
+    font-weight: bold;
+}
+
+
+/* Remove Right Border for Last Box */
+.appointmentStatus-item:last-child {
+    border-right: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .appointmentStatus-box {
+        flex-direction: column;
+        gap: 15px;
+        /* Reduced gap for smaller screens */
+        padding: 5px 0;
+        /* Adjusted padding for compact layout */
+    }
+
+    .appointmentStatus-item {
+        border-right: none;
+        padding: 12px;
+        /* Increased padding for a better tap area */
+    }
+}

@@ -1,48 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './MyApprovalHierarchy.css';
 import Header from '../../../Components/Header/Header';
 import SearchIcon from '@mui/icons-material/Search';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { UserContext } from '../../../StoreContext/UserContext';
+import { useGetReportingListsQuery } from '../../../Redux/api/admin/approvalSetupApi';
+import config from '../../../secrect';
 
 const ITEMS_PER_PAGE = 5;
 
-const reportingToList = [
-    { empPhoto: '/images/kharush.png', name: 'Nidhu Ram Mondal', empNo: 'EMP001', designation: 'Manager', department: 'HR', level: 'Level 1' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP002', designation: 'Accountant', department: 'Finance', level: 'Level 2' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP003', designation: 'Accountant', department: 'Finance', level: 'Level 3' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP004', designation: 'Accountant', department: 'Finance', level: 'Level 4' },
-    { empPhoto: '/images/kharush.png', name: 'Alice Brown', empNo: 'EMP005', designation: 'Accountant', department: 'Finance', level: 'Level 5' },
-];
-
-const reportingByList = [
-    { empPhoto: '/images/kharush.png', name: 'Mark Davis', empNo: 'EMP003', designation: 'Developer', department: 'IT', level: 'Level 1' },
-    { empPhoto: '/images/kharush.png', name: 'Emma Johnson', empNo: 'EMP004', designation: 'Marketing Specialist', department: 'Marketing', level: 'Level 2' },
-    { empPhoto: '/images/kharush.png', name: 'Mark Davis', empNo: 'EMP005', designation: 'Developer', department: 'IT', level: 'Level 3' },
-    { empPhoto: '/images/kharush.png', name: 'Emma Johnson', empNo: 'EMP006', designation: 'Marketing Specialist', department: 'Marketing', level: 'Level 4' },
-    { empPhoto: '/images/kharush.png', name: 'Mark Davis', empNo: 'EMP007', designation: 'Developer', department: 'IT', level: 'Level 5' },
-    { empPhoto: '/images/kharush.png', name: 'Emma Johnson', empNo: 'EMP008', designation: 'Marketing Specialist', department: 'Marketing', level: 'Level 6' },
-];
-
-
 const MyApprovalHierarchy = () => {
+    const { userInfo } = useContext(UserContext);
+    const id = userInfo.EmployeeId;
+    const { data, error, isLoading } = useGetReportingListsQuery(id);
+    const { ImgUrl } = config;
+
+    const reportingToList = data?.reportingToList || [];
+    const reportingByList = data?.reportingByList || [];
+
     const [searchTo, setSearchTo] = useState('');
     const [searchBy, setSearchBy] = useState('');
     const [pageTo, setPageTo] = useState(1);
     const [pageBy, setPageBy] = useState(1);
+    const [showSearchTo, setShowSearchTo] = useState(false); // State for showing search input for "Reporting To"
+    const [showSearchBy, setShowSearchBy] = useState(false); // State for showing search input for "Reported By"
 
-    // Filtered lists
-    const filteredReportingToList = reportingToList.filter((employee) =>
-        employee.name.toLowerCase().includes(searchTo.toLowerCase())
+    // Filtering logic for "Reporting To"
+    const filteredReportingToList = reportingToList.filter(employee =>
+        employee.name.toLowerCase().includes(searchTo.toLowerCase()) ||
+        employee.empNo.toLowerCase().includes(searchTo.toLowerCase())
     );
 
-    const filteredReportingByList = reportingByList.filter((employee) =>
-        employee.name.toLowerCase().includes(searchBy.toLowerCase())
+    // Filtering logic for "Reported By"
+    const filteredReportingByList = reportingByList.filter(employee =>
+        employee.name.toLowerCase().includes(searchBy.toLowerCase()) ||
+        employee.empNo.toLowerCase().includes(searchBy.toLowerCase())
     );
 
     // Pagination for "Reporting To"
@@ -89,26 +85,34 @@ const MyApprovalHierarchy = () => {
                             <h1 className="myApprovalHierarchy-repotedTo-heading">Reported To</h1>
                             <div className="myApprovalHierarchy-repotedTo-icon-container">
                                 <Tooltip title="Search">
-                                    <IconButton>
-                                        <SearchIcon className="myApprovalHierarchy-repotedTo-header-icon" />
-                                    </IconButton>
+                                    <div className="search-container">
+                                        {showSearchTo && (
+                                            <input
+                                                type="text"
+                                                placeholder="Search by Name or EmpNo"
+                                                value={searchTo}
+                                                onChange={(e) => setSearchTo(e.target.value)}
+                                                className="search-input active"
+                                            />
+                                        )}
+                                        <IconButton onClick={(e) => {
+                                            e.stopPropagation(); // Prevents event bubbling
+                                            setShowSearchTo(prev => !prev); // Toggles only "Reported To"
+                                            setShowSearchBy(false); // Ensures "Reported By" is closed
+                                        }}>
+                                            <SearchIcon className="search-icon" />
+                                        </IconButton>
+                                    </div>
                                 </Tooltip>
+
                                 <Tooltip title="Export Leave Status in Excel">
                                     <IconButton>
                                         <FileDownloadIcon className="myApprovalHierarchy-repotedTo-header-icon" />
                                     </IconButton>
                                 </Tooltip>
-                                {/*
-                                <Tooltip title="Add Reporting to">
-                                    <IconButton>
-                                        <AddIcon className="myApprovalHierarchy-repotedTo-header-icon" />
-                                    </IconButton>
-                                </Tooltip>
-                               */}
                             </div>
                         </div>
 
-                        
                         <table className="myApprovalHierarchy-repotedTo-table">
                             <thead>
                                 <tr>
@@ -118,25 +122,23 @@ const MyApprovalHierarchy = () => {
                                     <th>Designation</th>
                                     <th>Department</th>
                                     <th>Level</th>
-                                    {/* <th>Action</th>*/}
                                 </tr>
                             </thead>
                             <tbody>
                                 {paginatedDataTo.map((employee) => (
                                     <tr key={employee.empNo}>
                                         <td>
-                                            <img src={employee.empPhoto} className="employee-photo" alt="Employee" />
+                                            <img
+                                                src={employee.empPhoto ? `${ImgUrl}/${employee.empPhoto}` : '/images/default.png'}
+                                                className="employee-photo"
+                                                alt="Employee"
+                                            />
                                         </td>
                                         <td>{employee.name}</td>
                                         <td>{employee.empNo}</td>
                                         <td>{employee.designation}</td>
                                         <td>{employee.department}</td>
                                         <td>{employee.level}</td>
-                                        {/*
-                                        <td>
-                                            <DeleteForeverIcon className="delete-btn" />
-                                        </td>
-                                        */}
                                     </tr>
                                 ))}
                             </tbody>
@@ -162,22 +164,32 @@ const MyApprovalHierarchy = () => {
                             <h1 className="myApprovalHierarchy-repotedBy-heading">Reported By</h1>
                             <div className="myApprovalHierarchy-repotedBy-icon-container">
                                 <Tooltip title="Search">
-                                    <IconButton>
-                                        <SearchIcon className="myApprovalHierarchy-repotedBy-header-icon" />
-                                    </IconButton>
+                                    <div className="search-container">
+                                        {showSearchBy && (
+                                            <input
+                                                type="text"
+                                                placeholder="Search by Name or EmpNo"
+                                                value={searchBy}
+                                                onChange={(e) => setSearchBy(e.target.value)}
+                                                className="search-input active"
+                                            />
+                                        )}
+                                        <IconButton onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowSearchBy(prev => !prev); // Toggles only "Reported By"
+                                            setShowSearchTo(false); // Ensures "Reported To" is closed
+                                        }}>
+                                            <SearchIcon className="search-icon" />
+                                        </IconButton>
+                                    </div>
                                 </Tooltip>
+
+
                                 <Tooltip title="Export Details in Excel">
                                     <IconButton>
                                         <FileDownloadIcon className="myApprovalHierarchy-repotedBy-header-icon" />
                                     </IconButton>
                                 </Tooltip>
-                                {/*
-                                <Tooltip title="Add Reported By">
-                                    <IconButton>
-                                        <AddIcon className="myApprovalHierarchy-repotedBy-header-icon" />
-                                    </IconButton>
-                                </Tooltip>
-                                */}
                             </div>
                         </div>
                         <table className="myApprovalHierarchy-repotedBy-table">
@@ -189,27 +201,23 @@ const MyApprovalHierarchy = () => {
                                     <th>Designation</th>
                                     <th>Department</th>
                                     <th>Level</th>
-                                    {/* <th>Action</th>*/}
-
                                 </tr>
                             </thead>
                             <tbody>
                                 {paginatedDataBy.map((employee) => (
                                     <tr key={employee.empNo}>
                                         <td>
-                                            <img src={employee.empPhoto} className="employee-photo" alt="Employee" />
+                                            <img
+                                                src={employee.empPhoto ? `${ImgUrl}/${employee.empPhoto}` : '/images/default.png'}
+                                                className="employee-photo"
+                                                alt="Employee"
+                                            />
                                         </td>
                                         <td>{employee.name}</td>
                                         <td>{employee.empNo}</td>
                                         <td>{employee.designation}</td>
                                         <td>{employee.department}</td>
                                         <td>{employee.level}</td>
-                                        {/*
-                                     <td>
-                                            <DeleteForeverIcon className="delete-btn" />
-                                        </td>
-                                     
-                                     */}
                                     </tr>
                                 ))}
                             </tbody>

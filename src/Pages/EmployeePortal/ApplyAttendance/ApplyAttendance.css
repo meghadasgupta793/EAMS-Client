@@ -1,3 +1,4 @@
+/* General styles */
 .applyAttendance {
     position: relative;
     display: flex;
@@ -6,14 +7,19 @@
     background-color: #e8f0ea;
     min-height: 100vh;
     margin-bottom: 60px;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    width: 100%; /* Ensure it takes full width */
 }
 
 .applyAttendance-container {
     padding: 20px;
-    margin: 28px;
+    margin: 0 auto; /* Center the container */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    max-width: 1200px; /* Limit maximum width for larger screens */
+    width: 100%; /* Ensure it takes full width on smaller screens */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .applyAttendance-left-content,
@@ -24,35 +30,44 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-radius: 8px;
+    box-sizing: border-box; /* Include padding in width calculation */
+    width: 100%; /* Ensure it takes full width */
 }
 
 /* Camera Frame for Live Feed */
 .camera-frame {
-    width: 400px;
-    height: 300px;
+    width: 100%;
+    height: auto;
+    max-width: 100%; /* Ensure it doesn't overflow */
+    aspect-ratio: 4/3;
     background-color: #e8f0ea;
     border: 2px dashed #4abb83;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 20px;
+    border-radius: 8px;
 }
 
 /* Employee Capture Photo Frame */
 .employee-photo-frame {
     display: flex;
-    width: 220px;
-    height: 220px;
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 1/1;
     background-color: #e8f0ea;
     border: 2px dashed #4abb83;
     margin: 0 auto 20px;
     justify-content: center;
     align-items: center;
+    border-radius: 8px;
 }
 
 .employee-photo-frame img {
-    width: 200px;
-    height: 200px;
+    width: 90%;
+    height: 90%;
+    border-radius: 8px;
 }
 
 /* Instruction text */
@@ -90,6 +105,7 @@
     resize: none;
     font-size: 14px;
     color: #333;
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* Apply Attendance Button */
@@ -102,15 +118,16 @@
 .apply-attendance-button {
     padding: 10px 20px;
     font-size: 14px;
-    background: var(--gradient-border);
+    background: linear-gradient(135deg, #4abb83, #3aa76d);
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    transition: background 0.3s ease;
 }
 
 .apply-attendance-button:hover {
-    background: var(--red-gradient);
+    background: linear-gradient(135deg, #3aa76d, #4abb83);
 }
 
 /* Attendance Options Toggle Button Group */
@@ -134,7 +151,7 @@
 
 .attendance-options .MuiToggleButton-root.Mui-selected {
     color: #fff;
-    background: var(--gradient-border);
+    background: linear-gradient(135deg, #4abb83, #3aa76d);
 }
 
 .attendance-options .MuiToggleButton-root:hover {
@@ -145,7 +162,7 @@
 .remarkAndLocation {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
+    gap: 20px;
 }
 
 /* Location Container for Displaying Location Information */
@@ -187,7 +204,7 @@
 }
 
 /* Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .applyAttendance-container {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -195,18 +212,16 @@
     }
 
     .camera-frame {
-        width: 100%;
-        height: auto;
+        max-width: 80%;
     }
 
     .employee-photo-frame {
-        width: 180px;
-        height: 180px;
+        max-width: 160px;
     }
 
     .employee-photo-frame img {
-        width: 160px;
-        height: 160px;
+        width: 80%;
+        height: 80%;
     }
 
     .attendance-options .MuiToggleButton-root {
@@ -230,7 +245,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .applyAttendance {
         padding: 10px;
     }
@@ -242,12 +257,12 @@
 
     .camera-frame,
     .employee-photo-frame {
-        width: 100%;
+        width: 80%;
         height: auto;
     }
 
     .employee-photo-frame img {
-        width: 100%;
+        width: 80%;
         height: auto;
     }
 
@@ -267,5 +282,71 @@
     .Location-container,
     .remark-input {
         font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .applyAttendance-container {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .camera-frame {
+      /*   aspect-ratio: 10/6; */
+        width: 100%; /* Full width on mobile */
+        max-width: 100%; /* Ensure it doesn't overflow */
+        margin: 0 auto 10px; /* Adjust margin */
+    }
+
+    .employee-photo-frame {
+        max-width: 150px;
+    }
+
+    .attendance-options .MuiToggleButton-root {
+        width: 30px;
+        height: 30px;
+    }
+
+    .apply-attendance-button {
+        font-size: 12px;
+    }
+
+    /* Ensure no horizontal overflow */
+    .applyAttendance-left-content,
+    .applyAttendance-right-content {
+        padding: 15px;
+    }
+
+    .remarkAndLocation {
+        gap: 10px;
+    }
+
+    .Location-container,
+    .remark-input {
+        font-size: 12px;
+    }
+
+    /* Force full width for mobile */
+    .applyAttendance-container {
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .applyAttendance-left-content,
+    .applyAttendance-right-content {
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
+
+    /* Move Webcam out of parent container on mobile */
+    .applyAttendance-left-content {
+        position: relative;
+    }
+
+    .camera-frame {
+        position: static; /* Reset positioning */
+        margin: 0 auto 10px; /* Adjust margin */
     }
 }

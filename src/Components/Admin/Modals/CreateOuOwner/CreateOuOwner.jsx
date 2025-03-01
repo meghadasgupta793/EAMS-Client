@@ -3,6 +3,7 @@ import SaveIcon from '@mui/icons-material/Save'; // Import the Save icon
 import CancelIcon from '@mui/icons-material/Cancel'; // Import the Cancel icon
 import Tooltip from '@mui/material/Tooltip'; // Import Tooltip component
 import './CreateOuOwner.css'; // Ensure to create corresponding CSS
+import { useCreateOuOwnerMutation } from '../../../../Redux/api/admin/ouApi';
 
 const CreateOuOwner = ({ closeOuOwnerModal }) => {
     // State for each input field
@@ -10,28 +11,46 @@ const CreateOuOwner = ({ closeOuOwnerModal }) => {
     const [mobileNo, setMobileNo] = useState('');
     const [email, setEmail] = useState('');
     const [secondaryEmail, setSecondaryEmail] = useState('');
+    
+    // Mutation hook
+    const [createOuOwner, { isLoading, error }] = useCreateOuOwnerMutation();
 
-    const handleSave = () => {
-        // Logic for saving the OuOwner data
+    const handleSave = async () => {
         const ownerData = {
-            name,
-            mobileNo,
-            email,
-            secondaryEmail,
+            Name: name,
+            MobNo: mobileNo,
+            EmailID: email,
+            SecondaryEmailID: secondaryEmail,
         };
-        console.log("OuOwner saved:", ownerData);
+
+        try {
+            await createOuOwner(ownerData).unwrap();
+            // After successful save, close modal
+            closeOuOwnerModal();
+        } catch (err) {
+            console.error("Error creating OuOwner:", err);
+        }
+    };
+
+    const handleCancel = () => {
+        // Reset the form state when the modal is closed
+        setName('');
+        setMobileNo('');
+        setEmail('');
+        setSecondaryEmail('');
+        closeOuOwnerModal();
     };
 
     return (
         <>
-            <div className="backGround-Wrapper" onClick={closeOuOwnerModal}></div>
+            <div className="backGround-Wrapper" onClick={handleCancel}></div>
             <div className="addOuOwner-container">
                 <div className='addOuOwner-header-container'>
                     <h1 className='addOuOwner-heading'>Create OuOwner</h1>
 
                     {/* Tooltip for Cancel button */}
                     <Tooltip title="Back to OuOwner List" placement="top">
-                        <button className="ouOwner-action-btn ouOwner-cancel-btn" onClick={closeOuOwnerModal}>
+                        <button className="ouOwner-action-btn ouOwner-cancel-btn" onClick={handleCancel}>
                             <CancelIcon />
                         </button>
                     </Tooltip>
@@ -82,11 +101,18 @@ const CreateOuOwner = ({ closeOuOwnerModal }) => {
                 <div className='button-section'>
                     {/* Tooltip for Save button */}
                     <Tooltip title="Save OuOwner" placement="top">
-                        <button className="ouOwner-action-btn ouOwner-save-btn" onClick={handleSave}>
-                            <SaveIcon />
+                        <button
+                            className="ouOwner-action-btn ouOwner-save-btn"
+                            onClick={handleSave}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Saving...' : <SaveIcon />}
                         </button>
                     </Tooltip>
                 </div>
+
+                {/* Error message */}
+                {error && <p className="error-message">Error: {error.message}</p>}
             </div>
         </>
     );

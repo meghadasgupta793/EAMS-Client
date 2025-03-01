@@ -69,6 +69,7 @@ h1 {
     flex: 3;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .middle, .right {

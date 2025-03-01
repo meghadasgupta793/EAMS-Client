@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import './department.css';
 import Header from '../../../Components/Header/Header';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -14,10 +14,16 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { exportToExcel } from '../../../Components/Utils/excelUtils'; // Adjust the import path
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useGetAllDepartmentQuery, useDeleteDepartmentMutation } from '../../../Redux/api/admin/departmentApi';
 
 const ITEMS_PER_PAGE = 7;
 
 const Department = () => {
+    const { data, error, isLoading } = useGetAllDepartmentQuery();
+    const [deleteDepartment] = useDeleteDepartmentMutation();
+
+    const [selectedDepartment, setSelectedDepartment] = useState(null);
+
     const [searchActive, setSearchActive] = useState(false);
     const [searchQueries, setSearchQueries] = useState({
         departmentCode: '',
@@ -25,23 +31,13 @@ const Department = () => {
     });
     const [page, setPage] = useState(1); // Pagination state
 
-    const data = [
-        { departmentCode: 'D1', departmentName: 'Human Resources' },
-        { departmentCode: 'D2', departmentName: 'Finance' },
-        { departmentCode: 'D3', departmentName: 'IT' },
-        // Add more department data here
-    ];
+    // Ensure data is defined and has items before proceeding
+    const departments = data?.data || [];
 
-    const handleSearchChange = (e, field) => {
-        setSearchQueries(prevQueries => ({
-            ...prevQueries,
-            [field]: e.target.value
-        }));
-    };
-
-    const filteredData = data.filter(item =>
-        item.departmentCode.toLowerCase().includes(searchQueries.departmentCode.toLowerCase()) &&
-        item.departmentName.toLowerCase().includes(searchQueries.departmentName.toLowerCase())
+    // Filter departments based on search query
+    const filteredData = departments.filter(item =>
+        item?.Code?.toLowerCase().includes(searchQueries.departmentCode.toLowerCase()) &&
+        item?.Name?.toLowerCase().includes(searchQueries.departmentName.toLowerCase())
     );
 
     // Pagination logic
@@ -49,30 +45,50 @@ const Department = () => {
     const endIndex = startIndex + ITEMS_PER_PAGE;
     const paginatedData = filteredData.slice(startIndex, endIndex);
 
-    const handleNext = () => {
-        setPage(prev => prev + 1);
-    };
-
-    const handlePrevious = () => {
-        setPage(prev => prev - 1);
-    };
+    const handleNext = () => setPage(prev => prev + 1);
+    const handlePrevious = () => setPage(prev => prev - 1);
 
     // Export to Excel logic
-    const handleExport = () => {
-        exportToExcel(filteredData, 'DepartmentDetails');
-    };
+    const handleExport = () => exportToExcel(filteredData, 'DepartmentDetails');
 
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     const goToCreateDepartment = () => {
-        navigate('/newDepartment'); // Navigate to CreateDepartment page
+        navigate('/newDepartment');
     };
 
-    const goToUpdateDepartment = () => {
-        navigate('/updateDepartment'); // Navigate to CreateDepartment page
+    const goToUpdateDepartment = (departmentId) => {
+        navigate(`/updateDepartment/${departmentId}`); // Pass departmentId to update page
     };
 
+    // Handle search input change
+    const handleSearchChange = (e, field) => {
+        setSearchQueries(prevQueries => ({
+            ...prevQueries,
+            [field]: e.target.value
+        }));
+    };
 
+    // Handle delete department
+    const handleDelete = async (departmentId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this department?");
+        if (!confirmDelete) return; // Stop if the user cancels
+    
+        try {
+            await deleteDepartment(departmentId).unwrap(); // Use unwrap() to properly handle errors
+            alert('Department deleted successfully');
+        } catch (err) {
+            console.error('Failed to delete department:', err);
+            alert('Failed to delete department. Please try again.');
+        }
+    };
+
+    // Handle update click
+    const handleUpdateClick = (departmentId) => {
+        const departmentToUpdate = departments.find(department => department.ID === departmentId);
+        setSelectedDepartment(departmentToUpdate);
+        goToUpdateDepartment(departmentId); // Navigate to update page with the department ID
+    };
 
     return (
         <div className='department'>
@@ -95,14 +111,12 @@ const Department = () => {
                             <IconButton>
                                 <CloudDownloadIcon className='department-header-icon' />
                             </IconButton>
-                        </Tooltip> 
-
+                        </Tooltip>
                         <Tooltip title="Choose File">
                             <IconButton>
                                 <CloudUploadIcon className='department-header-icon' />
                             </IconButton>
                         </Tooltip>
-
                         <Tooltip title="Create New Department">
                             <IconButton onClick={goToCreateDepartment}>
                                 <AddCircleOutlineIcon className='department-header-icon' />
@@ -110,6 +124,10 @@ const Department = () => {
                         </Tooltip>
                     </div>
                 </div>
+
+                {/* Loading, error handling */}
+                {isLoading && <p>Loading departments...</p>}
+                {error && <p>Error loading departments: {error.message}</p>}
 
                 <table className='department-table'>
                     <thead>
@@ -144,14 +162,19 @@ const Department = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {paginatedData.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.departmentCode}</td>
-                                <td>{item.departmentName}</td>
+                        {paginatedData.map((item) => (
+                            <tr key={item.ID}>
+                                <td>{item.Code}</td>
+                                <td>{item.Name}</td>
                                 <td>
-                                    <BorderColorIcon className='action-btn update-btn'  
-                                    onClick={goToUpdateDepartment}/>
-                                    <DeleteForeverIcon className='action-btn delete-btn' />
+                                    <BorderColorIcon
+                                        className='action-btn update-btn'
+                                        onClick={() => handleUpdateClick(item.ID)} // Trigger update
+                                    />
+                                    <DeleteForeverIcon
+                                        className='action-btn delete-btn'
+                                        onClick={() => handleDelete(item.ID)}
+                                    />
                                 </td>
                             </tr>
                         ))}

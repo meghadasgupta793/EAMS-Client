@@ -6,7 +6,6 @@
     background-color: var(--background-color);
     min-height: 100vh;
     margin-bottom: 60px;
-   
 }
 
 .myAttendanceReport-Container {
@@ -14,7 +13,7 @@
     margin: 20px;
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-   
+    border-radius: 8px;
 }
 
 .myAttendanceReport-header-container {
@@ -45,44 +44,72 @@
     color: #4abb83;
 }
 
+.myAttendanceReport-date-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.myAttendanceReport-date-input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+}
 
 /* Styles for the filter dropdown */
 .myAttendanceReport-filter-dropdown {
-    min-width: 120px; /* Reduced width */
-    margin: 0; /* Remove extra margins */
+    min-width: 120px;
+    margin: 0;
 }
 
 .myAttendanceReport-filter-select {
-    font-size: 14px; /* Smaller font size */
-    color: #333; /* Slightly darker text for visibility */
-    padding: 4px 8px; /* Compact padding */
-   /* border: 1px solid #ccc;  Simple border */
-   /* border-radius: 4px; /* Smooth corners */
-    background-color: white; /* Consistent with layout */
+    font-size: 14px;
+    color: #333;
+    padding: 4px 8px;
+    background-color: white;
     cursor: pointer;
-    height: 36px; /* Smaller height */
-    box-shadow: none; /* Remove shadow */
+    height: 36px;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .myAttendanceReport-filter-select:hover {
-    border-color: #888; /* Slight highlight on hover */
+    border-color: #888;
 }
 
 .myAttendanceReport-filter-dropdown {
     display: flex;
     align-items: center;
-    gap: 8px; /* Add slight spacing */
+    gap: 8px;
 }
 
-.myAttendanceReport-Table{
+/* Table styles */
+.myAttendanceReport-Table-container {
+    max-height: 300px; /* Adjust this height based on the height of 15 rows */
+    overflow-y: auto;  /* Enable scrolling when content exceeds the container's height */
+    display: block;
+}
+
+.scrollable-table-container{
+    max-height: 300px; /* Adjust this height based on the height of 15 rows */
+    overflow-y: auto;  /* Enable scrolling when content exceeds the container's height */
+    display: block; 
+}
+
+.myAttendanceReport-Table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
-   
 }
 
 .myAttendanceReport-Table thead {
     background-color: #4abb83;
+    position: sticky;
+    top: 0;
+    z-index: 1; /* Keep header above the scrolling content */
 }
 
 .myAttendanceReport-Table thead tr th {
@@ -95,11 +122,13 @@
     border: 1px solid #4abb83;
 }
 
+/* Table body styles */
 .myAttendanceReport-Table tbody tr {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
+    height: 20px; /* Adjust this value as needed */
 }
 
 .myAttendanceReport-Table tbody tr:hover {
@@ -129,7 +158,6 @@
     border-right: none;
 }
 
-
 /* Style for employee photo */
 .employee-photo {
     width: 30px;
@@ -138,31 +166,61 @@
     object-fit: cover;
     background: rgb(29,169,156);
     background: linear-gradient(90deg, rgba(29,169,156,1) 0%, rgba(74,187,131,1) 50%, rgba(125,207,97,1) 100%);
-    
-    border: 2px solid  #f7faf8 ; 
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-    /* You can adjust the size based on your preference */
+    border: 2px solid #f7faf8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.pagination-container {
+/* Employee Details Section */
+.MyAttendanceReport-Emp-deatils {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 15px;
+    flex-direction: row;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
-.pagination-btn {
-    cursor: pointer;
-    margin: 0 10px;
-    font-size: 24px;
-    color: #555;
+.MyAttendanceReport-Emp-img-container {
+    flex-shrink: 0;
+    margin-right: 20px;
 }
 
-.pagination-btn:hover {
-    color: #000;
+.MyAttendanceReport-Emp-dept-container {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding-top: 5px;
 }
 
-.pagination-container span {
-    font-size: 16px;
-    margin: 0 5px;
+.MyAttendanceReport-Emp-dept-container-left,
+.MyAttendanceReport-Emp-dept-container-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.MyAttendanceReport-Emp-dept-container-left label,
+.MyAttendanceReport-Emp-dept-container-right label {
+    font-size: 14px;
+    color: #35363a;
+    margin: 5px 0;
+}
+
+.MyAttendanceReport-Emp-dept-container-left-top,
+.MyAttendanceReport-Emp-dept-container-right-top {
+    font-weight: 600;
+}
+
+.MyAttendanceReport-Emp-dept-container-left-bottom,
+.MyAttendanceReport-Emp-dept-container-right-bottom {
+    font-weight: normal;
+}
+
+.MyAttendanceReport-Emp-dept-container-left {
+    margin-right: 20px;
+}
+
+.MyAttendanceReport-Emp-dept-container-right {
+    padding-left: 10px;
 }

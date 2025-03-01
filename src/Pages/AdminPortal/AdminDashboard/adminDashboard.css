@@ -31,7 +31,10 @@
 
     border-radius: 10px;
     border: 1px solid #e7faef;
-    background-color: #ffffff;
+    background: #ffffff; /* Pure white background */
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), 
+                -8px -8px 15px rgba(255, 255, 255, 0.7); /* Soft shadows for neumorphism */
+   
     height: auto;
     overflow: hidden;
     transition: box-shadow 0.3s ease, background-color 0.3s ease;
@@ -42,17 +45,9 @@
 
 /* Hover effect */
 .box:hover {
-    box-shadow:
-        0 0 5px rgba(148, 147, 147, 0.2),
-        /* Base shadow */
-        0 0 2px #4abb83,
-        /* First shadow layer */
-        0 0 5px #2e9993,
-        /* Second shadow layer */
-        0 0 10px #3dc6c3,
-        /* Third shadow layer */
-        0 0 10px #BAD6EB;
-    /* Fourth shadow layer */
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.15), 
+    -10px -10px 20px rgba(255, 255, 255, 0.8);
+    
 }
 
 .box1 {
@@ -71,6 +66,14 @@
     grid-row: span 4;
 }
 
+.box10 {
+    grid-column: span 2;
+    grid-row: span 3;
+}
+.box11 {
+    grid-column: span 2;
+    grid-row: span 3;
+}
 
 
 

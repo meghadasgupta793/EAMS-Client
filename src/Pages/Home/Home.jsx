@@ -1,23 +1,30 @@
 import React, { useContext } from 'react'
 import './home.css'
-import { ThemeContext } from '../../ThemeContext'
 import { UserContext } from '../../StoreContext/UserContext';
 
 import AdminDashboard from '../AdminPortal/AdminDashboard/AdminDashboard'
 import EmployeeDashboard from '../EmployeePortal/EmployeeDashboard/EmployeeDashboard'
+import VMSDashboard from '../VMSPortal/VMSDashboard/VMSDashboard'
 
 const Home = () => {
 
-    const { DarkTheme } = useContext(ThemeContext);
+   
     const { userRole } = useContext(UserContext); // Consume UserContext
+
 
  
 
-
-     return (
-        <div className={`home ${DarkTheme && 'dark'}`}>
-            {userRole === 'admin' ? <AdminDashboard /> : <EmployeeDashboard />}
+    return (
+        <div className='home'>
+            {userRole === 'admin' ? (
+                <AdminDashboard />
+            ) : userRole === 'vms' ? (
+                <VMSDashboard />
+            ) : (
+                <EmployeeDashboard />
+            )}
         </div>
+
     );
 };
 

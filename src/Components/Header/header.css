@@ -2,58 +2,36 @@ header {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between; /* Space between left and right sections */
     padding: 8px;
     --color: #4abb83;
-
     background: #ffffff;
 }
 
-header .serach-bar {
-    position: relative;
-    width: 25%;
+header .menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-header .serach-bar input {
-    padding: 8px 16px;
-    border: 1px solid rgb(82, 82, 82);
-    border-radius: 100px;
-    flex: 1;
-    background-color: transparent;
-    font-size: 16px;
-}
-
-
-header .serach-bar input:focus::placeholder {
-    color: var(--color);
-}
-
-header .serach-bar input:focus {
-    outline: none;
-    border: 1px solid var(--color);
-}
-
-header .serach-bar .icon {
-    position: absolute;
-    right: 8px;
-    font-size: 18px;
+header .menu-toggle .MuiSvgIcon-root {
+    font-size: 24px;
     color: rgb(82, 82, 82);
 }
 
-header .serach-bar input:focus~.icon {
+header .menu-toggle:hover .MuiSvgIcon-root {
     color: var(--color);
 }
 
-
 header .tools {
-    position: relative;
     display: flex;
     align-items: center;
     gap: 25px;
 }
-
 
 header .tools .icon {
     color: rgb(82, 82, 82);
@@ -72,37 +50,87 @@ header .tools .divider {
     align-self: stretch;
 }
 
-
-
-
-
-
 header .tools .user {
     position: relative;
     height: 30px;
     aspect-ratio: 1;
     width: 100px;
-   /* border: 1px solid var(--color);  */
-    color: var(--text-color);
-   /* border-radius: 100px;   */
- 
     cursor: pointer;
     display: flex;
     justify-content: center;
-    align-items: center; /* Center the logo vertically */
-    overflow: hidden; /* Prevents image overflow */
+    align-items: center;
+    overflow: hidden;
 }
 
 header .tools .user img {
     background-color: #4abb83;
     height: 100%;
-    width: auto; /* Ensure the image maintains aspect ratio */
+    width: auto;
 }
 
 header .tools .user:active {
     scale: 0.97;
 }
 
-header.dark input {
-    color: white;
+/* Media Queries for Responsiveness */
+
+/* For tablets and small laptops */
+@media (max-width: 1024px) {
+    header .tools {
+        gap: 15px;
+    }
+
+    header .tools .icon {
+        font-size: 18px;
+    }
+
+    header .tools .user {
+        height: 28px;
+    }
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+    header {
+        padding: 6px;
+    }
+
+    header .menu-toggle .MuiSvgIcon-root {
+        font-size: 20px;
+    }
+
+    header .tools {
+        gap: 10px;
+    }
+
+    header .tools .icon {
+        font-size: 16px;
+    }
+
+    header .tools .user {
+        height: 25px;
+    }
+}
+
+/* For very small mobile devices */
+@media (max-width: 480px) {
+    header {
+        padding: 4px;
+    }
+
+    header .menu-toggle .MuiSvgIcon-root {
+        font-size: 18px;
+    }
+
+    header .tools {
+        gap: 8px;
+    }
+
+    header .tools .icon {
+        font-size: 14px;
+    }
+
+    header .tools .user {
+        height: 22px;
+    }
 }

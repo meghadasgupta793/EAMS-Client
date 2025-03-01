@@ -7,6 +7,8 @@
     flex-grow: 1;
     gap: 5px;
     border-right: 1px solid #4abb83;
+    padding: 10px; /* Added padding for better spacing */
+    box-sizing: border-box; /* Ensure padding is included in the element's dimensions */
 }
 
 .myAttendanceStatus:nth-child(8) {
@@ -28,12 +30,58 @@
     font-size: 16px;
     color: #55565b;
     font-weight: 400;
+    text-align: center; /* Center-align text for better readability */
 }
 
-
 .myAttendanceStatus .value {
-
     color: #4abb83;
     display: flex;
     gap: 5px;
+    font-size: 18px; /* Slightly larger font for better visibility */
+    font-weight: 500; /* Medium font weight for emphasis */
+}
+
+/* Responsive Styles for Tablet and Mobile */
+@media (max-width: 768px) {
+    .myAttendanceStatus {
+        border-right: none; /* Remove borders for smaller screens */
+        border-bottom: 1px solid #4abb83; /* Add bottom border for separation */
+        width: 100%; /* Full width for stacking */
+        padding: 8px; /* Reduce padding for smaller screens */
+    }
+
+    .myAttendanceStatus:nth-child(8) {
+        border-bottom: none; /* Remove bottom border for the last item */
+    }
+
+    .myAttendanceStatus .icon {
+        font-size: 24px; /* Slightly smaller icon for smaller screens */
+    }
+
+    .myAttendanceStatus .title {
+        font-size: 14px; /* Smaller font size for smaller screens */
+    }
+
+    .myAttendanceStatus .value {
+        font-size: 16px; /* Smaller font size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .myAttendanceStatus {
+        gap: 3px; /* Reduce gap for smaller screens */
+        padding: 6px; /* Further reduce padding for smaller screens */
+    }
+
+    .myAttendanceStatus .icon {
+        font-size: 20px; /* Even smaller icon for mobile */
+    }
+
+    .myAttendanceStatus .title {
+        font-size: 12px; /* Smaller font size for mobile */
+    }
+
+    .myAttendanceStatus .value {
+        font-size: 14px; /* Smaller font size for mobile */
+    }
 }

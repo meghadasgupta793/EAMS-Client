@@ -1,0 +1,149 @@
+
+.employeeImg-backGroundWrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.employeeImg-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    z-index: 101;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.employeeImg-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.employeeImg-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #333;
+}
+
+.employeeImg-closeButton {
+    color: #999;
+    font-size: 28px;
+}
+
+.employeeImg-description {
+    font-size: 16px;
+    color: #555;
+    margin: 15px 0 20px;
+}
+
+.employeeImg-buttonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.employeeImg-iconButton {
+    padding: 12px;
+    background: var(--gradient-border);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+/* Ensure Material UI Icon remains white */
+.employeeImg-iconButton svg {
+    color: white !important;
+}
+
+
+
+.employeeImg-iconButton:hover {
+    background: var(--gradient-border);
+}
+
+/* Small Cropping Modal */
+.employeeImg-cropModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+}
+
+.employeeImg-cropHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.employeeImg-cropHeader h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.employeeImg-cropText {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.employeeImg-cropFrame {
+    width: 100%;
+    height: 250px;
+    position: relative;
+    background: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.employeeImg-cropButtons {
+    margin-top: 15px;
+}
+
+.employeeImg-cropButtons button {
+    background: var(--gradient-border);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.employeeImg-cropButtons button:hover {
+    background: var(--red-gradient);
+}
+
+
+.employeeImg-cameraModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+}
+
+.employeeImg-webcam {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    background: black;
+}

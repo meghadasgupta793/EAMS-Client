@@ -1,0 +1,255 @@
+.shiftgroup-backGround-Wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(192, 207, 200, 0.7);
+    /* #4abb83 with 70% opacity */
+}
+
+.assignShiftInAutoShiftGroup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 500px;
+    max-width: 800px;
+   
+}
+
+.assignShiftInAutoShiftGroup-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assignShiftInAutoShiftGroup-heading {
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.assignShiftInAutoShiftGroup-groupName{
+    font-size: 20px;
+    color: var(--primary-color); 
+    margin: 0;
+    padding-left: 0;
+}
+
+.assignShiftInAutoShiftGroup-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    /* Space between rows to show shadow effect */
+}
+
+
+
+
+.assignShiftInAutoShiftGroup-table thead {
+    background-color: #4abb83;
+}
+
+.assignShiftInAutoShiftGroup-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+    border: 1px solid #4abb83;
+    background-color: #4abb83;
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Soft shadow on each row */
+    border-radius: 8px;
+    /* Optional: Rounded corners */
+    transition: box-shadow 0.3s ease;
+    /* Smooth transition on hover */
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Stronger shadow on hover */
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+    /* Light gray background for odd rows */
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-bottom: none;
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr td:first-child {
+    border-left: none;
+    /* Remove border from first column */
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr td:last-child {
+    border-right: none;
+    /* Remove border from last column */
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr td input {
+    width: 100px; /* Adjust width for HH:mm:ss format */
+    padding: 6px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+/* Focus effect */
+.assignShiftInAutoShiftGroup-table tbody tr td input:focus {
+    border-color: #4abb83;
+    box-shadow: 0 0 4px rgba(74, 187, 131, 0.6);
+}
+
+/* Placeholder style */
+.assignShiftInAutoShiftGroup-table tbody tr td input::placeholder {
+    color: #aaa;
+    font-size: 12px;
+}
+
+/* Disable input field if needed */
+.assignShiftInAutoShiftGroup-table tbody tr td input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    border: 1px solid #ddd;
+}
+
+
+
+
+.assignShiftInAutoShiftGroup-table tbody tr td .action-btn {
+    width: 25px;
+    height: 25px;
+    line-height: 35px;
+    display: inline-block;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    font-size: 20px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #555;
+    /* Icon color */
+    margin: 2px;
+    padding: 4px;
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr td .update-btn {
+    background: var(--gradient-border);
+    color: white;
+    margin-right: 6px;
+    /* Add margin to create a gap between the buttons */
+}
+
+.assignShiftInAutoShiftGroup-table tbody tr td .delete-btn {
+    background: var(--red-gradient);
+    color: white;
+}
+
+.close-btn {
+    background: var(--red-gradient);
+    color: white;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+   
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.pagination-btn {
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 24px;
+    color: #555;
+}
+
+.pagination-btn:hover {
+    color: #000;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+@media (max-width: 768px) {
+    .assignShiftInAutoShiftGroup-table thead {
+        display: none;
+    }
+
+    .assignShiftInAutoShiftGroup-table,
+    .assignShiftInAutoShiftGroup-table tbody,
+    .assignShiftInAutoShiftGroup-table tr,
+    .assignShiftInAutoShiftGroup-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .assignShiftInAutoShiftGroup-table tr {
+        margin-bottom: 15px;
+    }
+
+    .assignShiftInAutoShiftGroup-table tbody tr td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .assignShiftInAutoShiftGroup-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        font-weight: 600;
+        font-size: 14px;
+        text-align: left;
+    }
+
+
+
+    .assignShiftInAutoShiftGroup-table tbody tr td input {
+        width: 90px;
+        font-size: 12px;
+        padding: 4px;
+    }
+
+}

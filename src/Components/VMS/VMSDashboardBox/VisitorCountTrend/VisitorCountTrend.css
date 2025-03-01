@@ -1,0 +1,61 @@
+.visitor-count-trend {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .visitor-count-trend h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .visitor-count-trend__period-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .visitor-count-trend__period-selector label {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .visitor-count-trend__period-selector select {
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  .visitor-count-trend__chart {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 20px;
+  }
+  
+  .visitor-count-trend__bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+  }
+  
+  .visitor-count-trend__bar {
+    background-color: #4abb83;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .visitor-count-trend__bar:hover {
+    transform: translateY(-5px);
+  }
+  
+  .visitor-count-trend__label {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  

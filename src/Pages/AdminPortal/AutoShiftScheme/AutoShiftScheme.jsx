@@ -1,133 +1,229 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './AutoShiftScheme.css';
 import Header from '../../../Components/Header/Header';
+import { Tooltip, IconButton } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useCreateAutoShiftGroupMutation, useDeleteAutoShiftGroupMutation, useGetAllAutoShiftGroupQuery, useUnAssignAutoShiftMutation } from "../../../Redux/api/admin/shiftApi";
+import AssignShiftInAutoShiftGroup from "../../../Components/Admin/Modals/AssignShiftInAutoShiftGroup/AssignShiftInAutoShiftGroup";
+
+// Function to format timestamps into "HH:mm"
+const formatTime = (timestamp) => {
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+};
 
 const AutoShiftScheme = () => {
-  const [groupName, setGroupName] = useState("");
-  const [shifts, setShifts] = useState([
-    { name: "Shift A", startTime: "06:00", endTime: "14:00" },
-    { name: "Shift B", startTime: "14:00", endTime: "22:00" },
-    { name: "Shift C", startTime: "22:00", endTime: "06:00" }
-  ]);
+
+  const [createAutoShiftGroup, { isLoading: isCreating }] = useCreateAutoShiftGroupMutation();
+  const { data, error, isLoading } = useGetAllAutoShiftGroupQuery();
+  const [deleteAutoShiftGroup] = useDeleteAutoShiftGroupMutation();
+
+  const [unAssignAutoShift, { isLoading: isUnassining }] = useUnAssignAutoShiftMutation();
+  const [shiftSchemes, setShiftSchemes] = useState([]);
+  const [newSchemeName, setNewSchemeName] = useState('');
   const [selectedShifts, setSelectedShifts] = useState([]);
+  const [selectedSchemeId, setSelectedSchemeId] = useState(null);
+  const [selectedSchemeName, setSelectedSchemeName] = useState('');
 
-  const handleGroupNameChange = (e) => {
-    setGroupName(e.target.value);
+  /////Navigate
+  const [showAssignShiftModal, setShowAssignShiftModal] = useState(false);
+  // Handle modal close
+  const closeAssignShiftModal = () => setShowAssignShiftModal(false);
+
+
+
+  useEffect(() => {
+    if (data && data.data) {
+      setShiftSchemes(data.data); // Directly set the API response
+    }
+  }, [data]);
+
+
+
+  /////handleDeleteAutoShifGroup
+  const handleDeleteAutoShiftGroup = async (id) => {
+    try {
+      const response = await deleteAutoShiftGroup(id).unwrap();
+      alert(response.message);
+    } catch (err) {
+      alert(err?.data?.message || "Error deleting AutoShiftGroup");
+    }
   };
 
-  // Function to select a shift and move it to selected shifts
-  const selectShift = (shift) => {
-    setSelectedShifts([...selectedShifts, shift]); // Add to selected shifts
-    setShifts(shifts.filter(s => s.name !== shift.name)); // Remove from available shifts
+
+  const handleRemoveShift = async (shiftCode) => {
+    try {
+      await unAssignAutoShift({ shiftCode, AutoShiftGroupID: selectedSchemeId }).unwrap();
+      setSelectedShifts(selectedShifts.filter((shift) => shift.shiftCode !== shiftCode));
+    } catch (err) {
+      console.error("Failed to remove shift:", err);
+    }
   };
 
-  // Function to deselect a shift and move it back to available shifts
-  const deselectShift = (shift) => {
-    setShifts([...shifts, shift]); // Add back to available shifts
-    setSelectedShifts(selectedShifts.filter(s => s.name !== shift.name)); // Remove from selected shifts
+  const handleAddScheme = async () => {
+    if (newSchemeName.trim()) {
+      try {
+        const response = await createAutoShiftGroup({ AutoShiftGroup: newSchemeName.trim() }).unwrap();
+        setShiftSchemes([...shiftSchemes, { id: response.id, name: newSchemeName.trim(), shifts: [] }]);
+        setNewSchemeName('');
+      } catch (error) {
+        console.error("Error creating AutoShift group:", error);
+      }
+    }
   };
+
+
+
+  // Handle selecting a shift scheme to show its shifts
+  const handleShowShifts = (shifts, schemeName, schemeId) => {
+    setSelectedShifts(shifts);
+    setSelectedSchemeName(schemeName);
+    setSelectedSchemeId(schemeId);
+  };
+
 
   return (
-    <div className="auto-shift-scheme">
+    <div className='autoShiftScheme'>
       <Header />
-      <div className="auto-shift-scheme-container">
-        {/* Top Grid - Group Name */}
-      
-        <div className="shift-group-name">
-          <label htmlFor="groupName">AutoShift Group Name: </label>
+      <div className='autoShiftScheme-container'>
+        <div className='scheme-add'>
           <input
             type="text"
-            id="groupName"
-            className="form-control"
-            value={groupName}
-            onChange={handleGroupNameChange}
-            placeholder="Enter Group Name"
+            className="scheme-input"
+            value={newSchemeName}
+            onChange={(e) => setNewSchemeName(e.target.value)}
+            placeholder="Enter Shift Scheme Name"
           />
+          <button className='add-scheme-button' onClick={handleAddScheme}>Add</button>
         </div>
 
-        {/* Center Grid - Two side by side sections */}
-        <div className="shift-grids">
-          {/* Left side - Shift Table */}
-          <div className="shift-table-container">
-            <h3>Shift</h3>
-            <table className="shift-table">
-              <thead>
-                <tr>
-                  <th>Shift</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {shifts.map((shift) => (
-                  <tr key={shift.name}>
-                    <td>{shift.name}</td>
-                    <td>{shift.startTime}</td>
-                    <td>{shift.endTime}</td>
-                    <td>
-                      <button className="shift-btn"
-                        onClick={() => selectShift(shift)}
-                      >
-                        Select
-                      </button>
-                    </td>
+        {isLoading ? (
+          <p>Loading shift schemes...</p>
+        ) : error ? (
+          <p>Error loading shift schemes</p>
+        ) : (
+          <div className='scheme-grids'>
+            <div className='scheme-table-container'>
+              <h3 className="scheme-title">Shift Schemes</h3>
+              <table className="scheme-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {shiftSchemes.map((scheme) => (
+                    <tr key={scheme.id}>
+                      <td>{scheme.id}</td>
+                      <td>{scheme.name}</td>
+                      <td>
+                        <div className="button-container">
+                          <Tooltip title="Add Shift To this Group" arrow>
+                            <IconButton className="showShift-btn" style={{ padding: 4 }}
+                              onClick={() => {
+                                setSelectedSchemeId(scheme.id); // Set Group ID
+                                setShowAssignShiftModal(true);
+                              }}
+                            >
+                              <AddIcon fontSize="small" style={{ color: 'white' }} />
+                            </IconButton>
+                          </Tooltip>
 
-          {/* Right side - Selected Shifts Table */}
-          <div className="selected-shifts-container">
-            <h3>Selected Shifts</h3>
-            <table className="shift-table">
-              <thead>
-                <tr>
-                  <th>Shift</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Entry Threshold</th>
-                  <th>End Threshold</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedShifts.map((shift, index) => (
-                  <tr key={index}>
-                    <td>{shift.name}</td>
-                    <td>{shift.startTime}</td>
-                    <td>{shift.endTime}</td>
-                    <td>
-                      <input
-                        type="time"
-                        step="60"
-                        onChange={(e) => console.log("Entry Threshold:", e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="time"
-                        step="60"
-                        onChange={(e) => console.log("End Threshold:", e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <button className="shift-deselect-btn" onClick={() => deselectShift(shift)}>Deselect</button>
-                    </td>
+                          <Tooltip title="Show Shifts" arrow>
+                            <IconButton className="showShift-btn"
+                              onClick={() => handleShowShifts(scheme.shifts, scheme.name, scheme.id)}
+                              style={{ padding: 4 }}>
+                              <VisibilityIcon fontSize="small" style={{ color: 'white' }} />
+                            </IconButton>
+                          </Tooltip>
+
+                          <Tooltip title="Delete Scheme" arrow>
+                            <IconButton
+                              className="deleteScheme-btn"
+                              onClick={() => handleDeleteAutoShiftGroup(scheme.id)}
+                              style={{ padding: 4 }}>
+                              <DeleteIcon fontSize="small" style={{ color: 'white' }} />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="shift-table-container">
+              <div className="shift-table-Header-container">
+                <h3 className="shift-table-title">Shifts for</h3>
+                <h3 className="shift-table-groupName"> {selectedSchemeName || "Select a scheme"}</h3>
+              </div>
+              <table className="shift-table">
+                <thead>
+                  <tr>
+                    <th>Shift Code</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Entry Threshold</th>
+                    <th>End Threshold</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                </thead>
+                <tbody>
+                  {selectedSchemeName && selectedSchemeName !== "Select a scheme" ? (
+                    selectedShifts.length > 0 ? (
+                      selectedShifts.map((shift) => (
+                        <tr key={shift.shiftCode}>
+                          <td>{shift.shiftCode}</td>
 
-        {/* Bottom Section - Save and Cancel Buttons */}
-        <div className="btn-section">
-          <button className="cancel-btn">Cancel</button>
-          <button className="save-btn" onClick={() => console.log("Save data")}>Save</button>
-        </div>
+                          <td>{shift.startTime}</td>
+                          <td>{shift.endTime}</td>
+                          <td>{shift.entryThreshold}</td>
+                          <td>{shift.endThreshold}</td>
+                          <td>
+                            <Tooltip title="Remove Shift From this scheme" arrow>
+                              <IconButton
+                                className="deselect-btn"
+                                onClick={() => handleRemoveShift(shift.shiftCode, selectedSchemeId)} // Add the mutation trigger here
+                                style={{ padding: 4 }}
+                              >
+                                <DeleteIcon fontSize="small" style={{ color: 'white' }} />
+                              </IconButton>
+                            </Tooltip>
+
+
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6">No shifts found for this scheme</td>
+                      </tr>
+                    )
+                  ) : (
+                    <tr>
+                      <td colSpan="6">Select a scheme to view shifts</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
+
+        {/* Modal for Assign Shift In Auto Shift group */}
+        {showAssignShiftModal && (
+                <AssignShiftInAutoShiftGroup
+                    closeModal={closeAssignShiftModal}
+                    id={selectedSchemeId}  // Pass the selected HolidayGroupId
+                    AutoShiftGroupName={selectedSchemeName}
+                />
+            )}
     </div>
   );
 };

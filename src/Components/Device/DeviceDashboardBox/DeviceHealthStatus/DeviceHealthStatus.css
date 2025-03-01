@@ -1,0 +1,86 @@
+/* Parent Container */
+.DHS-box-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-family: Poppins, sans-serif;
+  }
+  
+  /* Title */
+  .DHS-box-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #55565b;
+  }
+  
+  /* Flexbox Layout */
+  .DHS-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    padding: 2px 0;
+  }
+  
+  /* Individual Status Box */
+  .DHS-StatusItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 2px;
+    border-right: 1px solid rgb(51, 123, 148);
+    text-align: center;
+  }
+  
+  /* Remove Right Border for Last Box */
+  .DHS-StatusItem.DHS-no-border {
+    border-right: none;
+  }
+  
+  /* Icon Styling */
+  .DHS-StatusIcon {
+    font-size: 28px;
+    padding: 3px;
+    margin-bottom: 8px;
+    background: var(--gradient-border);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+  }
+  
+  /* Title Styling */
+  .DHS-StatusTitle {
+    font-size: 16px;
+    color: #55565b;
+    font-weight: 400;
+    margin-bottom: 5px;
+  }
+  
+  /* Value Styling */
+  .DHS-StatusValue {
+    font-size: 20px;
+    color: #55565b;
+    font-weight: bold;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .DHS-box {
+      flex-direction: column;
+      gap: 15px;
+      padding: 5px 0;
+    }
+  
+    .DHS-StatusItem {
+      border-right: none;
+      padding: 12px;
+    }
+  }
+  

@@ -1,0 +1,271 @@
+.AccessLocation{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.AccessLocation-Table-container{
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.AccessLocation-header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.AccessLocation-heading{
+    font-size: 20px;
+    color: #55565b;
+    margin: 0;
+}
+
+.AccessLocation-icon-container{
+    display: flex;
+    gap: 10px;
+}
+
+
+.AccessLocation-header-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+
+.AccessLocation-header-icon:hover {
+    color: #089bab;
+}
+
+.AccessLocation-table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+
+.AccessLocation-table thead {
+    background: var(--primary-color);
+}
+
+.AccessLocation-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+}
+
+
+
+.AccessLocation-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+
+
+.AccessLocation-table tbody tr td {
+    font-size: 10px; /* Smaller font size */
+    letter-spacing: 0.25px; /* Reduced letter-spacing */
+    font-weight: normal;
+    color: #35363a;
+    padding: 4px 8px; /* Reduced padding */
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+
+
+.AccessLocation-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.AccessLocation-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.AccessLocation-table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 6px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+.AccessLocation-table tbody tr td:first-child {
+    border-left: none;
+}
+
+.AccessLocation-table tbody tr td:last-child {
+    border-right: none;
+}
+
+
+
+/* Action Buttons Container */
+.AccessLocation-table tbody tr td .action-btn-container {
+    display: flex;
+    justify-content: center;  /* Center buttons horizontally */
+    align-items: center;      /* Center buttons vertically */
+    gap: 10px;                /* Space between buttons */
+}
+
+/* Individual Action Buttons */
+.AccessLocation-table tbody tr td .action-btn {
+    width: 24px;              /* Smaller width for the button */
+    height: 24px;             /* Smaller height to match the width */
+    display: inline-flex;
+    justify-content: center;  /* Center icons horizontally */
+    align-items: center;      /* Center icons vertically */
+    font-size: 16px;          /* Adjust font-size to control icon size */
+    border-radius: 15%;       /* Rounded corners */
+    background-color: #f0f0f0;
+    color: #555;
+    cursor: pointer;
+    padding: 4px;             /* Reduced padding for smaller buttons */
+    margin: 0;                /* Remove margin for even button spacing */
+}
+
+/* Specific Button Styles */
+.AccessLocation-table tbody tr td .update-btn {
+    background: var(--gradient-border);
+    color: white;
+}
+
+.AccessLocation-table tbody tr td .delete-btn {
+    background: var(--red-gradient);
+    color: white;
+}
+
+/* Icon size adjustment */
+.AccessLocation-table tbody tr td .action-btn .MuiSvgIcon-root {
+    font-size: 16px;  /* Reduce icon size here */
+}
+
+/* Hover Effects */
+.update-btn:hover, .delete-btn:hover {
+    opacity: 0.9;
+}
+
+/* Tooltip */
+.AccessLocation-table tbody tr td .MuiTooltip-tooltip {
+    font-size: 12px; /* Smaller font size for tooltips */
+}
+
+/* Ensure buttons appear side by side */
+.AccessLocation-table tbody tr td .action-btn-container {
+    display: flex;
+    flex-direction: row;      /* Arrange buttons in a row */
+    gap: 10px;                /* Space between buttons */
+    justify-content: center;  /* Center the buttons horizontally */
+}
+
+/* Search Input Styles */
+.AccessLocation-table th input {
+    width: 100%;              /* Full width to fill the table header */
+    padding: 8px;             /* Adequate padding for input */
+    font-size: 14px;          /* Font size to match the table's text */
+    border: 1px solid #ddd;  /* Light border color */
+    border-radius: 4px;      /* Rounded corners */
+    box-sizing: border-box;  /* Ensure padding doesn't affect width */
+    background-color: #f9f9f9; /* Light background for search inputs */
+    color: #555;             /* Text color for input */
+    transition: border-color 0.3s ease; /* Smooth border transition */
+}
+
+/* Focus state for the search input */
+.AccessLocation-table th input:focus {
+    border-color: var(--primary-color); /* Highlight border on focus */
+    outline: none;                        /* Remove default outline */
+}
+
+/* Placeholder styling for search input */
+.AccessLocation-table th input::placeholder {
+    color: #aaa;                          /* Lighter color for placeholder text */
+    font-style: italic;                    /* Italicize placeholder */
+}
+
+/* Styling when search input is active (search box appears) */
+.AccessLocation-table th input {
+    margin-bottom: 10px;  /* Add space below the input field */
+}
+
+/* Style for search input fields when focused */
+.AccessLocation-table th input:focus::placeholder {
+    color: transparent;    /* Hide placeholder text when focused */
+}
+
+  
+
+/* Pagination Styling */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.pagination-btn {
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 24px;
+    color: #555;
+}
+
+.pagination-btn:hover {
+    color: #000;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+/* Visitor Image Styling */
+.visitor-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #e8f0ea;
+    border: 2px solid #4abb83;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.visitor-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Search Mode Active State */
+.VMSAppointmentStatusModal-table th input:focus {
+    border-color: #089bab;
+    outline: none;
+}
+
+/* Modal Table Adjustments for Search */
+.VMSAppointmentStatusModal-table th input {
+    display: block;  /* Ensure input takes full width in search mode */
+}
+
+/* Styling the modal content when search inputs are present */
+.VMSAppointmentStatusModal-content {
+    max-height: 85vh;  /* Ensure modal content doesn't overflow when search is active */
+    overflow-y: auto;
+    padding-right: 10px; /* Add some padding to prevent content overlap with scrollbar */
+}

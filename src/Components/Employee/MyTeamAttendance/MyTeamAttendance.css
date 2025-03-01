@@ -1,0 +1,264 @@
+.my-team-attendance {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.my-team-attendance-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+    margin: 20px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    flex-direction: column;
+    /* Stack left and right sections vertically on small screens */
+}
+
+.my-team-attendance-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.my-team-attendance-employee-photo {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.my-team-attendance-employee-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.my-team-attendance-employee-info {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.my-team-attendance-employee-info h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.my-team-attendance-employee-info p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #666;
+}
+
+.my-team-attendance-right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.my-team-attendance-camera-frame {
+    width: 100%;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #999;
+    overflow: hidden;
+    /* Ensure the webcam doesn't overflow */
+    position: relative;
+    /* For positioning the webcam */
+}
+
+.my-team-attendance-camera-frame video {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    width: 60% !important;
+    /* Ensure the video fills the frame */
+    height: 100% !important;
+    /* Ensure the video fills the frame */
+    padding: 6px;
+    border-radius: 8px;
+    /* Match the frame's border radius */
+}
+
+.my-team-attendance-camera-icon {
+    font-size: 3rem;
+    color: #999;
+}
+
+.my-team-attendance-verify-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    background: var(--gradient-border);
+    color: white;
+}
+
+.my-team-attendance-verification-status {
+    text-align: center;
+    color: #ff4444;
+    /* Red for error status */
+    font-size: 1rem;
+}
+
+.my-team-attendance-verified-photo {
+    width: 100%;
+    height: 200px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.my-team-attendance-verified-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.my-team-attendance-toggle-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.my-team-attendance-remark-input {
+    width: 100%;
+}
+
+.my-team-attendance-mark-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    background: var(--gradient-border);
+    color: white;
+}
+
+/* Media Queries for Responsive Design */
+
+/* For tablets and small laptops (768px - 1024px) */
+@media (min-width: 768px) {
+    .my-team-attendance-container {
+        flex-direction: row;
+        /* Side-by-side layout for larger screens */
+    }
+
+    .my-team-attendance-left {
+        max-width: 300px;
+        /* Limit the width of the left section */
+    }
+
+    .my-team-attendance-right {
+        flex: 3;
+        /* Give more space to the right section */
+    }
+}
+
+/* For mobile devices (up to 767px) */
+@media (max-width: 767px) {
+    .my-team-attendance-container {
+        padding: 10px;
+        margin: 10px;
+        gap: 10px;
+    }
+
+    .my-team-attendance-employee-photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .my-team-attendance-employee-info h3 {
+        font-size: 1.2rem;
+    }
+
+    .my-team-attendance-employee-info p {
+        font-size: 0.9rem;
+    }
+
+    .my-team-attendance-camera-frame {
+        height: 150px;
+    }
+
+    .my-team-attendance-camera-icon {
+        font-size: 2rem;
+    }
+
+    .my-team-attendance-verified-photo {
+        height: 120px;
+    }
+
+    .my-team-attendance-toggle-buttons {
+        flex-direction: column;
+        /* Stack toggle buttons vertically on mobile */
+        gap: 10px;
+    }
+
+    .my-team-attendance-remark-input {
+        font-size: 0.9rem;
+    }
+
+    .my-team-attendance-mark-button {
+        font-size: 0.9rem;
+    }
+}
+
+/* For very small mobile devices (up to 480px) */
+@media (max-width: 480px) {
+    .my-team-attendance-employee-photo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .my-team-attendance-employee-info h3 {
+        font-size: 1rem;
+    }
+
+    .my-team-attendance-employee-info p {
+        font-size: 0.8rem;
+    }
+
+    .my-team-attendance-camera-frame {
+        height: 120px;
+    }
+
+    .my-team-attendance-camera-icon {
+        font-size: 1.5rem;
+    }
+
+    .my-team-attendance-verified-photo {
+        height: 100px;
+    }
+
+    .my-team-attendance-remark-input {
+        font-size: 0.8rem;
+    }
+
+    .my-team-attendance-mark-button {
+        font-size: 0.8rem;
+    }
+}

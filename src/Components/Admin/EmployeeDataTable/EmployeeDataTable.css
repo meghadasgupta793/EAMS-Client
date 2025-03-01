@@ -1,54 +1,52 @@
-.EmployeeDataTable {
-    height: 400px;
-    padding: 20px;
-    margin-top: 60px;
-}
-
-.table-container {
+.employee-table-container {
     padding: 20px;
     margin: 28px 28px;
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Add horizontal scroll for small screens */
 }
 
-.header-container {
+.employee-table-header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* Allow header items to wrap on small screens */
+    gap: 10px; /* Add gap between header items */
 }
 
-.heading {
+.employee-table-heading {
     font-size: 20px;
     color: var(--text-color);
     margin: 0;
 }
 
-.icon-container {
+.employee-table-icon-container {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap; /* Allow icons to wrap on small screens */
 }
 
-.header-icon {
+.employee-table-header-icon {
     font-size: 24px;
     color: #555;
     cursor: pointer;
 }
 
-.header-icon:hover {
+.employee-table-header-icon:hover {
     color: #4abb83;
 }
 
-.employee-table {
+.employee-List-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
 }
 
-.employee-table thead {
+.employee-List-table thead {
     background-color: #4abb83;
 }
 
-.employee-table thead tr th {
+.employee-List-table thead tr th {
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.35px;
@@ -58,22 +56,22 @@
     border: 1px solid #4abb83;
 }
 
-.employee-table tbody tr {
+.employee-List-table tbody tr {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
 }
 
-.employee-table tbody tr:hover {
+.employee-List-table tbody tr:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.employee-table tbody tr:nth-child(odd) {
+.employee-List-table tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
 
-.employee-table tbody tr td {
+.employee-List-table tbody tr td {
     font-size: 12px;
     letter-spacing: 0.35px;
     font-weight: normal;
@@ -84,15 +82,15 @@
     border-bottom: none;
 }
 
-.employee-table tbody tr td:first-child {
+.employee-List-table tbody tr td:first-child {
     border-left: none;
 }
 
-.employee-table tbody tr td:last-child {
+.employee-List-table tbody tr td:last-child {
     border-right: none;
 }
 
-.employee-table tbody tr td .action-btn {
+.employee-List-table tbody tr td .action-btn {
     width: 25px;
     height: 25px;
     display: inline-block;
@@ -107,24 +105,19 @@
     padding: 4px;
 }
 
-.employee-table tbody tr td .update-btn {
+.employee-List-table tbody tr td .update-btn {
     background: var(--gradient-border);
     color: white;
     cursor: pointer;
-    margin-right: 6px; /* Add margin to create a gap between the buttons */
-   
+    margin-right: 6px;
 }
 
-.employee-table tbody tr td .delete-btn {
+.employee-List-table tbody tr td .delete-btn {
     background: var(--red-gradient);
     color: white;
     cursor: pointer;
 }
 
-.delete-btn,.update-btn:hover{
-    opacity: 0.9;
-}
-/* Style for employee photo */
 .employee-photo {
     width: 30px;
     height: 30px;
@@ -132,10 +125,8 @@
     object-fit: cover;
     background: rgb(29,169,156);
     background: linear-gradient(90deg, rgba(29,169,156,1) 0%, rgba(74,187,131,1) 50%, rgba(125,207,97,1) 100%);
-    
-    border: 2px solid  #f7faf8 ; 
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-    /* You can adjust the size based on your preference */
+    border: 2px solid #f7faf8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .pagination-container {
@@ -161,30 +152,148 @@
     margin: 0 5px;
 }
 
+/* Responsive Styles for Tablets and Mobile */
+/* Responsive Styles for Tablets and Mobile */
 @media (max-width: 768px) {
-    .employee-table thead {
-        display: none;
+
+
+    .employee-List-table, .employee-List-table tbody, .employee-List-table tr, .employee-List-table td {
+        display: block;
+        width: 100%;}
+
+
+
+
+    .employee-table-container {
+        margin: 10px;
+        padding: 20px;
     }
-    .employee-table, .employee-table tbody, .employee-table tr, .employee-table td {
+
+    .employee-table-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .employee-table-heading {
+        font-size: 18px;
+    }
+
+    .employee-table-icon-container {
+        gap: 5px;
+    }
+
+    .employee-table-header-icon {
+        font-size: 20px;
+    }
+
+    .employee-List-table {
         display: block;
         width: 100%;
     }
-    .employee-table tr {
+
+    .employee-List-table thead {
+        display: none; /* Hide thead on small screens */
+    }
+
+    .employee-List-table tbody tr {
+        display: block;
         margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 8px;
     }
-    .employee-table tbody tr td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-    }
-    .employee-table td:before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 15px;
-        font-weight: 600;
+
+    .employee-List-table tbody tr td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         font-size: 14px;
-        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd; /* Add a border between rows */
+    }
+
+    .employee-List-table tbody tr td:last-child {
+        border-bottom: none; /* Remove border for the last row */
+    }
+
+    /* Add headers using ::before pseudo-element and CSS counters */
+    .employee-List-table tbody {
+        counter-reset: row-header; /* Initialize counter */
+    }
+
+    .employee-List-table tbody tr td::before {
+        content: attr(data-label); /* Fallback for data-label */
+        font-weight: 600;
+        color: #4abb83; /* Match the header color */
+        width: 120px; /* Fixed width for the header */
+        flex-shrink: 0; /* Prevent the header from shrinking */
+        margin-right: 10px; /* Space between header and data */
+    }
+
+    /* Dynamically generate headers using CSS counters */
+    .employee-List-table tbody tr td:nth-child(1)::before {
+        content: "Photo:";
+    }
+
+    .employee-List-table tbody tr td:nth-child(2)::before {
+        content: "Emp No:";
+    }
+
+    .employee-List-table tbody tr td:nth-child(3)::before {
+        content: "Emp Name:";
+    }
+
+    .employee-List-table tbody tr td:nth-child(4)::before {
+        content: "Email:";
+    }
+
+    .employee-List-table tbody tr td:nth-child(5)::before {
+        content: "Department:";
+    }
+
+    .employee-List-table tbody tr td:nth-child(6)::before {
+        content: "Designation:";
+    }
+
+    .employee-List-table tbody tr td:nth-child(7)::before {
+        content: "Organization:";
+    }
+
+    .employee-List-table tbody tr td:nth-child(8)::before {
+        content: "Action:";
+    }
+
+    .employee-photo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .pagination-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .employee-table-heading {
+        font-size: 16px;
+    }
+
+    .employee-table-header-icon {
+        font-size: 18px;
+    }
+
+    .employee-List-table tbody tr td {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .employee-List-table tbody tr td::before {
+        width: 100px; /* Adjust width for smaller screens */
+    }
+
+    .employee-photo {
+        width: 30px;
+        height: 30px;
     }
 }

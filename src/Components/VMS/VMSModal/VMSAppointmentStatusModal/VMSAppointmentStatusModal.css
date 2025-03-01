@@ -1,0 +1,230 @@
+/* Modal Overlay */
+.VMSAppointmentStatusModal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+  
+/* Modal Content */
+.VMSAppointmentStatusModal-content {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 900px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease;
+    overflow: hidden;
+}
+
+.VMSAppointmentStatusModal-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+/* Modal Title */
+.VMSAppointmentStatusModal-heading {
+    font-size: 20px;
+    color: #55565b;
+    margin: 0;
+}
+
+.VMSAppointmentStatusModal-icon-container {
+    display: flex;
+    gap: 10px;
+}
+
+.VMSAppointmentStatusModal-header-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+
+.VMSAppointmentStatusModal-header-icon:hover {
+    color: var(--primary-color);
+}
+
+/* Table Styling */
+.VMSAppointmentStatusModal-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.VMSAppointmentStatusModal-table thead {
+    background: var(--primary-color);
+}
+
+.VMSAppointmentStatusModal-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+}
+
+/* Table Row Styling */
+.VMSAppointmentStatusModal-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.VMSAppointmentStatusModal-table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+/* Search Mode Adjustments */
+.VMSAppointmentStatusModal-table th input {
+    width: 100%;
+    padding: 6px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #555;
+}
+
+/* Table Row Hover Effects */
+.VMSAppointmentStatusModal-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.VMSAppointmentStatusModal-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+
+
+/* Action Buttons Container */
+.VMSAppointmentStatusModal-table tbody tr td .action-btn-container {
+    display: flex;
+    justify-content: center;  /* Center buttons horizontally */
+    align-items: center;      /* Center buttons vertically */
+    gap: 10px;                /* Space between buttons */
+}
+
+/* Individual Action Buttons */
+.VMSAppointmentStatusModal-table tbody tr td .action-btn {
+    width: 24px;              /* Smaller width for the button */
+    height: 24px;             /* Smaller height to match the width */
+    display: inline-flex;
+    justify-content: center;  /* Center icons horizontally */
+    align-items: center;      /* Center icons vertically */
+    font-size: 16px;          /* Adjust font-size to control icon size */
+    border-radius: 50%;       /* Rounded corners */
+    background-color: #f0f0f0;
+    color: #555;
+    cursor: pointer;
+    padding: 4px;             /* Reduced padding for smaller buttons */
+    margin: 0;                /* Remove margin for even button spacing */
+}
+
+/* Specific Button Styles */
+.VMSAppointmentStatusModal-table tbody tr td .update-btn {
+    background: var(--gradient-border);
+    color: white;
+}
+
+.VMSAppointmentStatusModal-table tbody tr td .delete-btn {
+    background: var(--red-gradient);
+    color: white;
+}
+
+/* Icon size adjustment */
+.VMSAppointmentStatusModal-table tbody tr td .action-btn .MuiSvgIcon-root {
+    font-size: 16px;  /* Reduce icon size here */
+}
+
+/* Hover Effects */
+.update-btn:hover, .delete-btn:hover {
+    opacity: 0.9;
+}
+
+/* Tooltip */
+.VMSAppointmentStatusModal-table tbody tr td .MuiTooltip-tooltip {
+    font-size: 12px; /* Smaller font size for tooltips */
+}
+
+/* Ensure buttons appear side by side */
+.VMSAppointmentStatusModal-table tbody tr td .action-btn-container {
+    display: flex;
+    flex-direction: row;      /* Arrange buttons in a row */
+    gap: 10px;                /* Space between buttons */
+    justify-content: center;  /* Center the buttons horizontally */
+}
+
+
+  
+
+/* Pagination Styling */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.pagination-btn {
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 24px;
+    color: #555;
+}
+
+.pagination-btn:hover {
+    color: #000;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+/* Visitor Image Styling */
+.visitor-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #e8f0ea;
+    border: 2px solid #4abb83;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.visitor-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Search Mode Active State */
+.VMSAppointmentStatusModal-table th input:focus {
+    border-color: #089bab;
+    outline: none;
+}
+
+/* Modal Table Adjustments for Search */
+.VMSAppointmentStatusModal-table th input {
+    display: block;  /* Ensure input takes full width in search mode */
+}
+
+

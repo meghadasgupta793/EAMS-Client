@@ -1,156 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './widgets.css';
-import { Link } from 'react-router-dom';
+import AdminAttendanceWidgetModal from '../DashboardModal/AdminAttendanceWidgetModal/AdminAttendanceWidgetModal';
+import { UserContext } from '../../../StoreContext/UserContext';
+import { useDashBoardTypeWiseAttendanceDeatailsMutation } from '../../../Redux/api/admin/adminDashboardApi';
+import CircularProgress from '@mui/material/CircularProgress'; // Loading spinner
+import Alert from '@mui/material/Alert'; // Error alert
+import config from '../../../secrect';
 
+const Widgets = ({ type, count, icon: Icon, iconColor }) => {
+    const [openModal, setOpenModal] = useState(false);
+    const { userInfo } = useContext(UserContext);
+    const { UserRole, EmployeeId } = userInfo || {}; // Added fallback for `userInfo` to avoid crashes
+    const date = new Date().toLocaleDateString('en-CA'); // Current date in YYYY-MM-DD format
+    const { ImgUrl } = config;
+    // API hook for fetching attendance details
+    const [DashBoardTypeWiseAttendanceDeatails, { data, isLoading, isError, error }] = useDashBoardTypeWiseAttendanceDeatailsMutation();
 
-import PendingActionsIcon from '@mui/icons-material/PendingActions';
-import LogoutIcon from '@mui/icons-material/Logout';
-import PersonIcon from '@mui/icons-material/Person'; // New icon for Total Employees
-import EventAvailableIcon from '@mui/icons-material/EventAvailable'; // New icon for On Time
-import EventBusyIcon from '@mui/icons-material/EventBusy'; // New icon for Absent
-import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave'; // New icon for Time-off
-import TotalPresent from '../DashboardModal/TotalPresent/TotalPresent';
+    const handleViewAllClick = async () => {
+        setOpenModal(true);
 
-
-import EarlyExit from '../DashboardModal/EarlyExit/EarlyExit';
-import TotalAbsent from '../DashboardModal/TotalAbsent/TotalAbsent';
-import WeeklyOff from '../DashboardModal/WeeklyOff/WeeklyOff';
-import OnLeave from '../DashboardModal/OnLeave/OnLeave';
-import LateArrival from '../DashboardModal/LateArrival/LateArrival';
-
-
-
-
-
-
-const Widgets = ({ type, count }) => {
-
-
-    const [openModal, setOpenModal] = useState({ totalPresent: false, lateArrival: false, earlyExit: false, totalAbsent: false, weeklyOff: false, onLeave: false });
-
-
-
-    const handleViewAllClick = () => {
-        switch (type) {
-            case "Present":
-                setOpenModal({ totalPresent: true });
-                break;
-            case "Late Arrival":
-                setOpenModal({ lateArrival: true });
-                break;
-            case "Early Exit":
-                setOpenModal({ earlyExit: true });
-                break;
-            case "Absent":
-                setOpenModal({ totalAbsent: true });
-                break;
-            case "Week-off":
-                setOpenModal({ weeklyOff: true });
-                break;
-            case "On-Leave":
-                setOpenModal({ onLeave: true });
-                break;
-            default:
-                return;
+        // Fetch data when the modal is opened
+        if (UserRole && EmployeeId && date) {
+            try {
+                await DashBoardTypeWiseAttendanceDeatails({
+                    UserRole,
+                    EmployeeId,
+                    date,
+                    AttenddanceStatus: type, // Use the widget type as the attendance status
+                });
+            } catch (err) {
+                console.error('Error fetching attendance details:', err);
+            }
         }
     };
 
     const closeModal = () => {
-        setOpenModal({
-            totalPresent: false,
-            lateArrival: false,
-            earlyExit: false,
-            totalAbsent: false,
-            weeklyOff: false,
-            onLeave: false,
-        });
+        setOpenModal(false);
     };
 
+    // Define columns and titles for each type
+    const modalConfig = {
+        Present: {
+            title: 'Present List',
+            columns: ['Photo', 'EmpNo', 'EmpName', 'Department', 'Designation', 'Organization', 'Date', 'InTime', 'OutTime', 'WorkHour', 'Remark'],
+        },
+        'Late Arrival': {
+            title: 'Late Arrival List',
+            columns: ['Photo', 'EmpNo', 'EmpName', 'Department', 'Designation', 'Organization', 'Date', 'InTime', 'LateMinute', 'Remark'],
+        },
+        'Early Exit': {
+            title: 'Early Exit List',
+            columns: ['Photo', 'EmpNo', 'EmpName', 'Department', 'Designation', 'Organization', 'Date', 'OutTime', 'EarlyMinute', 'Remark'],
+        },
+        Absent: {
+            title: 'Absent List',
+            columns: ['Photo', 'EmpNo', 'EmpName', 'Department', 'Designation', 'Organization', 'Date', 'Remark'],
+        },
+        'Week-off': {
+            title: 'Weekly Off List',
+            columns: ['Photo', 'EmpNo', 'EmpName', 'Department', 'Designation', 'Organization', 'Date', 'Remark'],
+        },
+        'On-Leave': {
+            title: 'On Leave List',
+            columns: ['Photo', 'EmpNo', 'EmpName', 'Department', 'Designation', 'Organization', 'Date', 'Remark'],
+        },
+    };
 
+    // Map API data to modal data format
+    const mapApiDataToModalData = (apiData) => {
+        return apiData.map((item) => ({
+            EmpNo: item.EmpNo,
+            EmpName: item.Name,
+            Department: item.Department,
+            Designation: item.Designation,
+            Organization: item.Organization.trim(), // Trim to remove extra spaces
+            Date: item.Date,
+            InTime: item.Intime || 'N/A',
+            OutTime: item.OutTime || 'N/A',
+            WorkHour: item.WorkHour || 'N/A',
+            LateMinute: item.LateIn || 'N/A',
+            EarlyMinute: item.EarlyOut || 'N/A',
+            Remark: item.AttendanceStatus,
+            photo: item.PictureName ? `${ImgUrl}/${item.PictureName}` : '/images/profile.png', // Use the provided photo or a default
+        }));
+    };
 
+    // Get modal configuration for the current type
+    const { title, columns } = modalConfig[type] || {};
 
-
-
-    let data;
-
-    switch (type) {
-        case "Present":
-            data = {
-                title: "Present",
-                link: "View All",
-                counter: count,
-                icon: <PersonIcon className="icon" style={{ color: "blue", backgroundColor: "rgb(235, 229, 229)", fontSize: "30px" }} />
-            };
-            break;
-        case "Late Arrival":
-            data = {
-                title: "Late Arrival",
-                link: "View All",
-                counter: count,
-                icon: <EventAvailableIcon className="icon" style={{ color: "green", backgroundColor: "rgb(235, 229, 229)", fontSize: "30px" }} />
-            };
-            break;
-        case "Early Exit":
-            data = {
-                title: "Early Exit",
-                link: "View All",
-                counter: count,
-                icon: <PendingActionsIcon className="icon" style={{ color: "orange", backgroundColor: "rgb(235, 229, 229)", fontSize: "30px" }} />
-            };
-            break;
-        case "Absent":
-            data = {
-                title: "Absent",
-                link: "View All",
-                counter: count,
-                icon: <LogoutIcon className="icon" style={{ color: "crimson", backgroundColor: "rgb(235, 229, 229)", fontSize: "30px" }} />
-            };
-            break;
-        case "Week-off":
-            data = {
-                title: "Week-off",
-                link: "View All",
-                counter: count,
-                icon: <EventBusyIcon className="icon" style={{ color: "crimson", backgroundColor: "rgb(235, 229, 229)", fontSize: "30px" }} />
-            };
-            break;
-        case "On-Leave":
-            data = {
-                title: "On-Leave",
-                link: "View All",
-                counter: count,
-                icon: <TimeToLeaveIcon className="icon" style={{ color: "crimson", backgroundColor: "rgb(235, 229, 229)", fontSize: "30px" }} />
-            };
-            break;
-        default:
-            return null;
-    }
-
-
-
-
+    // Use API data if available, otherwise use an empty array
+    const modalData = data?.data ? mapApiDataToModalData(data.data) : [];
 
     return (
-        <div className='widgets'>
-            <div className='widgets-left'>
-                <div className='widgets-left-title'>{data.title}</div>
-                <div className='widgets-left-count'>{data.counter}</div>
-                <div className='widgets-left-link' onClick={handleViewAllClick}>
-                    {data.link}
+        <div className="widgets">
+            <div className="widgets-left">
+                <div className="widgets-left-title">{type}</div>
+                <div className="widgets-left-count">{count}</div>
+                <div className="widgets-left-link" onClick={handleViewAllClick}>
+                    View All
                 </div>
-
             </div>
             <div className="widgets-right">
-                {data.icon}
+                {Icon && <Icon className="widget-icon" style={{ color: iconColor }} />} {/* Apply icon color */}
             </div>
-            <TotalPresent open={openModal.totalPresent} onClose={closeModal} />
-            <LateArrival open={openModal.lateArrival} onClose={closeModal} />
-            <EarlyExit open={openModal.earlyExit} onClose={closeModal} />
-            <TotalAbsent open={openModal.totalAbsent} onClose={closeModal} />
-            <WeeklyOff open={openModal.weeklyOff} onClose={closeModal} />
-            <OnLeave open={openModal.onLeave} onClose={closeModal} />
+
+            {/* Modal for displaying attendance details */}
+            <AdminAttendanceWidgetModal
+                open={openModal}
+                onClose={closeModal}
+                data={modalData}
+                title={title}
+                columns={columns}
+                isLoading={isLoading}
+                isError={isError}
+                error={error}
+            />
         </div>
     );
-}
+};
 
 export default Widgets;

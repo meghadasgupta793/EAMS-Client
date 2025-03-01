@@ -6,7 +6,7 @@ import upload_area from './upload_area.png'
 import parcel_icon from './parcel_icon.png'
 import appointee from './appointee.png'
 import avatar from './avatar.png'
-import emp1 from './emp1.png'
+
 
 export const assets ={
     logo,
@@ -17,7 +17,7 @@ export const assets ={
     parcel_icon,
     appointee,
     avatar,
-    emp1
+   
 }
 
 export const url = 'http://localhost:4000'

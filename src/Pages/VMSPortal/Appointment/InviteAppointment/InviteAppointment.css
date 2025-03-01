@@ -1,0 +1,227 @@
+/* General Layout */
+.invite-appointment {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #e8f0ea;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+.invite-appointment-form-wrapper {
+    padding: 20px;
+    margin: 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Image Upload Frame */
+.invite-appointment-image-upload-frame {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invite-appointment-image-upload-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.invite-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+/* Form Styling */
+fieldset {
+    border: 2px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+legend {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Container for form fields */
+.invite-appointment-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.invite-appointment-input-field {
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.invite-appointment-input-field input,
+.invite-appointment-input-field textarea,
+.invite-appointment-input-field select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.invite-appointment-input-field textarea {
+    height: 80px;
+    resize: none;
+}
+
+.invite-appointment-input-field select {
+    height: 40px;
+}
+
+.invite-appointment-input-field input:focus,
+.invite-appointment-input-field textarea:focus,
+.invite-appointment-input-field select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Appointment Duration Section */
+.invite-appointment-duration {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.invite-appointment-duration div {
+    display: flex;
+    flex-direction: column;
+}
+
+.invite-appointment-duration label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Button Styling */
+.invite-appointment-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.invite-appointment-submit-btn {
+    background: var(--gradient-border);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.invite-appointment-submit-btn:hover {
+    background: var(--red-gradient);
+}
+
+
+
+.invite-appointment-camera-icon {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background-color: white;
+    padding: 6px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.invite-appointment-camera-icon svg {
+    font-size: 22px;
+    color: #4abb83;
+}
+
+
+
+
+/* Responsive Design for Tablets (max-width: 768px) */
+@media (max-width: 768px) {
+    .invite-appointment-form-wrapper {
+        margin: 20px;
+        padding: 16px;
+    }
+
+    .invite-appointment-image-upload-frame {
+        width: 80px;
+        height: 80px;
+    }
+
+    .invite-appointment-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .invite-appointment-duration {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive Design for Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .invite-appointment-form-wrapper {
+        margin: 15px;
+        padding: 12px;
+    }
+
+    .invite-appointment-image-upload-frame {
+        width: 70px;
+        height: 70px;
+    }
+
+    fieldset {
+        padding: 12px;
+    }
+
+    legend {
+        font-size: 16px;
+    }
+
+    .invite-appointment-input-field input,
+    .invite-appointment-input-field textarea,
+    .invite-appointment-input-field select {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .invite-appointment-submit-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}

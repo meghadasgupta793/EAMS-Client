@@ -1,240 +1,377 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import './updateEmployee.css';
 import Header from '../../Header/Header';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-
+import CropPhoto from '../../../Components/PhotoModal/CropPhoto/CropPhoto';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCropImage } from '../../../Redux/slice/cropImageSlice';
+import { useGetAllDepartmentQuery } from '../../../Redux/api/admin/departmentApi';
+import { useGetAllDesignationQuery } from '../../../Redux/api/admin/designationApi';
+import { useGetAllBatchQuery } from '../../../Redux/api/admin/bacthApi';
+import { useGetAllCategoryQuery } from '../../../Redux/api/admin/categoryApi';
+import { useGetAllOuQuery } from '../../../Redux/api/admin/ouApi';
+import { useGetAllHolidayGroupQuery } from '../../../Redux/api/admin/holidayApi';
+import { useGetAllAutoShiftGroupQuery, useGetAllShiftsQuery } from '../../../Redux/api/admin/shiftApi';
+import { useGetEmployeeByIdQuery, useUpdateEmployeeMutation } from '../../../Redux/api/admin/employeeApi';
+import config from '../../../secrect';
 const UpdateEmployee = () => {
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const { ImgUrl } = config;
+    const dispatch = useDispatch();
+    useEffect(() => {
+        return () => {
+            dispatch(clearCropImage());
+        };
+    }, [dispatch]);
 
-    // Arrays for select dropdown options
-    const departments = ['IT', 'Dev', 'Production'];
-    const designations = ['Manager', 'Security', 'Developer'];
-    const shiftTypes = ['Fixed', 'Flexi', 'Auto'];
-    const shifts = ['Day-Shift', 'Afternoon-Shift', 'Night-Shift'];
-    const autoShiftGroups = ['ABCD', 'AMN', 'DDH'];
-    const weekoffs = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const holidayGroups = ['WestBengalHoliday', 'NorthSideHoliday', 'EastSideHoliday'];
+    const image = useSelector((state) => state.cropImage.image);
+    const { data, error, isLoading } = useGetEmployeeByIdQuery(id);
+    const employeeData = data?.data || {};
+    console.log(employeeData);
 
-    const [step, setStep] = useState(1); // To keep track of the current step
+    const [updateEmployee, { isupdateEmployeeLoading, updateEmployeeerror }] = useUpdateEmployeeMutation();
 
-    // State variables for form fields
-    const [employeeName, setEmployeeName] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobileNo, setMobileNo] = useState("");
-    const [employeeNo, setEmployeeNo] = useState("");
-    const [idNo, setIdNo] = useState("");
-    const [organization, setOrganization] = useState("");
-    const [selectedWeekoffs, setSelectedWeekoffs] = useState([]);
-    const [selectedShiftType, setSelectedShiftType] = useState(''); // State for Shift Type
+    const { data: departmentData, departmenterror, isdepartmentLoading } = useGetAllDepartmentQuery();
+    const { data: designationsData, designationserror, isdesignationsLoading } = useGetAllDesignationQuery();
+    const { data: batchesData, batcheserror, isbatchesLoading } = useGetAllBatchQuery();
+    const { data: categoriesData, categorieserror, iscategoriesLoading } = useGetAllCategoryQuery();
+    const { data: organizationsData, organizationserror, isorganizationsLoading } = useGetAllOuQuery();
+    const { data: holidayGroupsData, holidayGroupserror, isholidayGroupsLoading } = useGetAllHolidayGroupQuery();
+    const { data: shiftData, shifterror, isshiftLoading } = useGetAllShiftsQuery();
+    const { data: autoShiftData, autoShiferror, isautoShifLoading } = useGetAllAutoShiftGroupQuery();
 
-    const handleWeekoffChange = (day) => {
-        if (selectedWeekoffs.includes(day)) {
-            setSelectedWeekoffs(selectedWeekoffs.filter(weekoff => weekoff !== day));
+    const departments = departmentData?.data || [];
+    const designations = designationsData?.data || [];
+    const batches = batchesData?.data || [];
+    const categories = categoriesData?.data || [];
+    const organizations = organizationsData?.data || [];
+    const holidayGroups = holidayGroupsData?.data || [];
+    const shifts = shiftData?.data || [];
+    const autoShiftGroups = autoShiftData?.data || [];
+
+    const [formData, setFormData] = useState({
+        EmployeeName: '',
+        Email: '',
+        PhoneNo: '',
+        EmpNo: '',
+        IdNo: '',
+        OUID: '',
+        DateOfJoin: '',
+        PFNumber: '',
+        ESINumber: '',
+        AadhaarNo: '',
+        Address: '',
+        ValidUpTo: '',
+        DepartmentID: '',
+        DesignationID: '',
+        BatchID: '',
+        CategoryID: '',
+        HolidayGroupID: '',
+        Shift: '',
+        NonShiftGroup: '',
+        LateApplicable: 1,
+        ShiftEarlyAsExtra: 1,
+        SinglePunchAllowed: 1,
+        OverTimeApplicable: 1,
+        CalculateWorkHour: '',
+        CreatedBy: 1,
+        Weekoffs: [],
+    });
+
+    const [selectedShiftType, setSelectedShiftType] = useState('1');
+
+    useEffect(() => {
+        if (employeeData && Object.keys(employeeData).length > 0) {
+            const weekOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const weekoffsArray = employeeData.Weekoffs
+                .split('')
+                .map((day, index) => (day === '1' ? weekOrder[index] : null))
+                .filter(day => day !== null);
+
+            setFormData({
+                EmployeeName: employeeData.EmployeeName,
+                Email: employeeData.Email,
+                PhoneNo: employeeData.PhoneNo,
+                EmpNo: employeeData.EmpNo,
+                IdNo: employeeData.IdNo,
+                OUID: employeeData.OUID,
+                DateOfJoin: employeeData.DateOfJoin ? employeeData.DateOfJoin.split('T')[0] : '',
+                PFNumber: employeeData.PFNumber,
+                ESINumber: employeeData.ESINumber,
+                AadhaarNo: employeeData.AadhaarNo,
+                Address: employeeData.Address,
+                ValidUpTo: employeeData.ValidUpTo ? employeeData.ValidUpTo.split('T')[0] : '', 
+                DepartmentID: employeeData.DepartmentID,
+                DesignationID: employeeData.DesignationID,
+                BatchID: employeeData.BatchID,
+                CategoryID: employeeData.CategoryID,
+                HolidayGroupID: employeeData.HolidayGroupID,
+                Shift: employeeData.Shift,
+                NonShiftGroup: employeeData.NonShiftGroup,
+                LateApplicable: employeeData.LateApplicable ? 1 : 0,
+                ShiftEarlyAsExtra: employeeData.ShiftEarlyAsExtra ? 1 : 0,
+                SinglePunchAllowed: employeeData.SinglePunchAllowed ? 1 : 0,
+                OverTimeApplicable: employeeData.OverTimeApplicable ? 1 : 0,
+                CalculateWorkHour: employeeData.CalculateWorkHour,
+                CreatedBy: 1,
+                Weekoffs: weekoffsArray,
+            });
+
+            setSelectedShiftType(employeeData.ShiftType.toString());
+        }
+    }, [employeeData]);
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        console.log(`Changed: ${name} → ${value}`);
+    
+        if (type === "checkbox") {
+            setFormData((prevData) => ({
+                ...prevData,
+                Weekoffs: checked
+                    ? [...new Set([...prevData.Weekoffs, value])]
+                    : prevData.Weekoffs.filter((day) => day !== value),
+            }));
         } else {
-            setSelectedWeekoffs([...selectedWeekoffs, day]);
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+    };
+    
+
+    const weekoffs = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const [step, setStep] = useState(1);
+    const handleShiftTypeChange = (e) => setSelectedShiftType(e.target.value);
+    const handleNext = () => step < 3 && setStep(step + 1);
+    const handlePrevious = () => step > 1 && setStep(step - 1);
+    const [isemployeeImgModalOpen, setIsEmployeeImgModalOpen] = useState(false);
+    const openModal = () => setIsEmployeeImgModalOpen(true);
+    const closeModal = () => setIsEmployeeImgModalOpen(false);
+
+    const base64ToFile = (base64String, fileName) => {
+        // Extract the base64 data and MIME type from the string
+        const arr = base64String.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
+        const bstr = atob(arr[1]); // Decode base64 string
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+    
+        // Convert the decoded data into a Uint8Array
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+    
+        // Create and return a File object
+        return new File([u8arr], fileName, { type: mime });
+    };
+
+    const handleSubmit = async () => {
+        const weekOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const weekoffsBinary = weekOrder
+            .map(day => formData.Weekoffs.includes(day) ? '1' : '0')
+            .join('');
+    
+        // Create a new FormData object
+        const submissionData = new FormData();
+    
+        // Append all form data fields to FormData
+        Object.keys(formData).forEach((key) => {
+            if (key !== 'Weekoffs') {
+                submissionData.append(key, formData[key]);
+            }
+        });
+    
+        // Append Weekoffs and ShiftType
+        submissionData.append("Weekoffs", weekoffsBinary);
+        submissionData.append("ShiftType", selectedShiftType);
+    
+        // Append the image if it exists
+        if (image) {
+            let finalImage = image;
+    
+            // If the image is a base64 string, convert it to a File object
+            if (typeof image === "string" && image.startsWith("data:image")) {
+                finalImage = base64ToFile(image, "employee_photo.png");
+            }
+    
+            // Append the image file to FormData
+            submissionData.append("Photo", finalImage);
+        }
+    
+        try {
+            // Call the update API
+            const response = await updateEmployee({ id, employeeData: submissionData }).unwrap();
+            alert(response.message);
+            setTimeout(() => {
+                navigate('/employee');
+            }, 0);
+        } catch (err) {
+            console.error("Error updating employee:", err);
+            if (err?.data?.message) {
+                alert(err.data.message);
+            } else {
+                alert("Error updating employee");
+            }
         }
     };
 
-    const handleShiftTypeChange = (e) => {
-        setSelectedShiftType(e.target.value); // Update shift type state
+    const renderSelectOptions = (options) => {
+        return options.length > 0 ? options.map((option, index) => (
+            <option key={index} value={option.ID || option.id || option.Code || option}>
+                {option.OUName || option.Name || option.name || option}
+            </option>
+        )) : <option>No data available</option>;
     };
 
-    const handleNext = () => {
-        if (step < 3) {
-            setStep(step + 1);
-        }
-    };
+    if (isshiftLoading || isdepartmentLoading || isdesignationsLoading || isbatchesLoading || iscategoriesLoading || isorganizationsLoading || isholidayGroupsLoading) {
+        return <div>Loading...</div>;
+    }
 
-    const handlePrevious = () => {
-        if (step > 1) {
-            setStep(step - 1);
-        }
-    };
+    if (shifterror || departmenterror || designationserror || batcheserror || categorieserror || organizationserror || holidayGroupserror) {
+        return <div>Error loading data</div>;
+    }
 
-    const handleBackToEmployeeList = () => {
-        navigate('/employee'); // Navigate to '/employee'
-    };
+    const shiftTypes = [
+        { "id": 1, "Name": "Fixed" },
+        { "id": 2, "Name": "Flexi" },
+        { "id": 3, "Name": "Auto" }
+    ];
 
     return (
         <div className='updateEmployee'>
             <Header />
             <div className='update-container'>
-                {step === 1 && <h1>Update Employee Information</h1>}
-                {step === 2 && <h1>Update Employment Details</h1>}
-                {step === 3 && <h1>Update Attendance Information</h1>}
-
+                <h1>{step === 1 ? "Employee Information" : step === 2 ? "Employment Details" : "Attendance Information"}</h1>
                 <div className='updateEmployee-content'>
                     <div className='left-section'>
-                        {/* Employee Photo Section */}
-                        <div className='employee-pic'>
-                            <img src='/images/profile.png' alt='Employee' />
-                            <div className='camera-icon'>
-                                <CameraAltIcon />
-                            </div>
-                        </div>
+                    <div className='employee-pic'>
+    {image ? (
+        <img src={image} alt='Employee' />
+    ) : (
+        <img src={`${ImgUrl}/${employeeData.PictureName}`} alt='Employee' />
+    )}
+    <div className='camera-icon' onClick={openModal}>
+        <CameraAltIcon />
+    </div>
+</div>
                     </div>
-
                     <div className='right-section'>
-                        {/* First Step - Employee Information */}
                         {step === 1 && (
                             <>
                                 <div className='middle'>
                                     <label>Employee Name:</label>
-                                    <input
-                                        type='text'
-                                        value={employeeName}
-                                        onChange={(e) => setEmployeeName(e.target.value)}
-                                    />
+                                    <input type='text' name='EmployeeName' value={formData.EmployeeName} onChange={handleInputChange} />
 
                                     <label>Email:</label>
-                                    <input
-                                        type='email'
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
+                                    <input type='email' name='Email' value={formData.Email} onChange={handleInputChange} />
 
                                     <label>Mobile No:</label>
-                                    <input
-                                        type='tel'
-                                        value={mobileNo}
-                                        onChange={(e) => setMobileNo(e.target.value)}
-                                    />
-                                </div>
-                                <div className='right'>
+                                    <input type='tel' name='PhoneNo' value={formData.PhoneNo} onChange={handleInputChange} />
+
                                     <label>Employee No:</label>
-                                    <input
-                                        type='text'
-                                        value={employeeNo}
-                                        onChange={(e) => setEmployeeNo(e.target.value)}
-                                    />
+                                    <input type='text' name='EmpNo' value={formData.EmpNo} onChange={handleInputChange} />
 
                                     <label>ID No:</label>
-                                    <input
-                                        type='text'
-                                        value={idNo}
-                                        onChange={(e) => setIdNo(e.target.value)}
-                                    />
+                                    <input type='text' name='IdNo' value={formData.IdNo} onChange={handleInputChange} />
 
                                     <label>Organization:</label>
-                                    <input
-                                        type='text'
-                                        value={organization}
-                                        onChange={(e) => setOrganization(e.target.value)}
-                                    />
+                                    <select name='OUID' value={formData.OUID} onChange={handleInputChange}>
+                                        {renderSelectOptions(organizations)}
+                                    </select>
                                 </div>
                             </>
                         )}
 
-                        {/* Second Step - Employment Details */}
                         {step === 2 && (
                             <>
                                 <div className='middle'>
-                                    <label>Date of Join: </label>
-                                    <input type='date' />
-
+                                    <label>Date of Join:</label>
+                                    <input type='date' name='DateOfJoin' value={formData.DateOfJoin} onChange={handleInputChange} />
                                     <label>PF Number:</label>
-                                    <input type='text' />
+                                    <input type='text' name='PFNumber' value={formData.PFNumber} onChange={handleInputChange} />
 
                                     <label>ESI Number:</label>
-                                    <input type='text' />
+                                    <input type='text' name='ESINumber' value={formData.ESINumber} onChange={handleInputChange} />
+
+                                    <label>Aadhaar No:</label>
+                                    <input type='text' name='AadhaarNo' value={formData.AadhaarNo} onChange={handleInputChange} />
 
                                     <label>Address:</label>
-                                    <input type='text' />
+                                    <input type='text' name='Address' value={formData.Address} onChange={handleInputChange} />
                                 </div>
                                 <div className='right'>
+                                    <label>Valid Up To:</label>
+                                    <input type='date' name='ValidUpTo' value={formData.ValidUpTo} onChange={handleInputChange} />
                                     <label>Department:</label>
-                                    <select>
-                                        {departments.map((dept, index) => (
-                                            <option key={index} value={dept}>
-                                                {dept}
-                                            </option>
-                                        ))}
+                                    <select name='DepartmentID' value={formData.DepartmentID} onChange={handleInputChange}>
+                                        {renderSelectOptions(departments)}
                                     </select>
-
                                     <label>Designation:</label>
-                                    <select>
-                                        {designations.map((desig, index) => (
-                                            <option key={index} value={desig}>
-                                                {desig}
-                                            </option>
-                                        ))}
+                                    <select name='DesignationID' value={formData.DesignationID} onChange={handleInputChange}>
+                                        {renderSelectOptions(designations)}
                                     </select>
-
                                     <label>Batch:</label>
-                                    <input type='text' />
+                                    <select name='BatchID' value={formData.BatchID} onChange={handleInputChange}>
+                                        {renderSelectOptions(batches)}
+                                    </select>
                                     <label>Category:</label>
-                                    <input type='text' />
+                                    <select name='CategoryID' value={formData.CategoryID} onChange={handleInputChange}>
+                                        {renderSelectOptions(categories)}
+                                    </select>
                                 </div>
                             </>
                         )}
 
-                        {/* Third Step - Attendance Information */}
                         {step === 3 && (
                             <>
                                 <div className='middle'>
                                     <label>Shift Type:</label>
-                                    <select value={selectedShiftType} onChange={handleShiftTypeChange}>
-                                        {shiftTypes.map((shiftType, index) => (
-                                            <option key={index} value={shiftType}>
-                                                {shiftType}
-                                            </option>
+                                    <select name='ShiftType' value={selectedShiftType} onChange={handleShiftTypeChange}>
+                                        {shiftTypes.map((shiftType) => (
+                                            <option key={shiftType.id} value={shiftType.id}>{shiftType.Name}</option>
                                         ))}
                                     </select>
-
-                                    {/* Conditionally render based on Shift Type */}
-                                    {selectedShiftType === 'Fixed' && (
+                                    {selectedShiftType === '1' && (
                                         <>
                                             <label>Choose Shift:</label>
-                                            <select>
-                                                {shifts.map((shift, index) => (
-                                                    <option key={index} value={shift}>
-                                                        {shift}
-                                                    </option>
-                                                ))}
+                                            <select name='Shift' value={formData.Shift} onChange={handleInputChange}>
+                                                {renderSelectOptions(shifts)}
                                             </select>
                                         </>
                                     )}
-
-                                    {selectedShiftType === 'Auto' && (
+                                    {selectedShiftType === '3' && (
                                         <>
                                             <label>Auto Shift Group:</label>
-                                            <select>
-                                                {autoShiftGroups.map((group, index) => (
-                                                    <option key={index} value={group}>
-                                                        {group}
-                                                    </option>
-                                                ))}
+                                            <select name='NonShiftGroup' value={formData.NonShiftGroup} onChange={handleInputChange}>
+                                                {renderSelectOptions(autoShiftGroups)}
                                             </select>
                                         </>
                                     )}
-
-                                    {/* Hide both Choose Shift and Auto Shift Group for Flexi */}
-                                    {selectedShiftType === 'Flexi' && null}
+                                    {selectedShiftType === '2' && null}
                                 </div>
                                 <div className='right'>
                                     <label>Weekoff:</label>
                                     <div className='weekoff-container'>
-                                        {weekoffs.map((day, index) => (
-                                            <div key={index} className='day-checkbox'>
+                                        {weekoffs.map((day) => (
+                                            <div key={day} className='day-checkbox'>
                                                 <span>{day}</span>
                                                 <input
                                                     type='checkbox'
+                                                    name='Weekoffs'
                                                     value={day}
-                                                    checked={selectedWeekoffs.includes(day)}
-                                                    onChange={() => handleWeekoffChange(day)}
+                                                    checked={formData.Weekoffs?.includes(day) || false}
+                                                    onChange={handleInputChange}
                                                 />
                                             </div>
                                         ))}
                                     </div>
-
                                     <label>Holiday Group:</label>
-                                    <select>
-                                        {holidayGroups.map((holiday, index) => (
-                                            <option key={index} value={holiday}>
-                                                {holiday}
-                                            </option>
-                                        ))}
+                                    <select name='HolidayGroupID' value={formData.HolidayGroupID} onChange={handleInputChange}>
+                                        {renderSelectOptions(holidayGroups)}
                                     </select>
                                 </div>
                             </>
@@ -242,18 +379,13 @@ const UpdateEmployee = () => {
                     </div>
                 </div>
 
-                {/* Navigation Buttons */}
                 <div className='buttons'>
-                    {step === 1 && (
-                        <button onClick={handleBackToEmployeeList} className="back-button">
-                            Back To Employee List
-                        </button>
-                    )}
-                    {step > 1 && <button onClick={handlePrevious} className="previous-button">Previous</button>}
-                    {step < 3 && <button onClick={handleNext} className="next-button">Next</button>}
-                    {step === 3 && <button className="update-button">Update</button>}
+                    {step > 1 && <button onClick={handlePrevious}>Previous</button>}
+                    {step < 3 && <button onClick={handleNext}>Next</button>}
+                    {step === 3 && <button onClick={handleSubmit}>Update</button>}
                 </div>
             </div>
+            {isemployeeImgModalOpen && <CropPhoto closeModal={closeModal} />}
         </div>
     );
 };

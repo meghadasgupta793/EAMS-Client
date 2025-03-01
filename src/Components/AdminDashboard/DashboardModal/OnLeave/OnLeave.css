@@ -1,20 +1,159 @@
-.backGround-Wrapper {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background-color: rgba(192, 207, 200, 0.7);
+.on-leave-modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.onLeave-container{
+.on-leave-container{
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
     z-index: 101;
-    width: 350px;
+    padding: 20px;
+    margin: 28px 28px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.on-leave-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.on-leave-heading{
+    font-size: 20px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.on-leave-icon-container {
+    display: flex;
+    gap: 10px;
+}
+
+.on-leave-header-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+
+.on-leave-header-icon:hover {
+    color: #000;
+}
+
+
+.on-leave-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.on-leave-table thead {
+    background-color: #4abb83;
+}
+
+.on-leave-table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: white;
+    padding: 12px;
+    vertical-align: top;
+    border: 1px solid #4abb83;
+}
+
+.on-leave-table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.on-leave-table tbody tr:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.on-leave-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.on-leave-table tbody tr td {
+    font-size: 12px;
+    letter-spacing: 0.35px;
+    font-weight: normal;
+    color: #35363a;
+    padding: 6px;
+    text-align: center;
+    border-top: none;
+    border-bottom: none;
+}
+
+.on-leave-table tbody tr td .action-btn {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    font-weight: medium;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #555;
+    margin: 2px;
+    padding: 4px;
+}
+
+.on-leave-table tbody tr td .update-btn {
+    background: var(--gradient-border);
+    color: white;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.on-leave-table tbody tr td .delete-btn {
+    background: var(--red-gradient);
+    color: white;
+    cursor: pointer;
+}
+
+
+.delete-btn,
+.update-btn:hover {
+    opacity: 0.9;
+}
+
+.employee-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: linear-gradient(90deg, rgba(29, 169, 156, 1) 0%, rgba(74, 187, 131, 1) 50%, rgba(125, 207, 97, 1) 100%);
+    border: 2px solid #f7faf8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.pagination-btn {
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 24px;
+    color: #555;
+}
+
+.pagination-btn:hover {
+    color: #000;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    margin: 0 5px;
 }

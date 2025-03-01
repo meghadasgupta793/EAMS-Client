@@ -19,17 +19,16 @@
 }
 
 .myApprovalHierarchy-grids {
-   display: flex; 
-    justify-content: space-between;  
+    display: flex;
+
     gap: 20px;
 }
 
 .myApprovalHierarchy-repotedTo-table-container,
 .myApprovalHierarchy-repotedby-table-container {
-    flex: 1;
     width: 100%;
     background-color: var(--background-color-light);
-    padding: 15px;
+    padding: 8px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -50,18 +49,17 @@
 
 .myApprovalHierarchy-repotedTo-icon-container,
 .myApprovalHierarchy-repotedBy-icon-container {
-    font-size: 20px;
+    font-size: 18px;
     color: var(--text-color);
     margin: 0;
-    
-     display: flex;
-    
-    gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .myApprovalHierarchy-repotedTo-header-icon,
 .myApprovalHierarchy-repotedBy-header-icon {
-    font-size: 24px;
+    font-size: 20px;
     color: #555;
     cursor: pointer;
 }
@@ -71,12 +69,12 @@
     color: var(--primary-color);
 }
 
-.myApprovalHierarchy-repotedTo-table {
+.myApprovalHierarchy-repotedTo-table,
+.myApprovalHierarchy-repotedBy-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
 }
-
 
 .myApprovalHierarchy-repotedTo-table thead,
 .myApprovalHierarchy-repotedBy-table thead {
@@ -86,10 +84,10 @@
 .myApprovalHierarchy-repotedTo-table thead tr th,
 .myApprovalHierarchy-repotedBy-table thead tr th {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.35px;
     color: white;
-    padding: 12px;
+    padding: 8px;
     vertical-align: top;
     border: 1px solid #4abb83;
     background-color: #4abb83;
@@ -99,32 +97,26 @@
 .myApprovalHierarchy-repotedBy-table tbody tr {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Soft shadow on each row */
     border-radius: 8px;
-    /* Optional: Rounded corners */
     transition: box-shadow 0.3s ease;
-    /* Smooth transition on hover */
 }
 
 .myApprovalHierarchy-repotedTo-table tbody tr:hover,
 .myApprovalHierarchy-repotedBy-table tbody tr:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Stronger shadow on hover */
 }
 
 .myApprovalHierarchy-repotedTo-table tbody tr:nth-child(odd),
 .myApprovalHierarchy-repotedBy-table tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
-    /* Light gray background for odd rows */
 }
 
 .myApprovalHierarchy-repotedTo-table tbody tr td,
 .myApprovalHierarchy-repotedBy-table tbody tr td {
-    font-size: 12px;
-    letter-spacing: 0.35px;
+    font-size: 10px;
     font-weight: normal;
     color: #35363a;
-    padding: 6px;
+    padding: 2px;
     text-align: center;
     border-top: none;
     border-bottom: none;
@@ -138,4 +130,295 @@
 .myApprovalHierarchy-repotedTo-table tbody tr td:last-child,
 .myApprovalHierarchy-repotedBy-table tbody tr td:last-child {
     border-right: none;
+}
+
+.employee-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.pagination-btn {
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+}
+
+.pagination-btn:hover {
+    color: var(--primary-color);
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.search-input {
+    width: 0;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    border-bottom: 2px solid #007bff;
+    outline: none;
+    background: transparent;
+    color: #333;
+    padding: 5px;
+    font-size: 14px;
+}
+
+/* Active search input */
+.search-input.active {
+    width: 150px;
+    opacity: 1;
+}
+
+.search-icon {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Optional: Slight scale effect on click */
+.search-icon:active {
+    transform: scale(0.9);
+}
+
+
+/* Media Queries for Responsive Design */
+
+@media (max-width: 1024px) {
+    .myApprovalHierarchy-grids {
+        flex-direction: column;
+    }
+
+    .myApprovalHierarchy-repotedTo-table-container,
+    .myApprovalHierarchy-repotedby-table-container {
+        width: 100%;
+    }
+
+    .myApprovalHierarchy-repotedTo-table thead tr th,
+    .myApprovalHierarchy-repotedBy-table thead tr th {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td,
+    .myApprovalHierarchy-repotedBy-table tbody tr td {
+        font-size: 10px;
+        padding: 4px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .myApprovalHierarchy-repotedTo-table,
+    .myApprovalHierarchy-repotedTo-table tbody,
+    .myApprovalHierarchy-repotedTo-table tr,
+    .myApprovalHierarchy-repotedTo-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .myApprovalHierarchy-repotedBy-table,
+    .myApprovalHierarchy-repotedBy-table tbody,
+    .myApprovalHierarchy-repotedBy-table tr,
+    .myApprovalHierarchy-repotedBy-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .myApprovalHierarchy-Container {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .myApprovalHierarchy-repotedTo-header-container,
+    .myApprovalHierarchy-repotedBy-header-container {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .myApprovalHierarchy-repotedTo-heading,
+    .myApprovalHierarchy-repotedBy-heading {
+        font-size: 18px;
+    }
+
+    .myApprovalHierarchy-repotedTo-icon-container,
+    .myApprovalHierarchy-repotedBy-icon-container {
+        gap: 5px;
+    }
+
+    .myApprovalHierarchy-repotedTo-header-icon,
+    .myApprovalHierarchy-repotedBy-header-icon {
+        font-size: 20px;
+    }
+
+
+    .myApprovalHierarchy-repotedTo-table,
+    .myApprovalHierarchy-repotedBy-table {
+        display: block;
+        width: 100%;
+    }
+
+    .myApprovalHierarchy-repotedTo-table thead,
+    .myApprovalHierarchy-repotedBy-table thead {
+        display: none;
+        /* Hide thead on small screens */
+    }
+
+
+    .myApprovalHierarchy-repotedTo-table tbody tr,
+    .myApprovalHierarchy-repotedBy-table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+        height: 100%;
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td,
+    .myApprovalHierarchy-repotedBy-table tbody tr td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        /* Add a border between rows */
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td:last-child,
+    .myApprovalHierarchy-repotedBy-table tbody tr td:last-child {
+        border-bottom: none;
+        /* Remove border for the last row */
+    }
+
+
+    /* Add headers using ::before pseudo-element and CSS counters */
+    .myApprovalHierarchy-repotedTo-table tbody,
+    .myApprovalHierarchy-repotedBy-table tbody {
+        counter-reset: row-header;
+        /* Initialize counter */
+    }
+
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td::before,
+    .myApprovalHierarchy-repotedBy-table tbody tr td::before {
+        content: attr(data-label);
+        /* Fallback for data-label */
+        font-weight: 600;
+        color: #4abb83;
+        /* Match the header color */
+        width: 120px;
+        /* Fixed width for the header */
+        flex-shrink: 0;
+        /* Prevent the header from shrinking */
+        margin-right: 10px;
+        /* Space between header and data */
+    }
+
+    /* Dynamically generate headers using CSS counters */
+    .myApprovalHierarchy-repotedTo-table tbody tr td:nth-child(1)::before,
+    .myApprovalHierarchy-repotedBy-table tbody tr td:nth-child(1)::before {
+        content: "Photo:";
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td:nth-child(2)::before,
+    .myApprovalHierarchy-repotedBy-table tbody tr td:nth-child(2)::before {
+        content: "Name:";
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td:nth-child(3)::before,
+    .myApprovalHierarchy-repotedBy-table tbody tr td:nth-child(3)::before {
+        content: "EmpNo:";
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td:nth-child(4)::before,
+    .myApprovalHierarchy-repotedBy-table tbody tr td:nth-child(4)::before {
+        content: "Designation:";
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td:nth-child(5)::before,
+    .myApprovalHierarchy-repotedBy-table tbody tr td:nth-child(5)::before {
+        content: "Department:";
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td:nth-child(6)::before,
+    .myApprovalHierarchy-repotedBy-table tbody tr td:nth-child(6)::before {
+        content: "Level:";
+    }
+
+    .employee-photo {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    .pagination-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .myApprovalHierarchy-Container {
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .myApprovalHierarchy-repotedTo-heading,
+    .myApprovalHierarchy-repotedBy-heading {
+        font-size: 16px;
+    }
+
+
+    .myApprovalHierarchy-repotedTo-icon,
+    .myApprovalHierarchy-repotedBy-icon {
+        font-size: 14px;
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td,
+    .myApprovalHierarchy-repotedBy-table tbody tr td {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .myApprovalHierarchy-repotedTo-table tbody tr td::before,
+    .myApprovalHierarchy-repotedTo-table tbody tr td::before {
+        width: 100px;
+        /* Adjust width for smaller screens */
+    }
+
+
+
+
+
+    .myApprovalHierarchy-repotedTo-table thead tr th,
+    .myApprovalHierarchy-repotedBy-table thead tr th {
+        font-size: 8px;
+        padding: 2px;
+    }
+
+
+    .employee-photo {
+        width: 20px;
+        height: 20px;
+    }
+
+    .pagination-btn {
+        font-size: 16px;
+    }
+
+   
 }

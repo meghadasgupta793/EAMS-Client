@@ -21,40 +21,46 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.total-present-modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
 
 
-
-.table-container {
+.total-present-table-container {
     padding: 20px;
     margin: 28px 28px;
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.header-container {
+.total-present-header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.heading {
+.total-present-heading {
     font-size: 20px;
     color: var(--text-color);
     margin: 0;
 }
 
-.icon-container {
+.total-present-icon-container {
     display: flex;
     gap: 10px;
 }
 
-.header-icon {
+.total-present-header-icon {
     font-size: 24px;
     color: #555;
     cursor: pointer;
 }
 
-.header-icon:hover {
+.total-present-header-icon:hover {
     color: #000;
 }
 

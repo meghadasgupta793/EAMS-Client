@@ -1,18 +1,34 @@
-// ApplyAttendance.jsx
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './ApplyAttendance.css';
 import Header from '../../../Components/Header/Header';
 import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-
-import { useFaceRecognition } from '../../../StoreContext/FaceRecognitionContext';
+import { UserContext } from '../../../StoreContext/UserContext';
+import { useFaceRecognition, FaceRecognitionProvider } from '../../../StoreContext/FaceRecognitionContext';
 import Webcam from 'react-webcam';
+import { useMarkAttendanceMutation } from '../../../Redux/api/ess/employeeAttendance';
 
 const ApplyAttendance = () => {
-    const [attendance, setAttendance] = useState("in");
+    const { userInfo } = useContext(UserContext);
+    const labels = [userInfo.Picture]; // Ensure this is an array
+    console.log(labels);
+
+    return (
+        <FaceRecognitionProvider labels={labels}>
+            <ApplyAttendanceContent />
+        </FaceRecognitionProvider>
+    );
+};
+
+const ApplyAttendanceContent = () => {
+    const navigate = useNavigate(); // Initialize useNavigate
     const { handleVerifyFace, webcamRef, recognitionResult, alertVisible, verifiedImage } = useFaceRecognition();
+    const [attendance, setAttendance] = useState("in");
+    const { userInfo } = useContext(UserContext);
+    const EmployeeId = userInfo.EmployeeId;
+    const [markAttendance, { isLoading, error }] = useMarkAttendanceMutation();
 
     const handleAttendanceChange = (event, newAttendance) => {
         if (newAttendance !== null) {
@@ -63,6 +79,38 @@ const ApplyAttendance = () => {
         fetchLocation();
     }, []);
 
+    // Handle Apply Attendance button click
+    const handleApplyAttendance = async () => {
+        if (!position || !address || !verifiedImage) {
+            alert("Please verify your face and ensure location is fetched.");
+            return;
+        }
+
+        // Prepare the payload
+        const AttendanceData = {
+            EmployeeID: EmployeeId,
+            PunchTime: new Date().toISOString(), // Current timestamp
+            Latitude: position.latitude,
+            Longitude: position.longitude,
+            GeoLocation: address,
+            HeadPhoto: verifiedImage, // Base64 image
+            InOutMode: attendance === "in" ? 0 : 1, // 0 for "in", 1 for "out"
+        };
+
+        try {
+            const response = await markAttendance(AttendanceData).unwrap();
+            console.log("Attendance marked successfully:", response);
+            alert("Attendance marked successfully!");
+            
+            // Navigate to the home page after successful attendance mark
+            navigate('/');
+            
+        } catch (err) {
+            console.error("Error marking attendance:", err);
+            alert("Failed to mark attendance. Please try again.");
+        }
+    };
+
     return (
         <div className='applyAttendance'>
             <Header />
@@ -73,13 +121,12 @@ const ApplyAttendance = () => {
                             audio={false}
                             ref={webcamRef}
                             screenshotFormat="image/jpeg"
-                            width="380"
-                            height="380"
+                            width="280"
+                            height="280"
                         />
                     </div>
                     {/* Alert for recognition result */}
                     {alertVisible && <div className="alert"><p>{recognitionResult}</p></div>}
-
 
                     <div className='apply-attendance-button-container'>
                         <button
@@ -89,10 +136,6 @@ const ApplyAttendance = () => {
                             Verify
                         </button>
                     </div>
-
-
-
-
                 </div>
 
                 <div className='applyAttendance-right-content'>
@@ -119,7 +162,6 @@ const ApplyAttendance = () => {
                         </ToggleButtonGroup>
                     </div>
 
-
                     {/* Location and remark side by side */}
                     <div className='remarkAndLocation'>
                         <textarea
@@ -139,14 +181,16 @@ const ApplyAttendance = () => {
                             )}
                             <p>Address: {address}</p>
                         </div>
-
-
-
                     </div>
 
-
                     <div className='apply-attendance-button-container'>
-                        <button className='apply-attendance-button'>Apply Attendance</button>
+                        <button
+                            className='apply-attendance-button'
+                            onClick={handleApplyAttendance}
+                            disabled={isLoading} // Disable button while loading
+                        >
+                            {isLoading ? "Applying..." : "Apply Attendance"}
+                        </button>
                     </div>
                 </div>
             </div>

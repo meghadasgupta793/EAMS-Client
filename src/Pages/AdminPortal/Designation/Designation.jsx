@@ -14,6 +14,7 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { exportToExcel } from '../../../Components/Utils/excelUtils'; // Adjust the import path
 import { useNavigate } from 'react-router-dom';
+import { useGetAllDesignationQuery,useDeleteDesignationMutation } from '../../../Redux/api/admin/designationApi';
 
 const ITEMS_PER_PAGE = 7;
 
@@ -25,12 +26,8 @@ const Designation = () => {
     });
     const [page, setPage] = useState(1);
 
-    const data = [
-        { designationCode: 'D1', designationName: 'Software Engineer' },
-        { designationCode: 'D2', designationName: 'Product Manager' },
-        { designationCode: 'D3', designationName: 'UX Designer' },
-        // Add more designation data here
-    ];
+    const { data: designationData, isLoading, isError } = useGetAllDesignationQuery();
+    const [deleteDesignation] = useDeleteDesignationMutation(); // Hook for delete mutation
 
     const handleSearchChange = (e, field) => {
         setSearchQueries(prevQueries => ({
@@ -39,10 +36,10 @@ const Designation = () => {
         }));
     };
 
-    const filteredData = data.filter(item =>
-        item.designationCode.toLowerCase().includes(searchQueries.designationCode.toLowerCase()) &&
-        item.designationName.toLowerCase().includes(searchQueries.designationName.toLowerCase())
-    );
+    const filteredData = designationData?.data?.filter(item =>
+        (item.Code?.toLowerCase() || '').includes(searchQueries.designationCode.toLowerCase()) &&
+        (item.Name?.toLowerCase() || '').includes(searchQueries.designationName.toLowerCase())
+    ) || [];
 
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -66,9 +63,22 @@ const Designation = () => {
         navigate('/newDesignation'); // Navigate to CreateDesignation page
     };
 
-    const goToUpdateDesignation = () => {
-        navigate('/updateDesignation'); // Navigate to UpdateDesignation page
+    const goToUpdateDesignation = (id) => {
+        navigate(`/updateDesignation/${id}`); // Navigate to UpdateDesignation page
     };
+       // Handle delete designation
+       const handleDeleteDesignation = async (id) => {
+        try {
+            await deleteDesignation(id).unwrap(); // Perform the delete operation
+            alert('Designation deleted successfully!');
+        } catch (err) {
+            console.error('Failed to delete designation:', err);
+            alert('Error deleting designation');
+        }
+    };
+
+    if (isLoading) return <p>Loading designations...</p>;
+    if (isError) return <p>Error loading designations.</p>;
 
     return (
         <div className='designation'>
@@ -140,14 +150,19 @@ const Designation = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {paginatedData.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.designationCode}</td>
-                                <td>{item.designationName}</td>
+                        {paginatedData.map((item) => (
+                            <tr key={item.ID}>
+                                <td>{item.Code}</td>
+                                <td>{item.Name}</td>
                                 <td>
-                                    <BorderColorIcon className='action-btn update-btn'
-                                    onClick={goToUpdateDesignation} />
-                                    <DeleteForeverIcon className='action-btn delete-btn' />
+                                    <BorderColorIcon 
+                                        className='action-btn update-btn'
+                                        onClick={() => goToUpdateDesignation(item.ID)} 
+                                    />
+                                    <DeleteForeverIcon 
+                                        className='action-btn delete-btn' 
+                                        onClick={() => handleDeleteDesignation(item.ID)} // Handle delete
+                                    />
                                 </td>
                             </tr>
                         ))}

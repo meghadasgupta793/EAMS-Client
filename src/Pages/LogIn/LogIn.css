@@ -1,5 +1,4 @@
-/* LogIn.css */
-
+/* Base styles */
 .login {
     position: relative;
     margin: 0;
@@ -25,67 +24,65 @@
     right: 0;
     bottom: 0;
     background: inherit;
-    /* Inherits the background image */
     filter: blur(8px);
-    /* Adjust blur level as needed */
     z-index: 0;
 }
 
 .login-title {
     text-align: center;
-    padding: 50px 0 20px;
+    padding: 20px 0;
     color: #fff;
     font-size: 36px;
     z-index: 1;
-    /* Place above the blur */
 }
-
 
 .login-title h1 {
     text-align: center;
-    color: #fff; 
+    color: #fff;
 }
-
-
-
 
 .login-container {
     display: flex;
-    width: 50%;
-    height: 400px;
+    width: 80%;
+    max-width: 900px;
+    height: auto;
+    min-height: 400px;
     background-color: #1eb39a;
     margin: 0 auto;
     border: 2px solid #fff;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 1;
-    /* Ensure it is above the blurred background */
+    flex-direction: column;
+}
+
+.login-left,
+.login-right {
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
 }
 
 .login-left {
-    float: left;
-    width: 50%;
-    height: 100%;
-    box-sizing: border-box;
     background: url("/images/bg.jpeg");
     background-size: cover;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #fff;
 }
 
 .login-right {
-    float: right;
-    width: 50%;
-    height: 100%;
-    box-sizing: border-box;
     background-color: #fff;
-    /* Adjust as needed for styling */
+    border-radius: 0 0 10px 10px;
 }
-
 
 .login-form-box {
     width: 100%;
-    padding: 80px 40px;
+    padding: 40px 20px;
     box-sizing: border-box;
-    height: 400px;
     background: #fff;
 }
 
@@ -121,8 +118,133 @@
     color: #fff;
     background: #55565b;
     cursor: pointer;
+    margin-top: 20px;
 }
 
 .login-form-box input[type="submit"]:hover {
     background: #4abb83;
+}
+
+.company-info {
+    text-align: center;
+    max-width: 250px;
+    margin-top: 20px;
+}
+
+.company-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.company-name {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.company-description {
+    font-size: 14px;
+    color: white;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Tablets and small laptops */
+@media (min-width: 768px) {
+    .login-container {
+        flex-direction: row;
+        height: 400px;
+    }
+
+    .login-left,
+    .login-right {
+        width: 50%;
+        height: 100%;
+    }
+
+    .login-left {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .login-right {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .login-form-box {
+        padding: 80px 40px;
+    }
+}
+
+/* Small laptops and desktops */
+@media (min-width: 1024px) {
+    .login-container {
+        width: 70%;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 767px) {
+    .login-title {
+        font-size: 28px;
+        padding: 10px 0;
+    }
+
+    .login-container {
+        width: 90%;
+        height: auto;
+    }
+
+    .login-form-box {
+        padding: 40px 20px;
+    }
+
+    .company-info {
+        max-width: 200px;
+    }
+
+    .company-logo {
+        width: 80px;
+    }
+
+    .company-name {
+        font-size: 20px;
+    }
+
+    .company-description {
+        font-size: 12px;
+    }
+}
+
+/* Very small mobile devices */
+@media (max-width: 480px) {
+    .login-title {
+        font-size: 24px;
+    }
+
+    .login-container {
+        width: 95%;
+    }
+
+    .login-form-box {
+        padding: 30px 15px;
+    }
+
+    .company-info {
+        max-width: 180px;
+    }
+
+    .company-logo {
+        width: 70px;
+    }
+
+    .company-name {
+        font-size: 18px;
+    }
+
+    .company-description {
+        font-size: 11px;
+    }
 }
