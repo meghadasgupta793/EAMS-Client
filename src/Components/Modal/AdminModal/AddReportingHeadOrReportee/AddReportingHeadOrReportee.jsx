@@ -236,7 +236,15 @@ const AddReportingHeadOrReportee = ({ open, handleClose }) => {
                     </div>
 
                     {/* Select Level and Request Type */}
-                    <div className='addReportingHeadOrReportee-level-req-type'>Select Level and Request Type</div>
+                    <div className='addReportingHeadOrReportee-level-req-type'>Select Level and Request Type
+                    
+                    <div>Select Level</div>
+                    
+                    <div> Select Request Type</div>
+                    
+                    
+                    </div>
+                    <button> Assign</button>
                 </Box>
             </div>
         </Modal>
