@@ -1,6 +1,6 @@
 // secrect.js
 const config = {
-  url:'https://pro1.smart-punch.com/',
+  url:'https://pro1.smart-punch.com',
   MODEL_URL: '/models',
   ImgUrl:'https://pro1.smart-punch.com/images/Employee',
   VisitorImgUrl:'https://pro1.smart-punch.com/images/visitor',
