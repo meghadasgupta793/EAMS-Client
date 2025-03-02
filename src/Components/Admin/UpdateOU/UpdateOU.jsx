@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './updateOU.css';
 import Header from '../../Header/Header';
 import { useGetAllOuQuery, useUpdateOuMutation, useGetAllOuTypeQuery, useGetAllOuOwnerQuery } from '../../../Redux/api/admin/ouApi';
@@ -47,7 +49,6 @@ const UpdateOU = () => {
     }
   }, [ouData, id]);
 
-
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,15 +60,16 @@ const UpdateOU = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    if (!formData.ouCode || !formData.ouName || !formData.ouType || !formData.parentOU || !formData.ouOwner) {
-      alert("All fields are required.");
+    // Exclude ouCode from validation since it's not required for updates
+    if (!formData.ouName || !formData.ouType || !formData.parentOU || !formData.ouOwner) {
+      toast.error("All fields except OU Code are required.");
       return;
     }
 
     // Ensure the form values are mapped correctly
     const requestBody = {
       id, // Retrieved from URL
-      OUCode: formData.ouCode,
+      OUCode: formData.ouCode, // Include OUCode in the request body (even though it's not updated)
       OUName: formData.ouName,
       OUType: formData.ouType, // Directly using the selected ID
       ParentOU: formData.parentOU !== '' ? formData.parentOU : null, // Convert empty to null
@@ -79,16 +81,13 @@ const UpdateOU = () => {
     try {
       const response = await updateOu(requestBody).unwrap();
       console.log("API Response:", response);
-      alert("OU updated successfully!");
+      toast.success("OU updated successfully!");
       navigate("/organization");
     } catch (error) {
       console.error("Error updating OU:", error);
-      alert("Failed to update OU.");
+      toast.error(error.data?.message || "Failed to update OU.");
     }
   };
-
-
-
 
   return (
     <div className='update-Ou'>

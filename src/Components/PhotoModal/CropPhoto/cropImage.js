@@ -22,7 +22,11 @@ export const getCroppedImg = async (imageSrc, croppedAreaPixels) => {
 
     return new Promise((resolve) => {
         canvas.toBlob((blob) => {
-            resolve(URL.createObjectURL(blob));
+            const reader = new FileReader();
+            reader.readAsDataURL(blob); // Convert Blob to base64 string
+            reader.onloadend = () => {
+                resolve(reader.result); // Resolve with base64 string
+            };
         }, 'image/jpeg');
     });
 };

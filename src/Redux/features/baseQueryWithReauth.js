@@ -4,7 +4,7 @@ import config from '../../secrect';
 
 const { url } = config;
 
-// Create a baseQuery instance (reuse it)
+// Create a baseQuery instance
 const baseQuery = fetchBaseQuery({
   baseUrl: `${url}/api`,
   prepareHeaders: (headers, { getState }) => {

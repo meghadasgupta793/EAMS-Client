@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './CropPhoto.css';
 import { IconButton, Tooltip, Modal, Button } from '@mui/material';
 import { FileUpload, CameraAlt, Close } from '@mui/icons-material';
@@ -56,10 +58,12 @@ const CropPhoto = ({ closeModal }) => {
     const handleSaveCroppedImage = async () => {
         if (croppedAreaPixels && selectedImage) {
             try {
-                const croppedImage = await getCroppedImg(selectedImage, croppedAreaPixels);
-                dispatch(setCropImage(croppedImage)); // Dispatch the cropped image
+                const croppedImageBase64 = await getCroppedImg(selectedImage, croppedAreaPixels);
+                dispatch(setCropImage(croppedImageBase64)); // Dispatch the cropped image as a base64 string
+                toast.success("Image cropped and saved successfully!");
             } catch (error) {
                 console.error('Error cropping the image:', error);
+                toast.error("Failed to crop the image. Please try again.");
             }
         }
         setCropModalOpen(false);

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    image: null,
+    image: null, // Store the base64 string
 };
 
 const cropImageSlice = createSlice({
@@ -9,9 +9,11 @@ const cropImageSlice = createSlice({
     initialState,
     reducers: {
         setCropImage: (state, action) => {
-            state.image = action.payload;
+            state.image = action.payload; // Store the base64 string
         },
-        clearCropImage: () => initialState, // Return the initial state to reset the state
+        clearCropImage: (state) => {
+            state.image = null; // Clear the image
+        },
     },
 });
 

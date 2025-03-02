@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './createEmployee.css';
 import Header from '../../Header/Header';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CropPhoto from '../../../Components/PhotoModal/CropPhoto/CropPhoto';
 import { useSelector, useDispatch } from 'react-redux';
@@ -104,65 +106,84 @@ const CreateEmployee = () => {
 
     });
 
-    const base64ToFile = (base64String, fileName) => {
-        let arr = base64String.split(",");
-        let mime = arr[0].match(/:(.*?);/)[1];
-        let bstr = atob(arr[1]);
-        let n = bstr.length;
-        let u8arr = new Uint8Array(n);
+ // Utility function to convert base64 to File
+const base64ToFile = (base64String, fileName) => {
+    const arr = base64String.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
+    const bstr = atob(arr[1]); // Decode base64 string
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
 
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
+    // Convert the decoded data into a Uint8Array
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    // Create and return a File object
+    return new File([u8arr], fileName, { type: mime });
+};
+
+const handleSubmit = async () => {
+    const weekOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const weekoffsBinary = weekOrder
+        .map(day => formData.Weekoffs.includes(day) ? '1' : '0')
+        .join('');
+
+    // Create a new FormData object
+    const submissionData = new FormData();
+
+    // Append all form data fields to FormData
+    Object.keys(formData).forEach((key) => {
+        if (key !== 'Weekoffs') {
+            submissionData.append(key, formData[key]);
+        }
+    });
+
+    // Append Weekoffs and ShiftType
+    submissionData.append("Weekoffs", weekoffsBinary);
+    submissionData.append("ShiftType", selectedShiftType);
+
+    // Append the image if it exists
+    if (image) {
+        let finalImage;
+
+        // If the image is a base64 string, convert it to a File object
+        if (typeof image === "string" && image.startsWith("data:image")) {
+            finalImage = base64ToFile(image, "employee_photo.jpg");
+        } else {
+            console.error("Unsupported image format:", image);
+            toast.error("Unsupported image format. Please upload a valid image.");
+            return;
         }
 
-        return new File([u8arr], fileName, { type: mime });
-    };
+        // Append the image file to FormData
+        submissionData.append("Photo", finalImage);
+    }
 
-    const handleSubmit = async () => {
-        const weekOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        const weekoffsBinary = weekOrder
-            .map(day => formData.Weekoffs.includes(day) ? '1' : '0')
-            .join('');
-
-        const submissionData = new FormData();
-        Object.keys(formData).forEach((key) => {
-            if (key !== 'Weekoffs') {
-                submissionData.append(key, formData[key]);
-            }
-        });
-
-        submissionData.append("Weekoffs", weekoffsBinary);
-        submissionData.append("ShiftType", selectedShiftType);
-
-        if (image) {
-            let finalImage = image;
-            if (typeof image === "string" && image.startsWith("data:image")) {
-                finalImage = base64ToFile(image, "employee_photo.png");
-            }
-            submissionData.append("Photo", finalImage);
+    try {
+        // Call the create API
+        const response = await createEmployee(submissionData).unwrap();
+       // Show success toast and navigate after 2 seconds
+       toast.success(response.message, {
+        onClose: () => {
+            console.log('Navigating to /employee'); // Debugging
+            navigate('/employee');
+        },
+        autoClose: 2000, // Close the toast after 2 seconds
+    });
+    } catch (err) {
+        console.error("Error creating employee:", err);
+        
+        // Display the actual error message from the backend
+        if (err?.data?.message) {
+            toast.error(err.data.message); // Show error toast
+        } else if (err?.data?.error) {
+            toast.error(err.data.error); // Fallback for error message
+        } else {
+            toast.error("Error creating employee"); // Show generic error toast
         }
-
-        try {
-            const response = await createEmployee(submissionData).unwrap(); // Ensures we only process success here
-
-            alert(response.message); // Show success alert
-
-            // Ensure user clicks "OK" before proceeding
-            setTimeout(() => {
-                navigate('/employee');
-            }, 0); // Ensures navigation happens after the alert closes
-
-        } catch (err) {
-            console.error("Error creating employee:", err);
-
-            // Ensure only one error alert is shown
-            if (err?.data?.message) {
-                alert(err?.data?.error);
-            } else {
-                alert("Error Creating Employee");
-            }
-        }
-    };
+    }
+};
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -191,8 +212,19 @@ const CreateEmployee = () => {
         )) : <option>No data available</option>;
     };
     useEffect(() => {
+        // Calculate today's date
+        const today = new Date();
+        const todayFormatted = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    
+        // Calculate the date 6 months from today
+        const sixMonthsFromToday = new Date(today.setMonth(today.getMonth() + 6));
+        const sixMonthsFormatted = sixMonthsFromToday.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    
+        // Set the initial form data with today's date and 6 months from today
         setFormData((prevData) => ({
             ...prevData,
+            DateOfJoin: todayFormatted,
+            ValidUpTo: sixMonthsFormatted,
             OUID: organizations.length > 0 ? organizations[0].ID || organizations[0] : prevData.OUID,
             DepartmentID: departments.length > 0 ? departments[0].ID || departments[0] : prevData.DepartmentID,
             DesignationID: designations.length > 0 ? designations[0].ID || designations[0] : prevData.DesignationID,
@@ -343,12 +375,12 @@ const CreateEmployee = () => {
                                         ))}
                                     </div>
                                     <label>Holiday Group:</label>
-                                    <select name='HolidayGroup'
+                                    <select name='HolidayGroupID'
                                         value={formData.HolidayGroupID}
                                         onChange={handleInputChange} >
                                         {renderSelectOptions(holidayGroups)}
                                     </select>
-
+                                   
                                 </div>
                             </>
                         )}

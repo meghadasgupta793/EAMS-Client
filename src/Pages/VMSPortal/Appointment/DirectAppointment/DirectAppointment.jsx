@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './DirectAppointment.css';
 import Header from '../../../../Components/Header/Header';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Select from 'react-select';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CropPhoto from '../../../../Components/PhotoModal/CropPhoto/CropPhoto';
@@ -10,6 +12,7 @@ import { useCreateAppointmentMutation, useSearchByVisitorMobileNoQuery } from '.
 import { skipToken } from '@reduxjs/toolkit/query';
 import config from '../../../../secrect';
 import { useGetAllEmployeesQuery } from '../../../../Redux/api/admin/employeeApi';
+import { useNavigate } from 'react-router-dom';
 
 // Utility functions to format date and time
 const getFormattedDate = (date) => {
@@ -29,6 +32,7 @@ const DirectAppointment = () => {
     const { ImgUrl, VisitorImgUrl } = config;
     const dispatch = useDispatch();
     const image = useSelector((state) => state.cropImage.image); // Access image from Redux state
+    const navigate = useNavigate();
 
     useEffect(() => {
         return () => {
@@ -137,16 +141,6 @@ const DirectAppointment = () => {
         }));
     };
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                image: file, // Store the file object
-            }));
-        }
-    };
-
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormData((prevFormData) => ({
@@ -171,12 +165,12 @@ const DirectAppointment = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         try {
-            // ✅ Initialize FormData before using it
+            // Initialize FormData before using it
             const formDataToSend = new FormData();
             const formatDateTime = (date, time) => `${date}T${time}:00`;
-
+    
             // Append all fields as per the cURL structure
             formDataToSend.append('VisitorName', formData.VisitorName);
             formDataToSend.append('Email', formData.Email);
@@ -191,23 +185,34 @@ const DirectAppointment = () => {
             formDataToSend.append('AppToEmpID', formData.AppToEmpID);
             formDataToSend.append('AppDateFrom', formatDateTime(formData.fromDate, formData.fromTime));
             formDataToSend.append('AppDateTo', formatDateTime(formData.toDate, formData.toTime));
-
-
+    
             // Handle Image (Base64 to File if needed)
             if (formData.image) {
-                const isBase64 = typeof formData.image === 'string' && formData.image.startsWith('data:image');
-                if (isBase64) {
-                    const file = base64ToFile(formData.image, 'visitor_image.png');
-                    formDataToSend.append('Photo', file);
+                // Check if the image is a base64 string
+                if (typeof formData.image === "string" && formData.image.startsWith("data:image")) {
+                    const finalImage = base64ToFile(formData.image, "visitor_photo.png");
+                    // Append the image file to FormData
+                    formDataToSend.append('Photo', finalImage);
+                } else if (typeof formData.image === "string" && formData.image.startsWith("http")) {
+                    // If the image is a URL (e.g., from VisitorImgUrl), skip appending it
+                    console.log("Image is a URL, skipping upload:", formData.image);
                 } else {
-                    formDataToSend.append('Photo', formData.image);
+                    console.error("Unsupported image format:", formData.image);
+                    toast.error("Unsupported image format. Please upload a valid image.");
+                    return;
                 }
             }
-
-            // Submit the form
+    
+            // Call the API
             const response = await createAppointment(formDataToSend).unwrap();
             console.log('Appointment created successfully:', response);
-
+    
+            // Show success toast
+            toast.success('Appointment created successfully!');
+    
+            // Navigate to the dashboard after 3 seconds
+            setTimeout(() => navigate('/VMSDashboard'), 3000);
+    
             // Reset form after success
             setFormData({
                 MobileNo: '',
@@ -231,10 +236,15 @@ const DirectAppointment = () => {
             setMobileNo('');
         } catch (error) {
             console.error('Error creating appointment:', error);
+    
+            // Show error toast
+            if (error?.data?.message) {
+                toast.error(error.data.message); // Show backend error message
+            } else {
+                toast.error('Failed to create appointment. Please try again.'); // Show generic error message
+            }
         }
     };
-
-
     const [isemployeeImgModalOpen, setIsEmployeeImgModalOpen] = useState(false);
     const openModal = () => setIsEmployeeImgModalOpen(true);
     const closeModal = () => setIsEmployeeImgModalOpen(false);

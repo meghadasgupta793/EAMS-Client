@@ -17,6 +17,8 @@ import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import { exportToExcel } from '../../Utils/excelUtils';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllOuQuery, useDeleteOuMutation } from "../../../Redux/api/admin/ouApi";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ITEMS_PER_PAGE = 7;
 
@@ -56,6 +58,7 @@ const OrganizationDataTable = () => {
 
     const handleExport = () => {
         exportToExcel(filteredData, 'OrganizationsDetails');
+        toast.success('Data exported successfully!');
     };
 
     const navigate = useNavigate();
@@ -63,9 +66,15 @@ const OrganizationDataTable = () => {
     const handleUpdate = (id) => navigate(`/updateOU/${id}`);
     const goToOuTypeandOuOwner = () => navigate('/OuOwnerandOuOwner');
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this OU?')) {
-            deleteOu(id);
+            try {
+                await deleteOu(id).unwrap();
+                toast.success('OU deleted successfully!');
+            } catch (error) {
+                const errorMessage = error.data?.error || 'Failed to delete OU.';
+                toast.error(errorMessage); // Display the detailed error message
+            }
         }
     };
 
@@ -94,7 +103,6 @@ const OrganizationDataTable = () => {
                             <CloudUploadIcon className="header-icon" />
                         </IconButton>
                     </Tooltip>
-                   
                     <Tooltip title="OU Type & OU Owner">
                         <IconButton onClick={goToOuTypeandOuOwner}>
                             <GroupAddIcon className="header-icon" />
@@ -165,7 +173,7 @@ const OrganizationDataTable = () => {
                                         <th>OU Name</th>
                                         <th>Parent OU</th>
                                         <th>OU Type</th>
-                                        <th>Owner Name</th> {/* Added Owner Name column */}
+                                        <th>Owner Name</th>
                                         <th>Action</th>
                                     </>
                                 )}
@@ -189,7 +197,7 @@ const OrganizationDataTable = () => {
                                             <td>{item.OUName}</td>
                                             <td>{parentOU}</td>
                                             <td>{item.OUTypeName}</td>
-                                            <td>{item.OwnerName || 'N/A'}</td> {/* Display Owner Name */}
+                                            <td>{item.OwnerName || 'N/A'}</td>
                                             <td>
                                                 <BorderColorIcon className="action-btn update-btn" onClick={() => handleUpdate(item.ID)} />
                                                 <DeleteForeverIcon className="action-btn delete-btn" onClick={() => handleDelete(item.ID)} disabled={isDeleting} />
@@ -216,6 +224,7 @@ const OrganizationDataTable = () => {
                     </div>
                 </>
             )}
+
         </div>
     );
 };

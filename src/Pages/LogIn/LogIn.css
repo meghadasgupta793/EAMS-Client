@@ -30,9 +30,10 @@
 
 .login-title {
     text-align: center;
+    font-weight: 600;
     padding: 20px 0;
     color: #fff;
-    font-size: 36px;
+    font-size: 40px;
     z-index: 1;
 }
 
@@ -44,7 +45,7 @@
 .login-container {
     display: flex;
     width: 80%;
-    max-width: 900px;
+    max-width: 750px;
     height: auto;
     min-height: 400px;
     background-color: #1eb39a;
@@ -64,7 +65,7 @@
 }
 
 .login-left {
-    background: url("/images/bg.jpeg");
+    background: url("/images/bg2.jpeg");
     background-size: cover;
     border-radius: 10px 10px 0 0;
     display: flex;
@@ -104,6 +105,14 @@
     border-bottom: 2px solid #4abb83;
     outline: none;
     height: 40px;
+    font-size: 16px; /* Ensure consistent font size */
+}
+
+/* Placeholder styling */
+.login-form-box input[type="text"]::placeholder,
+.login-form-box input[type="password"]::placeholder {
+    font-weight: 500; /* Medium font weight for placeholders */
+    color: #888; /* Optional: Adjust placeholder color */
 }
 
 .login-form-box input[type="text"]:focus,
@@ -150,6 +159,25 @@
     font-weight: 400;
 }
 
+.login-btn {
+    background: var(--gradient-border);
+    color: white;
+    border: none;
+    outline: none;
+    height: 40px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+    background: linear-gradient(45deg, #4abb83, #1eb39a); /* Example hover effect */
+}
+
 /* Media Queries for Responsiveness */
 
 /* Tablets and small laptops */
@@ -176,12 +204,22 @@
     .login-form-box {
         padding: 80px 40px;
     }
+
+    .login-btn {
+        font-size: 18px; /* Larger font size for tablets */
+        height: 45px; /* Slightly taller button */
+    }
 }
 
 /* Small laptops and desktops */
 @media (min-width: 1024px) {
     .login-container {
         width: 70%;
+    }
+
+    .login-btn {
+        font-size: 20px; /* Larger font size for desktops */
+        height: 50px; /* Taller button */
     }
 }
 
@@ -216,6 +254,11 @@
     .company-description {
         font-size: 12px;
     }
+
+    .login-btn {
+        font-size: 14px; /* Smaller font size for mobile */
+        height: 35px; /* Shorter button */
+    }
 }
 
 /* Very small mobile devices */
@@ -246,5 +289,10 @@
 
     .company-description {
         font-size: 11px;
+    }
+
+    .login-btn {
+        font-size: 12px; /* Even smaller font size for very small devices */
+        height: 30px; /* Shorter button */
     }
 }

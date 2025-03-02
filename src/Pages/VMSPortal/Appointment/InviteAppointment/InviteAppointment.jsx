@@ -15,8 +15,8 @@ const InviteAppointment = () => {
     const { VisitorImgUrl } = config;
     const navigate = useNavigate();
     const dispatch = useDispatch();
-      const { userInfo } = useContext(UserContext);
-      const { UserRole, EmployeeId, id } = userInfo || {};
+    const { userInfo } = useContext(UserContext);
+    const { UserRole, EmployeeId, id } = userInfo || {};
 
     // Clear crop image state on unmount
     useEffect(() => {
@@ -89,6 +89,23 @@ const InviteAppointment = () => {
     // Mutation for inviting a visitor
     const [inviteAppointment, { isLoading: isInviting, error: invitementError }] = useInviteVisitorMutation();
 
+    // Utility function to convert base64 to File
+    const base64ToFile = (base64String, fileName) => {
+        const arr = base64String.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
+        const bstr = atob(arr[1]); // Decode base64 string
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        // Convert the decoded data into a Uint8Array
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        // Create and return a File object
+        return new File([u8arr], fileName, { type: mime });
+    };
+
     // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -116,10 +133,20 @@ const InviteAppointment = () => {
 
         // Append the photo if available
         if (image) {
-            const file = await fetch(image)
-                .then((res) => res.blob())
-                .then((blob) => new File([blob], 'visitor-photo.png', { type: 'image/png' }));
-            formData.append('Photo', file);
+            ///  let finalImage;
+
+            // If the image is a base64 string, convert it to a File object
+            if (typeof image === "string" && image.startsWith("data:image")) {
+                const file = base64ToFile(image, "visitor_photo.jpg");
+                // Append the image file to FormData
+                formData.append('Photo', file);
+            } else {
+                console.error("Unsupported image format:", image);
+                toast.error("Unsupported image format. Please upload a valid image.");
+                return;
+            }
+
+          
         }
 
         try {

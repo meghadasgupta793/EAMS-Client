@@ -10,14 +10,15 @@ const ProtectedRoute = ({ element }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const userInfo = sessionStorage.getItem("userInfo");
-        const token = sessionStorage.getItem("token"); // Retrieve token
+        const userInfo = localStorage.getItem("userInfo"); // Retrieve from localStorage
+        const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
         if (!userInfo || !token) {
           setIsAuthenticated(false);
           return;
         }
 
+        // Verify token with the backend
         await axios.get(`${url}/api/user/verifyToken`, {
           headers: { Authorization: `Bearer ${token}` }, // Send token in headers
         });

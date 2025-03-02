@@ -4,14 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../../../Components/Header/Header';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CropPhoto from '../../../../Components/PhotoModal/CropPhoto/CropPhoto';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux'; // Correct import of useDispatch
+import { useSelector, useDispatch } from 'react-redux';
 import { clearCropImage } from '../../../../Redux/slice/cropImageSlice';
 import config from '../../../../secrect';
 import { useAppointmentDetailsByidQuery, useCheckInAppointmentMutation } from '../../../../Redux/api/vms/vmsApi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const CheckIn = () => {
     const { AppointmentId } = useParams(); // Get appointment ID from URL
@@ -145,12 +143,18 @@ const CheckIn = () => {
 
         // Handle Image (Base64 to File if needed)
         if (visitorDetails.VisitorPhoto) {
-            const isBase64 = typeof visitorDetails.VisitorPhoto === 'string' && visitorDetails.VisitorPhoto.startsWith('data:image');
-            if (isBase64) {
-                const file = base64ToFile(visitorDetails.VisitorPhoto, 'visitor_image.png');
-                formData.append('Photo', file);
+            // Check if the image is a base64 string
+            if (typeof visitorDetails.VisitorPhoto === "string" && visitorDetails.VisitorPhoto.startsWith("data:image")) {
+                const finalImage = base64ToFile(visitorDetails.VisitorPhoto, "visitor_photo.png");
+                // Append the image file to FormData
+                formData.append('Photo', finalImage);
+            } else if (typeof visitorDetails.VisitorPhoto === "string" && visitorDetails.VisitorPhoto.startsWith("http")) {
+                // If the image is a URL (e.g., from VisitorImgUrl), skip appending it
+                console.log("Image is a URL, skipping upload:", visitorDetails.VisitorPhoto);
             } else {
-                formData.append('Photo', visitorDetails.VisitorPhoto);
+                console.error("Unsupported image format:", visitorDetails.VisitorPhoto);
+                toast.error("Unsupported image format. Please upload a valid image.");
+                return;
             }
         }
 

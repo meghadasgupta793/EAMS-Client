@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Profile.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -8,32 +8,35 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { UserContext } from '../../../StoreContext/UserContext';
 import { useLogoutMutation } from '../../../Redux/api/admin/userApi'; // Import logout mutation
 import config from '../../../secrect';
+import { useDispatch } from 'react-redux'; // Import useDispatch
+import { logout } from '../../../Redux/features/authSlice'; // Import the logout action
 
 const Profile = ({ onClose }) => {
     const { userRole, setUserData,userInfo } = useContext(UserContext); // Access context
-    const [logout, { isLoading }] = useLogoutMutation(); // Use the logout mutation
+ 
     const navigate = useNavigate();
     const { ImgUrl } = config;
+    const dispatch = useDispatch(); // Initialize dispatch
+    const [isLoading, setIsLoading] = useState(false); // Loading state for logout
 
     // Handle logout
-    const handleLogout = async () => {
-        try {
-            // Call the logout API
-            await logout().unwrap();
+  // Handle logout
+  const handleLogout = async () => {
+    setIsLoading(true); // Set loading state to true
+    try {
+        // Dispatch the logout action
+        dispatch(logout());
 
-            // Clear user data from context and sessionStorage
-            setUserData(null, {}); // Clear context data
-            sessionStorage.removeItem('userRole'); // Clear session storage
-            sessionStorage.removeItem('userInfo'); // Clear session storage
-
-            // Redirect to login page or home page
-            navigate('/Login'); // Or any other page you want to navigate to after logout
-
-        } catch (err) {
-            console.error('Logout failed:', err);
-            // Handle any errors, like showing a message to the user
-        }
-    };
+         // Redirect to login page
+        navigate('/Login');
+    } catch (err) {
+        console.error('Logout failed:', err);
+        // Handle any errors, like showing a message to the user
+        toast.error('Logout failed. Please try again.');
+    } finally {
+        setIsLoading(false); // Reset loading state
+    }
+};
 
     return (
         <div className="profile-container" onClick={onClose}>

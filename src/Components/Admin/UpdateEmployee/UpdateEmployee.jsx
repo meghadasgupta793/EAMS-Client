@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './updateEmployee.css';
 import Header from '../../Header/Header';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CropPhoto from '../../../Components/PhotoModal/CropPhoto/CropPhoto';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,6 +17,7 @@ import { useGetAllHolidayGroupQuery } from '../../../Redux/api/admin/holidayApi'
 import { useGetAllAutoShiftGroupQuery, useGetAllShiftsQuery } from '../../../Redux/api/admin/shiftApi';
 import { useGetEmployeeByIdQuery, useUpdateEmployeeMutation } from '../../../Redux/api/admin/employeeApi';
 import config from '../../../secrect';
+
 const UpdateEmployee = () => {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -86,9 +89,11 @@ const UpdateEmployee = () => {
         if (employeeData && Object.keys(employeeData).length > 0) {
             const weekOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             const weekoffsArray = employeeData.Weekoffs
-                .split('')
-                .map((day, index) => (day === '1' ? weekOrder[index] : null))
-                .filter(day => day !== null);
+                ? employeeData.Weekoffs
+                    .split('')
+                    .map((day, index) => (day === '1' ? weekOrder[index] : null))
+                    .filter(day => day !== null)
+                : [];
 
             setFormData({
                 EmployeeName: employeeData.EmployeeName,
@@ -102,7 +107,7 @@ const UpdateEmployee = () => {
                 ESINumber: employeeData.ESINumber,
                 AadhaarNo: employeeData.AadhaarNo,
                 Address: employeeData.Address,
-                ValidUpTo: employeeData.ValidUpTo ? employeeData.ValidUpTo.split('T')[0] : '', 
+                ValidUpTo: employeeData.ValidUpTo ? employeeData.ValidUpTo.split('T')[0] : '',
                 DepartmentID: employeeData.DepartmentID,
                 DesignationID: employeeData.DesignationID,
                 BatchID: employeeData.BatchID,
@@ -126,7 +131,7 @@ const UpdateEmployee = () => {
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
         console.log(`Changed: ${name} → ${value}`);
-    
+
         if (type === "checkbox") {
             setFormData((prevData) => ({
                 ...prevData,
@@ -141,7 +146,7 @@ const UpdateEmployee = () => {
             }));
         }
     };
-    
+
 
     const weekoffs = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const [step, setStep] = useState(1);
@@ -153,7 +158,6 @@ const UpdateEmployee = () => {
     const closeModal = () => setIsEmployeeImgModalOpen(false);
 
     const base64ToFile = (base64String, fileName) => {
-        // Extract the base64 data and MIME type from the string
         const arr = base64String.split(',');
         const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
         const bstr = atob(arr[1]); // Decode base64 string
@@ -168,7 +172,6 @@ const UpdateEmployee = () => {
         // Create and return a File object
         return new File([u8arr], fileName, { type: mime });
     };
-
     const handleSubmit = async () => {
         const weekOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         const weekoffsBinary = weekOrder
@@ -191,34 +194,33 @@ const UpdateEmployee = () => {
     
         // Append the image if it exists
         if (image) {
-            let finalImage = image;
-    
             // If the image is a base64 string, convert it to a File object
             if (typeof image === "string" && image.startsWith("data:image")) {
-                finalImage = base64ToFile(image, "employee_photo.png");
+                const file = base64ToFile(image, "employee_photo.jpg");
+                submissionData.append("Photo", file);
+            } else {
+                console.error("Unsupported image format:", image);
+                toast.error("Unsupported image format. Please upload a valid image.");
+                return;
             }
-    
-            // Append the image file to FormData
-            submissionData.append("Photo", finalImage);
         }
     
         try {
             // Call the update API
             const response = await updateEmployee({ id, employeeData: submissionData }).unwrap();
-            alert(response.message);
+            toast.success(response.message); // Show success toast
             setTimeout(() => {
                 navigate('/employee');
-            }, 0);
+            }, 2000); // Navigate after 2 seconds
         } catch (err) {
             console.error("Error updating employee:", err);
             if (err?.data?.message) {
-                alert(err.data.message);
+                toast.error(err.data.message); // Show error toast
             } else {
-                alert("Error updating employee");
+                toast.error("Error updating employee"); // Show generic error toast
             }
         }
     };
-
     const renderSelectOptions = (options) => {
         return options.length > 0 ? options.map((option, index) => (
             <option key={index} value={option.ID || option.id || option.Code || option}>
@@ -241,6 +243,20 @@ const UpdateEmployee = () => {
         { "id": 3, "Name": "Auto" }
     ];
 
+
+    // Add the loading and error checks here
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error loading employee data</div>;
+    }
+
+
+
+
+
     return (
         <div className='updateEmployee'>
             <Header />
@@ -248,16 +264,16 @@ const UpdateEmployee = () => {
                 <h1>{step === 1 ? "Employee Information" : step === 2 ? "Employment Details" : "Attendance Information"}</h1>
                 <div className='updateEmployee-content'>
                     <div className='left-section'>
-                    <div className='employee-pic'>
-    {image ? (
-        <img src={image} alt='Employee' />
-    ) : (
-        <img src={`${ImgUrl}/${employeeData.PictureName}`} alt='Employee' />
-    )}
-    <div className='camera-icon' onClick={openModal}>
-        <CameraAltIcon />
-    </div>
-</div>
+                        <div className='employee-pic'>
+                            {image ? (
+                                <img src={image} alt='Employee' />
+                            ) : (
+                                <img src={`${ImgUrl}/${employeeData.PictureName}`} alt='Employee' />
+                            )}
+                            <div className='camera-icon' onClick={openModal}>
+                                <CameraAltIcon />
+                            </div>
+                        </div>
                     </div>
                     <div className='right-section'>
                         {step === 1 && (

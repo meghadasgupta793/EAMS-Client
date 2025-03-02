@@ -4,14 +4,15 @@ import Header from '../../Header/Header';
 import { Tooltip, IconButton } from '@mui/material';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateOuType from "../Modals/CreateOuType/CreateOuType";
 import CreateOuOwner from "../Modals/CreateOuOwner/CreateOuOwner";
-import UpdateOuType from "../Modals/UpdateOuType/UpdateOuType"; // Importing UpdateOuType
-import UpdateOuOwner from "../Modals/UpdateOuOwner/UpdateOuOwner"; // Importing UpdateOuOwner
+import UpdateOuType from "../Modals/UpdateOuType/UpdateOuType";
+import UpdateOuOwner from "../Modals/UpdateOuOwner/UpdateOuOwner";
 import { useDeleteOuOwnerMutation, useDeleteOuTypeMutation, useGetAllOuOwnerQuery, useGetAllOuTypeQuery } from "../../../Redux/api/admin/ouApi";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const OuTypeOuOwner = () => {
   const { data: ouTypeData, error: ouTypeError, isLoading: isLoadingOuType } = useGetAllOuTypeQuery();
@@ -46,11 +47,27 @@ const OuTypeOuOwner = () => {
   };
 
   const handleDeleteOuType = async (id) => {
-    await deleteOuType(id);
+    try {
+      await deleteOuType(id).unwrap();
+      toast.success('OU Type deleted successfully!');
+    } catch (error) {
+      const errorMessage =
+        error?.data?.error || // Extracting the error message
+        error?.data?.message || 
+        'Failed to delete OU Type.';
+      toast.error(errorMessage);
+    }
   };
+  
 
   const handleDeleteOuOwner = async (id) => {
-    await deleteOuOwner(id);
+    try {
+      await deleteOuOwner(id).unwrap();
+      toast.success('OU Owner deleted successfully!');
+    } catch (error) {
+      const errorMessage = error.data?.message || 'Failed to delete OU Owner.';
+      toast.error(errorMessage);
+    }
   };
 
   if (isLoadingOuType || isLoadingOuOwner) return <p>Loading...</p>;
