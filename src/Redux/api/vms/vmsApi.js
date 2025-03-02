@@ -45,6 +45,16 @@ export const vmsApi = createApi({
         }),
         providesTags: ['DashBoardInvitationOverViewDetails'], // Cache tag for this endpoint
       }),
+             // ✅ Fetch AppointmentAnalytics
+             appointmentAnalytics: builder.mutation({
+              query: (body) => ({
+                url: '/vms/appointmentAnalytics',
+                method: 'POST',
+                body,
+              }),
+              providesTags: ['DashBoardappointmentAnalytics'], // Cache tag for this endpoint
+            }),
+      
 
     // ✅ Approve an appointment
     approvedAppointment: builder.mutation({
@@ -136,5 +146,6 @@ export const {
   useCheckOutAppointmentMutation,
   useInviteVisitorMutation,
   useInvitationOverViewMutation,
-  useInvitationOverViewDetailsMutation
+  useInvitationOverViewDetailsMutation,
+  useAppointmentAnalyticsMutation
 } = vmsApi;

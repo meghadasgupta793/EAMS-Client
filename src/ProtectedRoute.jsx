@@ -11,12 +11,17 @@ const ProtectedRoute = ({ element }) => {
     const checkAuth = async () => {
       try {
         const userInfo = sessionStorage.getItem("userInfo");
-        if (!userInfo) {
+        const token = sessionStorage.getItem("token"); // Retrieve token
+
+        if (!userInfo || !token) {
           setIsAuthenticated(false);
           return;
         }
 
-        await axios.get(`${url}/api/user/verifyToken`, { withCredentials: true });
+        await axios.get(`${url}/api/user/verifyToken`, {
+          headers: { Authorization: `Bearer ${token}` }, // Send token in headers
+        });
+
         setIsAuthenticated(true);
       } catch (error) {
         console.error("Authentication failed:", error.response?.data || error.message);

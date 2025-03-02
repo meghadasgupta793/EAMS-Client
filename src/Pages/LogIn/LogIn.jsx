@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './LogIn.css';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../Redux/api/admin/userApi';
@@ -22,38 +22,45 @@ const LogIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await login(credentials).unwrap();
-      dispatch(setCredentials(user));
+      const response = await login(credentials).unwrap();
 
-      setUserData(user.UserRole, {
-        id: user.id,
-        UserRole: user.UserRole,
-        UserName: user.UserName,
-        EmployeeName: user.EmployeeName,
-        EmpNo: user.EmpNo,
-        EmployeeId: user.EmployeeId,
-        Picture: user.Picture,
-        license: user.license,
+      // Store token separately
+      sessionStorage.setItem('token', response.token);
+      
+      // Store user & license info separately
+      sessionStorage.setItem('userInfo', JSON.stringify(response.user));
+      sessionStorage.setItem('licenseInfo', JSON.stringify(response.license));
+
+      // Dispatch user credentials to Redux state
+      dispatch(setCredentials({ user: response.user, token: response.token }));
+
+      // Set user data in UserContext
+      setUserData(response.user.UserRole, {
+        id: response.user.id,
+        UserRole: response.user.UserRole,
+        UserName: response.user.UserName,
+        EmployeeName: response.user.EmployeeName,
+        EmpNo: response.user.EmpNo,
+        EmployeeId: response.user.EmployeeId,
+        Picture: response.user.Picture,
+        license: response.license,
       });
 
-      // Display toast synchronously
       toast.success('Login successful!');
       navigate('/');
     } catch (err) {
-      console.error('Failed to login: ', err);
-      // Display toast synchronously
-      toast.error('Login failed. Please check your credentials and try again.');
+      console.error('Failed to login:', err);
+      toast.error(err?.data?.message || 'Login failed. Please check your credentials.');
     }
   };
 
-
-  // Cleanup function to prevent toast from being displayed after unmount
   useEffect(() => {
     return () => {
-      toast.dismiss(); // Dismiss all toasts when the component unmounts
+      toast.dismiss();
     };
   }, []);
 
+ 
   return (
     <div className="login">
       <div className="login-title">

@@ -1,6 +1,5 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { logout } from './authSlice';
-import Cookies from 'js-cookie';
 import config from '../../secrect';
 
 const { url } = config;
@@ -8,7 +7,15 @@ const { url } = config;
 // Create a baseQuery instance (reuse it)
 const baseQuery = fetchBaseQuery({
   baseUrl: `${url}/api`,
-  credentials: "include", // Ensure credentials (cookies) are included
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.token; // Retrieve token from Redux state
+
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`); // Attach token to headers
+    }
+
+    return headers;
+  },
 });
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
@@ -24,9 +31,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       (status === 403 && (data?.message === 'Invalid token' || data?.message === 'Token expired')) ||
       status === 401
     ) {
-      // Clear cookies and dispatch logout
-      Cookies.remove('user');  // Remove user info stored in cookies
-      api.dispatch(logout());
+      api.dispatch(logout()); // Dispatch logout action
     }
   }
 

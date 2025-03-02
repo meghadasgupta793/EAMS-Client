@@ -1,40 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
-import baseQueryWithReauth from './baseQueryWithReauth';
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { user: null },
+  initialState: { user: null, token: null }, // Store token in state
   reducers: {
     setCredentials: (state, action) => {
-      const userData = action.payload;
+      const { user, token } = action.payload;
 
-      // Store user information in cookies
-      Cookies.set('user', JSON.stringify(userData), { expires: 7, path: '' });
-
-      // Set the user in the Redux state
-      state.user = userData;
+      // Store user and token in Redux state
+      state.user = user;
+      state.token = token;
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.user = null;
-
-      // Remove user from cookies
-      Cookies.remove('user');
-   
-
-      // Manually invalidate cache for specific queries
-      action.asyncDispatch(baseQueryWithReauth.util.invalidateTags(['Users', 'Departments']));
-    },
-    loadCredentials: (state) => {
-      // Check if the user exists in cookies and load into the state
-      const user = Cookies.get('user');
-
-      if (user) {
-        state.user = JSON.parse(user);
-      }
+      state.token = null; // Clear token on logout
     },
   },
 });
 
-export const { setCredentials, logout, loadCredentials } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;
