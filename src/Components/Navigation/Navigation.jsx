@@ -36,6 +36,9 @@ import HistoryIcon from '@mui/icons-material/History';
 import PersonIcon from '@mui/icons-material/Person';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import InsertChartIcon from '@mui/icons-material/InsertChart'; // Added missing import
+import AssessmentIcon from '@mui/icons-material/Assessment'; // Added for Reports
+import SummarizeIcon from '@mui/icons-material/Summarize'; // Added for Leave Report
 
 import { UserContext } from '../../StoreContext/UserContext';
 import config from '../../secrect';
@@ -95,12 +98,14 @@ const menuItems = {
         },
         {
             name: 'Reports',
-            icon: BarChartIcon,
+            icon: InsertChartIcon, // Alternative to BarChartIcon
             children: [
-                { name: 'Attendance Report', path: '/AttendanceReport', icon: ManageHistoryIcon },
-                { name: 'Leave Report', path: '/LeaveReport', icon: EventRepeatIcon },
+                { name: 'Attendance Raw Report', path: '/attendanceRawReport', icon: AssessmentIcon }, // Alternative to ManageHistoryIcon
+                { name: 'Attendance Report', path: '/attendanceReport', icon: BarChartIcon }, // Alternative to ManageHistoryIcon
+                { name: 'Leave Report', path: '/leaveReport', icon: SummarizeIcon }, // Alternative to EventRepeatIcon
             ],
-        },
+        }
+        ,
         {
             name: 'Settings',
             icon: SettingsIcon,

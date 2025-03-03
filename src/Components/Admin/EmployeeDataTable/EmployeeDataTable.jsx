@@ -115,19 +115,22 @@ const EmployeeDataTable = () => {
                 <thead>
                     <tr>
                         {searchActive ? (
-                            Object.keys(searchQueries).map((key) => (
-                                <th key={key}>
-                                    <input
-                                        type='text'
-                                        value={searchQueries[key]}
-                                        onChange={(e) => handleSearchChange(e, key)}
-                                        placeholder={`Search ${key}`}
-                                    />
-                                </th>
-                            ))
+                            <>
+                                {Object.keys(searchQueries).map((key) => (
+                                    <th key={key}>
+                                        <input
+                                            type='text'
+                                            value={searchQueries[key]}
+                                            onChange={(e) => handleSearchChange(e, key)}
+                                            placeholder={`Search ${key}`}
+                                        />
+                                    </th>
+                                ))}
+                                <th>Action</th> {/* Ensure the Action column is always displayed */}
+                            </>
                         ) : (
                             <>
-                                <th>Photo</th>
+                                {!searchActive && <th>Photo</th>}
                                 <th>Emp No</th>
                                 <th>Emp Name</th>
                                 <th>Email</th>
@@ -138,19 +141,20 @@ const EmployeeDataTable = () => {
                             </>
                         )}
                     </tr>
+
                 </thead>
                 <tbody>
                     {filteredData.length > 0 ? (
                         paginatedData.map((item) => (
                             <tr key={item.id}>
-                                <td>
-                                    <img
-                                        src={`${ImgUrl}/${item.PictureName}`}
-                                       
-                                        className='employee-photo'
-                                        
-                                    />
-                                </td>
+                                {!searchActive && (
+                                    <td>
+                                        <img
+                                            src={`${ImgUrl}/${item.PictureName}`}
+                                            className='employee-photo'
+                                        />
+                                    </td>
+                                )}
                                 <td >{item.EmpNo}</td>
                                 <td>{item.EmployeeName}</td>
                                 <td>{item.Email}</td>
@@ -163,7 +167,7 @@ const EmployeeDataTable = () => {
                                             <BorderColorIcon className='action-btn update-btn' />
                                         </IconButton>
                                     </Tooltip>
-                                   
+
                                     <Tooltip title='Approval Setup'>
                                         <IconButton onClick={() => navigate(`/approvalSetup/${item.id}`)}>
                                             <AccountTreeIcon className='action-btn update-btn' />

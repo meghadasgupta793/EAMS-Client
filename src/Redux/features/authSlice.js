@@ -14,31 +14,32 @@ const getInitialUser = () => {
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    user: getInitialUser(), // Initialize user from localStorage
-    token: getInitialToken(), // Initialize token from localStorage
+    user: getInitialUser(),
+    token: getInitialToken(),
   },
   reducers: {
     setCredentials: (state, action) => {
       const { user, token } = action.payload;
-
-      // Store user and token in Redux state
       state.user = user;
       state.token = token;
-
-      // Persist user and token in localStorage
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
-
-      // Clear user and token from localStorage
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
+      localStorage.clear();
+      sessionStorage.clear();
+    },
+    logoutAndRedirect: (state) => {
+      state.user = null;
+      state.token = null;
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = "/Login"; // Redirect after logout
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, logoutAndRedirect } = authSlice.actions;
 export default authSlice.reducer;

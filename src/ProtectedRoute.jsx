@@ -10,30 +10,44 @@ const ProtectedRoute = ({ element }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const userInfo = localStorage.getItem("userInfo"); // Retrieve from localStorage
-        const token = localStorage.getItem("token"); // Retrieve token from localStorage
+        const userInfo = localStorage.getItem("userInfo");
+        const token = localStorage.getItem("token");
 
         if (!userInfo || !token) {
-          setIsAuthenticated(false);
+          handleLogout();
           return;
         }
 
         // Verify token with the backend
         await axios.get(`${url}/api/user/verifyToken`, {
-          headers: { Authorization: `Bearer ${token}` }, // Send token in headers
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         setIsAuthenticated(true);
       } catch (error) {
         console.error("Authentication failed:", error.response?.data || error.message);
-        setIsAuthenticated(false);
+        handleLogout();
       }
     };
 
     checkAuth();
   }, []);
 
-  if (isAuthenticated === null) return <div>Loading...</div>; // Show a loading state while verifying
+  const handleLogout = () => {
+    // Clear localStorage and sessionStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("user");
+    localStorage.removeItem("licenseInfo");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("userInfo");
+    sessionStorage.removeItem("userRole");
+
+    setIsAuthenticated(false);
+  };
+
+  if (isAuthenticated === null) return <div>Loading...</div>;
 
   return isAuthenticated ? element : <Navigate to="/Login" replace />;
 };

@@ -61,6 +61,7 @@ import VisitorPass from './Components/VMS/VisitorPass/VisitorPass';
 import MyTeam from './Pages/EmployeePortal/MyTeam/MyTeam';
 import MyTeamAttendance from './Components/Employee/MyTeamAttendance/MyTeamAttendance';
 import VisitorInvitationReview from './Components/VMS/VisitorInvitationReview/VisitorInvitationReview';
+import AttendanceRawReport from './Pages/AdminPortal/Reports/AttendanceRawReport/AttendanceRawReport';
 
 function App() {
   return (
@@ -95,13 +96,13 @@ function MainAppContent() {
         <Route path="/EmployeeDashboard" element={<ProtectedRoute element={<EmployeeDashboard />} />} />
         <Route path="/VMSDashboard" element={<ProtectedRoute element={<VMSDashboard />} />} />
         <Route path="/MyLeave" element={<ProtectedRoute element={<MyLeave />} />} />
-        <Route path="/ApplyAttendance" element={ <ProtectedRoute  element={
-                <FaceRecognitionProvider>
-                  <ApplyAttendance />
-                </FaceRecognitionProvider>
-              }
-            />
-          }
+        <Route path="/ApplyAttendance" element={<ProtectedRoute element={
+          <FaceRecognitionProvider>
+            <ApplyAttendance />
+          </FaceRecognitionProvider>
+        }
+        />
+        }
         />
         <Route path="/ApplyTour" element={<ProtectedRoute element={<ApplyTour />} />} />
         <Route path="/MyProfileUpdate" element={<ProtectedRoute element={<MyProfileUpdate />} />} />
@@ -154,6 +155,9 @@ function MainAppContent() {
         <Route path="/visitor-pass/:appointmentId" element={<VisitorPass />} />
 
         <Route path="/visitor-invitation-review/:token" element={<VisitorInvitationReview />} />
+
+        {/*Reports*/}
+        <Route path="/attendanceRawReport" element={<ProtectedRoute element={<AttendanceRawReport />} />} />
       </Routes>
     </div>
   );

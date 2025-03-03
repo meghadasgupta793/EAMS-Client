@@ -26,6 +26,8 @@
     flex-wrap: wrap; /* Allow icons to wrap on small screens */
 }
 
+
+
 .employee-table-header-icon {
     font-size: 24px;
     color: #555;
@@ -44,6 +46,24 @@
 
 .employee-List-table thead {
     background-color: #4abb83;
+}
+
+
+/* Style for search input fields */
+.employee-List-table thead tr th input[type="text"] {
+    width: 100%; /* Ensures it fits within the column */
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box; /* Prevents overflow issues */
+}
+
+/* Reduce padding in search row to prevent table expansion */
+.employee-List-table thead tr th {
+    padding: 5px;
+    text-align: left;
 }
 
 .employee-List-table thead tr th {
@@ -82,6 +102,8 @@
     border-bottom: none;
 }
 
+
+
 .employee-List-table tbody tr td:first-child {
     border-left: none;
 }
@@ -90,9 +112,15 @@
     border-right: none;
 }
 
+
+
+
+
 .employee-List-table tbody tr td .action-btn {
-    width: 25px;
-    height: 25px;
+    width: 20px; /* Reduce width */
+    height: 20px; /* Reduce height */
+    font-size: 16px; /* Reduce icon size */
+    padding: 2px; /* Reduce padding */
     display: inline-block;
     font-weight: medium;
     text-align: center;
@@ -102,8 +130,19 @@
     background-color: #f0f0f0;
     color: #555;
     margin: 2px;
-    padding: 4px;
+   
 }
+
+/* If using Material UI IconButton */
+.employee-List-table tbody tr td .MuiIconButton-root {
+    padding: 2px !important; /* Reduce padding */
+    font-size: 16px !important; /* Adjust icon size */
+}
+
+.employee-List-table tbody tr td .MuiIconButton-root {
+    padding: 0 !important;
+}
+
 
 .employee-List-table tbody tr td .update-btn {
     background: var(--gradient-border);
@@ -203,6 +242,10 @@
         border-radius: 8px;
     }
 
+    .employee-List-table thead tr th input[type="text"] {
+        font-size: 12px;
+        padding: 4px;
+    }
     .employee-List-table tbody tr td {
         display: flex;
         align-items: center;
