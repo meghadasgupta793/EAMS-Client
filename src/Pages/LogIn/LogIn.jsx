@@ -32,7 +32,7 @@ const LogIn = () => {
     try {
       const authHeader = `Basic ${btoa(`${credentials.UserName}:${credentials.Password}`)}`;
   
-      const response = await axios.post(`${url}/api/user/Login`, {}, {  // Ensure the correct API endpoint
+      const response = await axios.post(`${url}/api/user/Login`, {}, {
         headers: {
           Authorization: authHeader,
           'Content-Type': 'application/json',
@@ -42,15 +42,12 @@ const LogIn = () => {
   
       const { token, user, license } = response.data;
   
-      // Store token and user data in localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('userInfo', JSON.stringify(user));
       localStorage.setItem('licenseInfo', JSON.stringify(license));
   
-      // Dispatch user credentials to Redux state
       dispatch(setCredentials({ user, token }));
   
-      // Set user data in UserContext
       setUserData(user.UserRole, {
         id: user.id,
         UserRole: user.UserRole,
@@ -62,16 +59,17 @@ const LogIn = () => {
         license,
       });
   
-      // Show success toast and navigate to home
       toast.success('Login successful!');
       navigate('/');
     } catch (err) {
       console.error('Failed to login:', err);
+      alert("Login Error: " + JSON.stringify(err.response?.data || err.message)); // ✅ Add Alert Here
       toast.error(err.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
+  
   
 
   // Clear toasts on component unmount
