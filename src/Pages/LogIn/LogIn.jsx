@@ -37,7 +37,7 @@ const LogIn = () => {
           Authorization: authHeader,
           'Content-Type': 'application/json',
         },
-        withCredentials: true, // Ensure cookies are included if needed
+      
       });
   
       const { token, user, license } = response.data;
