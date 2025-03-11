@@ -1,5 +1,6 @@
+
 /* Main container */
-.AttendanceRawReport {
+.MyTeamsReports {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -10,7 +11,7 @@
 }
 
 /* Card-like container */
-.ARR-container {
+.MTR-container {
     padding: 20px;
     margin: 28px 28px;
     background-color: white;
@@ -18,7 +19,7 @@
 }
 
 /* Flexbox layout for filters + button */
-.ARR-seach-container {
+.MTR-search-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,7 +32,7 @@
 }
 
 /* Filters row (side by side) */
-.ARR-filters {
+.MTR-filters {
     display: flex;
     flex-wrap: wrap; /* Allows wrapping for responsiveness */
     gap: 20px;
@@ -39,7 +40,7 @@
 }
 
 /* Filter container */
-.ARR-filter {
+.MTR-filter {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -47,7 +48,7 @@
 }
 
 /* Label styles */
-.ARR-filter label {
+.MTR-filter label {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -55,8 +56,8 @@
 }
 
 /* Input styles */
-.ARR-filter input[type="text"],
-.ARR-filter input[type="date"] {
+.MTR-filter input[type="text"],
+.MTR-filter input[type="date"] {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -64,13 +65,13 @@
 }
 
 /* Button container (aligned to right) */
-.ARR-button {
+.MTR-button {
     display: flex;
     justify-content: flex-end;
 }
 
 /* Button styles */
-.ARR-button button {
+.MTR-button button {
     padding: 10px 20px;
     background: var(--gradient-border);
     color: white;
@@ -83,48 +84,50 @@
 }
 
 /* Button hover effect */
-.ARR-button button:hover {
+.MTR-button button:hover {
     background-color: #0056b3;
 }
 
 /* Icon styles */
-.ARR-filter .ARR-icon {
+.MTR-filter .MTR-icon {
     color: var(--primary-color);
 }
 
-
-.ARR-Table-container{
+/* Table container */
+.MTR-Table-container {
     padding: 20px;
     margin-top: 6px;
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.ARR-header-container {
+/* Header container for table */
+.MTR-header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  
 }
 
-.ARR-heading{
+/* Heading styles */
+.MTR-heading {
     font-size: 16px;
     color: var(--text-color);
     margin: 0;
 }
 
-.ARR-Table{
+/* Table styles */
+.MTR-Table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 5px;
 }
 
-
-.ARR-Table thead {
+/* Table header styles */
+.MTR-Table thead {
     background-color: #4abb83;
 }
 
-.ARR-Table thead tr th {
+.MTR-Table thead tr th {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.35px;
@@ -135,25 +138,25 @@
     background-color: #4abb83;
 }
 
-.ARR-Table tbody tr {
+/* Table row styles */
+.MTR-Table tbody tr {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
-   
 }
 
-.ARR-Table tbody tr:hover {
+.MTR-Table tbody tr:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-   
 }
 
-.ARR-Table tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
-    /* Light gray background for odd rows */
+/* Alternate row background color */
+.MTR-Table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Light gray background for odd rows */
 }
 
-.ARR-Table tbody tr td {
+/* Table cell styles */
+.MTR-Table tbody tr td {
     font-size: 12px;
     letter-spacing: 0.35px;
     font-weight: normal;
@@ -165,11 +168,12 @@
     border-bottom: none;
 }
 
-.ARR-Table tbody tr td:first-child {
+/* Remove left border for first cell */
+.MTR-Table tbody tr td:first-child {
     border-left: none;
-   
 }
 
-.ARR-Table tbody tr td:last-child {
+/* Remove right border for last cell */
+.MTR-Table tbody tr td:last-child {
     border-right: none;
 }

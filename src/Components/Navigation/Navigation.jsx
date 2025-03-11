@@ -132,6 +132,7 @@ const menuItems = {
         { name: 'MyApprovalHierarchy', path: '/MyApprovalHierarchy', icon: AccountTreeIcon },
         { name: 'MyTeams', path: '/my-teams', icon: Diversity3Icon },
         { name: 'MyAttendanceReport', path: '/my-attendance-report', icon: CorporateFareIcon },
+        { name: 'My Teams Report', path: '/myTeams-report', icon: CorporateFareIcon },
         { name: 'Notification', path: '/notification', icon: NotificationsActiveIcon },
         { name: 'Message', path: '/message', icon: MessageIcon },
     ],

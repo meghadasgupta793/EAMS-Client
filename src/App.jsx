@@ -62,6 +62,7 @@ import MyTeam from './Pages/EmployeePortal/MyTeam/MyTeam';
 import MyTeamAttendance from './Components/Employee/MyTeamAttendance/MyTeamAttendance';
 import VisitorInvitationReview from './Components/VMS/VisitorInvitationReview/VisitorInvitationReview';
 import AttendanceRawReport from './Pages/AdminPortal/Reports/AttendanceRawReport/AttendanceRawReport';
+import MyTeamsReports from './Pages/EmployeePortal/Reports/MyTeamsReports/MyTeamsReports';
 
 function App() {
   return (
@@ -158,6 +159,7 @@ function MainAppContent() {
 
         {/*Reports*/}
         <Route path="/attendanceRawReport" element={<ProtectedRoute element={<AttendanceRawReport />} />} />
+        <Route path="/myTeams-report" element={<ProtectedRoute element={<MyTeamsReports />} />} />
       </Routes>
     </div>
   );

@@ -202,6 +202,13 @@
     color: white;
 }
 
+.myTeam-Table tbody tr td .view-report-btn {
+    background: var(--gradient-border);
+    color: white;
+}
+
+
+
 .pagination-container {
     display: flex;
     justify-content: center;

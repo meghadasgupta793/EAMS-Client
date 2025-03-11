@@ -1,20 +1,4 @@
 
-/*
-.modal-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 800px;
-    background-color: white;
-    border: 1px solid var(--text-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow for a softer effect 
-    padding: 16px;
-    outline: none;
-    max-width: 100%; /* Ensure it never exceeds screen width 
-    box-sizing: border-box; /* Include padding in the element's total width/height 
-  }*/
-
   .employeeOneMonthStatus-table-container{
     width: 100%;
   }
@@ -169,14 +153,59 @@
 
 /* Responsive Styles */
 
-/* For tablets (768px and below) */
-@media (max-width: 768px) {
-    /* Hide the table header */
-    .employeeOneMonthStatus-table thead {
-        display: none;
+@media (max-width: 1024px) { /* Tablets and smaller screens */
+    .employeeOneMonthStatus-modal {
+        width: 90%;
+        max-width: 500px;
+        height: auto;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 10px;
     }
 
-    /* Convert table elements to block display */
+    .employeeOneMonthStatus-heading {
+        font-size: 18px;
+    }
+
+    .employeeOneMonthStatus-header-icon {
+        font-size: 22px;
+    }
+
+    .employeeOneMonthStatus-table-container {
+        overflow-x: auto; /* Allow scrolling if needed */
+    }
+
+    .employeeOneMonthStatus-table tbody tr td {
+        font-size: 10px;
+        padding: 4px;
+    }
+
+    .employeeOneMonthStatusAction-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) { /* Mobile screens */
+    .employeeOneMonthStatus-modal {
+        width: 95%;
+        max-width: 400px;
+        padding: 8px;
+    }
+
+    .employeeOneMonthStatus-heading {
+        font-size: 16px;
+    }
+
+    .employeeOneMonthStatus-header-icon {
+        font-size: 20px;
+    }
+
+    .employeeOneMonthStatus-table thead {
+        display: none; /* Hide table headers for better mobile view */
+    }
+
     .employeeOneMonthStatus-table,
     .employeeOneMonthStatus-table tbody,
     .employeeOneMonthStatus-table tr,
@@ -185,27 +214,80 @@
         width: 100%;
     }
 
-    /* Add spacing between rows */
     .employeeOneMonthStatus-table tbody tr {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
     }
 
-    /* Format each cell to show as a row */
     .employeeOneMonthStatus-table tbody tr td {
+        font-size: 9px;
+        padding: 3px;
         text-align: right;
-        padding-left: 50%;
         position: relative;
     }
 
-    /* Display labels for each cell using data-label attribute */
     .employeeOneMonthStatus-table tbody tr td:before {
         content: attr(data-label);
         position: absolute;
         left: 0;
         width: 50%;
-        padding-left: 15px;
+        padding-left: 10px;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 10px;
         text-align: left;
     }
+
+    .employeeOneMonthStatusAction-btn {
+        width: 18px;
+        height: 18px;
+        font-size: 14px;
+    }
+
+    .employeeOneMonthStatus-close-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 18px;
+    }
 }
+
+/* Mobile Small Screens (480px and below) */
+@media (max-width: 480px) {
+    .employeeOneMonthStatus-modal {
+        width: 98%;
+        max-width: 360px;
+        padding: 6px;
+    }
+
+    .employeeOneMonthStatus-heading {
+        font-size: 14px;
+    }
+
+    .employeeOneMonthStatus-header-icon {
+        font-size: 18px;
+    }
+
+    .employeeOneMonthStatus-table tbody tr td {
+        font-size: 8px;
+        padding: 2px;
+    }
+
+    .employeeOneMonthStatus-table tbody tr td:before {
+        font-size: 9px;
+        padding-left: 8px;
+    }
+
+    .employeeOneMonthStatusAction-btn {
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+    }
+
+    .employeeOneMonthStatus-close-btn {
+        font-size: 16px;
+        top: 3px;
+        right: 3px;
+    }
+}
+

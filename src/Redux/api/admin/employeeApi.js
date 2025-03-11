@@ -10,6 +10,10 @@ export const employeeApi = createApi({
             query: () => "/employee/allEmployees",
             providesTags: ['Employee'],
         }),
+        getAllEmpInfo: builder.query({
+            query: () => "/employee/allEmpInfo",
+            providesTags: ['EmpInfo'],
+        }),
 
         getEmployeeById: builder.query({
             query: (id) => `/employee/${id}`,
@@ -70,10 +74,12 @@ export const employeeApi = createApi({
 
 export const {
     useGetAllEmployeesQuery,
+    useGetAllEmpInfoQuery,
     useGetEmployeeByIdQuery,
     useCreateEmployeeMutation,
     useUpdateEmployeeMutation,
     useDeleteEmployeeMutation,
     useGetEmployeeByempNoQuery,
     useGetEmpInfoByeIDQuery
+
 } = employeeApi;

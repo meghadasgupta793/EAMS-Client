@@ -125,23 +125,28 @@ const VisitorTracking = () => {
       <div className="visitor-tracking-tabs">
         <div className="tabs-container">
           <Tooltip title="Extend Appointment">
-            <IconButton className={activeTab === 'extensions' ? 'active' : ''} onClick={() => setActiveTab('extensions')}>
-              <Extension />
+            <IconButton  sx={{ padding: 0, fontSize: '12px' }}
+            className={activeTab === 'extensions' ? 'active' : ''} 
+            onClick={() => setActiveTab('extensions')}>
+              <Extension  sx={{ fontSize: '16px' }}/>
             </IconButton>
           </Tooltip>
           <Tooltip title="Scheduled for Later">
-            <IconButton className={activeTab === 'scheduled' ? 'active' : ''} onClick={() => setActiveTab('scheduled')}>
-              <Schedule />
+            <IconButton sx={{ padding: 0, fontSize: '12px' }}
+            className={activeTab === 'scheduled' ? 'active' : ''} onClick={() => setActiveTab('scheduled')}>
+              <Schedule sx={{ fontSize: '16px' }} />
             </IconButton>
           </Tooltip>
           <Tooltip title="Late Check-In">
-            <IconButton className={activeTab === 'late' ? 'active' : ''} onClick={() => setActiveTab('late')}>
-              <AlarmOn />
+            <IconButton sx={{ padding: 0, fontSize: '12px' }}
+            className={activeTab === 'late' ? 'active' : ''} onClick={() => setActiveTab('late')}>
+              <AlarmOn sx={{ fontSize: '16px' }}/>
             </IconButton>
           </Tooltip>
           <Tooltip title="Late Check-Out">
-            <IconButton className={activeTab === 'lateCheckOut' ? 'active' : ''} onClick={() => setActiveTab('lateCheckOut')}>
-              <AlarmOn />
+            <IconButton sx={{ padding: 0, fontSize: '12px' }}
+            className={activeTab === 'lateCheckOut' ? 'active' : ''} onClick={() => setActiveTab('lateCheckOut')}>
+              <AlarmOn sx={{ fontSize: '16px' }} />
             </IconButton>
           </Tooltip>
         </div>

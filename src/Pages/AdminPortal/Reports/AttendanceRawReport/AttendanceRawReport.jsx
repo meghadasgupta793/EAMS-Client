@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AttendanceRawReport.css';
 import Header from '../../../../Components/Header/Header';
 import Select from 'react-select';
@@ -8,66 +8,116 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { useGetAllEmpInfoQuery } from '../../../../Redux/api/admin/employeeApi';
+import { useGetAllOuQuery } from '../../../../Redux/api/admin/ouApi';
+import { useGetAllDepartmentQuery } from '../../../../Redux/api/admin/departmentApi';
+import { useGetAttendanceRawDataMutation } from '../../../../Redux/api/report/rawReportApi';
 
 const ITEMS_PER_PAGE = 10; // Number of items to display per page
 
 const AttendanceRawReport = () => {
-    // Dummy data for multi-select options
-    const employeeOptions = [
-        { value: 'E001', label: 'John Doe' },
-        { value: 'E002', label: 'Jane Smith' },
-        { value: 'E003', label: 'Alice Johnson' },
-        { value: 'E004', label: 'Bob Brown' },
-    ];
+    // Fetch employee data using the API hook
+    const { data: employeeData, error: employeeError, isLoading: isEmployeeLoading } = useGetAllEmpInfoQuery();
 
-    const employeeNoOptions = employeeOptions.map(emp => ({ value: emp.value, label: emp.value }));
+    // Fetch OU data using the API hook
+    const { data: ouData, error: ouError, isLoading: isOULoading } = useGetAllOuQuery();
 
-    const ouOptions = [
-        { value: 'OU001', label: 'Sales' },
-        { value: 'OU002', label: 'Marketing' },
-        { value: 'OU003', label: 'Engineering' },
-        { value: 'OU004', label: 'HR' },
-    ];
+    // Fetch Department data using the API hook
+    const { data: departmentData, departmenterror, isdepartmentLoading } = useGetAllDepartmentQuery();
+
+    // API mutation for fetching raw attendance data
+    const [getAttendanceRawData, { data: rawData, isLoading: isRawDataLoading, error: rawDataError }] = useGetAttendanceRawDataMutation();
+
+    // State for employee options
+    const [employeeOptions, setEmployeeOptions] = useState([]);
+
+    // State for OU options
+    const [ouOptions, setOUOptions] = useState([]);
+
+    // State for Department options
+    const [departmentOptions, setDepartmentOptions] = useState([]);
+
+    // Function to get the current date in YYYY-MM-DD format
+    const getCurrentDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
 
     // State for selected values
     const [selectedEmployees, setSelectedEmployees] = useState([]);
     const [selectedEmployeeNos, setSelectedEmployeeNos] = useState([]);
     const [selectedOU, setSelectedOU] = useState([]);
-    const [fromDate, setFromDate] = useState('');
-    const [toDate, setToDate] = useState('');
+    const [selectedDepartments, setSelectedDepartments] = useState([]);
+    const [fromDate, setFromDate] = useState(getCurrentDate()); // Set default to current date
+    const [toDate, setToDate] = useState(getCurrentDate()); // Set default to current date
     const [page, setPage] = useState(1); // Pagination state
 
-    // Dummy employee data
-    const dummyEmployeeData = [
-        { empNo: 'E001', name: 'John Doe', department: 'Sales', designation: 'Sales Executive', ou: 'OU001', date: '2023-10-01', inTime: '09:00 AM', outTime: '06:00 PM' },
-        { empNo: 'E002', name: 'Jane Smith', department: 'Marketing', designation: 'Marketing Manager', ou: 'OU002', date: '2023-10-01', inTime: '09:15 AM', outTime: '06:15 PM' },
-        { empNo: 'E003', name: 'Alice Johnson', department: 'Engineering', designation: 'Software Engineer', ou: 'OU003', date: '2023-10-01', inTime: '09:30 AM', outTime: '06:30 PM' },
-        { empNo: 'E004', name: 'Bob Brown', department: 'HR', designation: 'HR Manager', ou: 'OU004', date: '2023-10-01', inTime: '09:45 AM', outTime: '06:45 PM' },
-        { empNo: 'E005', name: 'Charlie White', department: 'Finance', designation: 'Accountant', ou: 'OU005', date: '2023-10-01', inTime: '08:50 AM', outTime: '05:50 PM' },
-        { empNo: 'E006', name: 'David Green', department: 'IT', designation: 'System Admin', ou: 'OU006', date: '2023-10-01', inTime: '10:00 AM', outTime: '07:00 PM' },
-        { empNo: 'E007', name: 'Emily Carter', department: 'Operations', designation: 'Operations Manager', ou: 'OU007', date: '2023-10-01', inTime: '08:30 AM', outTime: '05:30 PM' },
-        { empNo: 'E008', name: 'Frank Adams', department: 'Customer Service', designation: 'Customer Support', ou: 'OU008', date: '2023-10-01', inTime: '09:20 AM', outTime: '06:20 PM' },
-        { empNo: 'E009', name: 'Grace Hill', department: 'Engineering', designation: 'Data Scientist', ou: 'OU009', date: '2023-10-01', inTime: '10:15 AM', outTime: '07:15 PM' },
-        { empNo: 'E010', name: 'Harry King', department: 'Legal', designation: 'Legal Advisor', ou: 'OU010', date: '2023-10-01', inTime: '09:10 AM', outTime: '06:10 PM' },
-        { empNo: 'E011', name: 'Isabella Lopez', department: 'Marketing', designation: 'SEO Specialist', ou: 'OU011', date: '2023-10-01', inTime: '08:45 AM', outTime: '05:45 PM' },
-        { empNo: 'E012', name: 'Jack Turner', department: 'IT', designation: 'Network Engineer', ou: 'OU012', date: '2023-10-01', inTime: '09:40 AM', outTime: '06:40 PM' },
-        { empNo: 'E013', name: 'Katherine Evans', department: 'HR', designation: 'Recruiter', ou: 'OU013', date: '2023-10-01', inTime: '08:55 AM', outTime: '05:55 PM' },
-        { empNo: 'E014', name: 'Leo Martin', department: 'Sales', designation: 'Sales Representative', ou: 'OU014', date: '2023-10-01', inTime: '09:05 AM', outTime: '06:05 PM' },
-        { empNo: 'E015', name: 'Mia Scott', department: 'Operations', designation: 'Logistics Coordinator', ou: 'OU015', date: '2023-10-01', inTime: '09:35 AM', outTime: '06:35 PM' },
-        { empNo: 'E016', name: 'Nathan Carter', department: 'Engineering', designation: 'DevOps Engineer', ou: 'OU016', date: '2023-10-01', inTime: '10:10 AM', outTime: '07:10 PM' },
-        { empNo: 'E017', name: 'Olivia Harris', department: 'Finance', designation: 'Financial Analyst', ou: 'OU017', date: '2023-10-01', inTime: '08:40 AM', outTime: '05:40 PM' },
-        { empNo: 'E018', name: 'Patrick Williams', department: 'Legal', designation: 'Paralegal', ou: 'OU018', date: '2023-10-01', inTime: '09:25 AM', outTime: '06:25 PM' },
-        { empNo: 'E019', name: 'Quinn Thomas', department: 'Customer Service', designation: 'Help Desk Support', ou: 'OU019', date: '2023-10-01', inTime: '09:50 AM', outTime: '06:50 PM' },
-        { empNo: 'E020', name: 'Rachel Moore', department: 'IT', designation: 'Software Tester', ou: 'OU020', date: '2023-10-01', inTime: '09:55 AM', outTime: '06:55 PM' }
-    ];
+    // Map API data to employeeOptions when data is fetched
+    useEffect(() => {
+        if (employeeData && employeeData.data) {
+            const options = employeeData.data.map(emp => ({
+                value: emp.id, // Use id as the value
+                label: `${emp.EmpNo}-${emp.EmployeeName}`, // Combine EmpNo and EmployeeName
+                empNo: emp.EmpNo, // Include EmpNo for reference
+                EmployeeName: emp.EmployeeName, // Include EmployeeName for reference
+            }));
+            setEmployeeOptions(options);
+        }
+    }, [employeeData]);
+
+    // Map API data to ouOptions when data is fetched
+    useEffect(() => {
+        if (ouData && ouData.data) {
+            const options = ouData.data.map(ou => ({
+                value: ou.id, // Use id as the value
+                label: ou.OUName, // Use OUName as the label
+            }));
+            setOUOptions(options);
+        }
+    }, [ouData]);
+
+    // Map API data to departmentOptions when data is fetched
+    useEffect(() => {
+        if (departmentData && departmentData.data) {
+            const options = departmentData.data.map(dept => ({
+                value: dept.ID, // Use ID as the value
+                label: dept.Name, // Use Name as the label
+            }));
+            setDepartmentOptions(options);
+        }
+    }, [departmentData]);
+
+    // Generate employeeNoOptions from employeeOptions
+    const employeeNoOptions = employeeOptions.map(emp => ({
+        value: emp.value, // Use value (id) as the value
+        label: `${emp.empNo}-${emp.EmployeeName}`, // Combine EmpNo and EmployeeName
+    }));
 
     // Handle show data button click
-    const handleShowData = () => {
-        console.log('Selected Employee Numbers:', selectedEmployeeNos);
-        console.log('Selected Employees:', selectedEmployees);
-        console.log('Selected OU:', selectedOU);
-        console.log('From Date:', fromDate);
-        console.log('To Date:', toDate);
+    const handleShowData = async () => {
+        try {
+            // Prepare the request body
+            const requestBody = {
+                OuId: selectedOU.map(ou => ou.value).join(','), // Convert array of selected OU IDs to comma-separated string
+                DepartmentId: selectedDepartments.map(dept => dept.value).join(','), // Convert array of selected department IDs to comma-separated string
+                EmployeeId: selectedEmployeeNos.map(emp => emp.value).join(','), // Convert array of selected employee IDs to comma-separated string
+                FromDate: fromDate,
+                ToDate: toDate,
+            };
+
+            console.log('Request Body:', requestBody); // Log the request body for debugging
+
+            // Call the API mutation
+            const response = await getAttendanceRawData(requestBody).unwrap();
+
+            // Handle the response
+            console.log('API Response:', response);
+        } catch (error) {
+            console.error('Error fetching raw attendance data:', error);
+        }
     };
 
     // Handle export button click
@@ -78,7 +128,7 @@ const AttendanceRawReport = () => {
     // Pagination logic
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
-    const paginatedData = dummyEmployeeData.slice(startIndex, endIndex);
+    const paginatedData = rawData?.data || []; // Use API data if available, otherwise fallback to empty array
 
     const handleNext = () => {
         setPage(prev => prev + 1);
@@ -98,25 +148,14 @@ const AttendanceRawReport = () => {
                     <div className='ARR-filters'>
                         {/* Employee Number Multi-Select */}
                         <div className='ARR-filter'>
-                            <label><Badge fontSize="small" className='ARR-icon' /> Employee No</label>
+                            <label><Badge fontSize="small" className='ARR-icon' /> Employee No / Name</label>
                             <Select
                                 isMulti
                                 options={employeeNoOptions}
                                 value={selectedEmployeeNos}
                                 onChange={setSelectedEmployeeNos}
                                 placeholder="Select Employee No"
-                            />
-                        </div>
-
-                        {/* Employee Multi-Select */}
-                        <div className='ARR-filter'>
-                            <label><Person fontSize="small" className='ARR-icon' /> Employee Name</label>
-                            <Select
-                                isMulti
-                                options={employeeOptions}
-                                value={selectedEmployees}
-                                onChange={setSelectedEmployees}
-                                placeholder="Select Employees"
+                                isLoading={isEmployeeLoading}
                             />
                         </div>
 
@@ -129,6 +168,20 @@ const AttendanceRawReport = () => {
                                 value={selectedOU}
                                 onChange={setSelectedOU}
                                 placeholder="Select OU"
+                                isLoading={isOULoading}
+                            />
+                        </div>
+
+                        {/* Department Multi-Select */}
+                        <div className='ARR-filter'>
+                            <label><Business fontSize="small" className='ARR-icon' /> Department</label>
+                            <Select
+                                isMulti
+                                options={departmentOptions}
+                                value={selectedDepartments}
+                                onChange={setSelectedDepartments}
+                                placeholder="Select Department"
+                                isLoading={isdepartmentLoading}
                             />
                         </div>
 
@@ -162,7 +215,7 @@ const AttendanceRawReport = () => {
                 {/* Table */}
                 <div className='ARR-Table-container'>
                     <div className='ARR-header-container'>
-                        <h1 className='ARR-heading'>Attendance Raw report</h1>
+                        <h1 className='ARR-heading'>Attendance Raw Report</h1>
                         <div className='ARR-icon-container'>
                             <Tooltip title="Export Batch Details in Excel">
                                 <IconButton onClick={handleExport}>
@@ -179,28 +232,26 @@ const AttendanceRawReport = () => {
                                 <th>Department</th>
                                 <th>Designation</th>
                                 <th>OU</th>
-                                <th>Date</th>
-                                <th>IN</th>
-                                <th>OUT</th>
+                                <th>Punch Date & Time</th>
+                                <th>IN/OUT</th>
                             </tr>
                         </thead>
                         <tbody>
                             {paginatedData.length > 0 ? (
-                                paginatedData.map((employee, index) => (
-                                    <tr key={index}>
-                                        <td>{employee.empNo}</td>
-                                        <td>{employee.name}</td>
-                                        <td>{employee.department}</td>
-                                        <td>{employee.designation}</td>
-                                        <td>{employee.ou}</td>
-                                        <td>{employee.date}</td>
-                                        <td>{employee.inTime}</td>
-                                        <td>{employee.outTime}</td>
+                                paginatedData.map((employee) => (
+                                    <tr key={employee.ID}>
+                                        <td>{employee.EmpNo}</td>
+                                        <td>{employee.EmployeeName}</td>
+                                        <td>{employee.DepartmentName}</td>
+                                        <td>{employee.Designation}</td>
+                                        <td>{employee.OUName}</td>
+                                        <td>{employee.PunchTime}</td>
+                                        <td>{employee.InOutMode}</td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="8" style={{ textAlign: 'center' }}>No data available</td>
+                                    <td colSpan="7" style={{ textAlign: 'center' }}>No data available</td>
                                 </tr>
                             )}
                         </tbody>
@@ -214,7 +265,7 @@ const AttendanceRawReport = () => {
                             </IconButton>
                         )}
                         <span>{page}</span>
-                        {endIndex < dummyEmployeeData.length && (
+                        {endIndex < paginatedData.length && (
                             <IconButton onClick={handleNext}>
                                 <KeyboardDoubleArrowRightIcon className='pagination-btn' />
                             </IconButton>

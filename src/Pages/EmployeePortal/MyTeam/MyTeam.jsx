@@ -10,6 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import DescriptionIcon from '@mui/icons-material/Description'; // Icon for the report
 import { UserContext } from '../../../StoreContext/UserContext';
 import { useMyTeamTodayQuery } from '../../../Redux/api/admin/approvalSetupApi';
 import config from '../../../secrect';
@@ -49,6 +50,11 @@ const MyTeam = () => {
     const handleMarkAttendance = (empNo) => {
         console.log(`Attendance marked for Employee No: ${empNo}`);
         navigate(`/my-teams-attendance/${empNo}`);
+    };
+
+    const handleViewReport = (empNo) => {
+        console.log(`View report for Employee No: ${empNo}`);
+        navigate(`/myTeams-report/${empNo}`); // Navigate to the desired route
     };
 
     const handleSearchClick = () => {
@@ -99,7 +105,7 @@ const MyTeam = () => {
                                 <tr key={index}>
                                     <td>
                                         <img
-                                            src={`${ImgUrl}/${item.PictureName}`}// Ensure the image path is correct
+                                            src={`${ImgUrl}/${item.PictureName}`}
                                             alt={`${item.EmpNo} Photo`}
                                             className="employee-photo"
                                         />
@@ -108,12 +114,17 @@ const MyTeam = () => {
                                     <td>{item.EmployeeName}</td>
                                     <td>{item.Department}</td>
                                     <td>{item.Designation}</td>
-                                    <td>{item.inTime || 'N/A'}</td> {/* Handle null values */}
-                                    <td>{item.outTime || 'N/A'}</td> {/* Handle null values */}
+                                    <td>{item.inTime || 'N/A'}</td>
+                                    <td>{item.outTime || 'N/A'}</td>
                                     <td>
                                         <Tooltip title="Mark Attendance">
                                             <IconButton onClick={() => handleMarkAttendance(item.EmpNo)}>
                                                 <SensorOccupiedIcon className='action-btn mark-attendance-btn' />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="View Report">
+                                            <IconButton onClick={() => handleViewReport(item.EmpNo)}>
+                                                <DescriptionIcon className='action-btn view-report-btn' />
                                             </IconButton>
                                         </Tooltip>
                                     </td>

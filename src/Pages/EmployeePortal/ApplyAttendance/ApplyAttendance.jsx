@@ -94,7 +94,7 @@ const ApplyAttendanceContent = () => {
             Longitude: position.longitude,
             GeoLocation: address,
             HeadPhoto: verifiedImage, // Base64 image
-            InOutMode: attendance === "in" ? 0 : 1, // 0 for "in", 1 for "out"
+            InOutMode: attendance === "in" ? 1 : 2, // 0 for "in", 1 for "out"
         };
 
         try {
