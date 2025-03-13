@@ -81,6 +81,13 @@ const InviteAppointment = () => {
         setMobileNo(event.target.value);
     };
 
+    // Handle blur event for mobile number input
+    const handleMobileNoBlur = () => {
+        if (MobileNo) {
+            refetch(); // Trigger the API call
+        }
+    };
+
     // Handle purpose change
     const handlePurposeChange = (event) => {
         setVisitorDetails({ ...visitorDetails, Purpose: event.target.value });
@@ -208,6 +215,7 @@ const InviteAppointment = () => {
                                         placeholder="Visitor Contact No"
                                         value={MobileNo}
                                         onChange={handleVisitorMobileNumberChange}
+                                        onBlur={handleMobileNoBlur} // Add onBlur handler
                                         required
                                     />
                                 </div>

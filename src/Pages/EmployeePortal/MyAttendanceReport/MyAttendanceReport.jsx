@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext} from 'react';
 import './MyAttendanceReport.css';
 
 import Header from '../../../Components/Header/Header';
@@ -10,8 +10,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import { UserContext } from '../../../StoreContext/UserContext';
+import config from '../../../secrect';
 
 const MyAttendanceReport = () => {
+     const { userInfo } = useContext(UserContext);
+        const id = userInfo.EmployeeId;
+        console.log(userInfo)
+        const {url}=config
     const AttendanceStatus = [
         'Present',
         'Absent',
