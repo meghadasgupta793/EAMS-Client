@@ -37,15 +37,15 @@ const InviteAppointment = () => {
         IdentityType: 'Aadhaar',
         IdentityNo: '',
         VisitorCompany: '',
-        Purpose: 'Personal', // Default purpose
-        image: '',
+        Purpose: 'Personal',
+        image: '/images/profile.png',
     });
 
-    // State for mobile number input
-    const [MobileNo, setMobileNo] = useState('');
+    // State for modal visibility
+    const [isemployeeImgModalOpen, setIsEmployeeImgModalOpen] = useState(false);
 
     // Fetch visitor details by mobile number
-    const { data: visitorData, refetch } = useSearchByVisitorMobileNoQuery(MobileNo || 'skip');
+    const { data: visitorData, refetch } = useSearchByVisitorMobileNoQuery(visitorDetails.MobileNo || 'skip');
 
     // Update visitor details when data is fetched
     useEffect(() => {
@@ -53,13 +53,12 @@ const InviteAppointment = () => {
             const visitor = visitorData.data[0];
             setVisitorDetails((prevDetails) => ({
                 ...prevDetails,
-                MobileNo: visitor.MobileNo,
-                VisitorName: visitor.VisitorName,
-                Email: visitor.Email,
-                AddressLine1: visitor.AddressLine1,
-                VisitorCompany: visitor.VisitorCompany,
+                VisitorName: visitor.VisitorName || '',
+                Email: visitor.Email || '',
+                AddressLine1: visitor.AddressLine1 || '',
+                VisitorCompany: visitor.VisitorCompany || '',
                 IdentityType: visitor.IdentityType || 'Aadhaar',
-                IdentityNo: visitor.IdentityNo,
+                IdentityNo: visitor.IdentityNo || '',
                 image: visitor.PictureName ? `${VisitorImgUrl}/${visitor.PictureName.trim()}` : '/images/profile.png',
             }));
         }
@@ -71,55 +70,61 @@ const InviteAppointment = () => {
     const [fromTime, setFromTime] = useState(getFormattedTime(new Date()));
     const [toTime, setToTime] = useState(getFormattedTime(new Date()));
 
-    // Handle identity type change
-    const handleIdentityTypeChange = (event) => {
-        setVisitorDetails({ ...visitorDetails, IdentityType: event.target.value });
-    };
-
-    // Handle mobile number change
-    const handleVisitorMobileNumberChange = (event) => {
-        setMobileNo(event.target.value);
+    // Handle input changes
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setVisitorDetails(prev => ({ ...prev, [name]: value }));
     };
 
     // Handle blur event for mobile number input
     const handleMobileNoBlur = () => {
-        if (MobileNo) {
-            refetch(); // Trigger the API call
+        if (visitorDetails.MobileNo) {
+            refetch();
         }
-    };
-
-    // Handle purpose change
-    const handlePurposeChange = (event) => {
-        setVisitorDetails({ ...visitorDetails, Purpose: event.target.value });
     };
 
     // Mutation for inviting a visitor
-    const [inviteAppointment, { isLoading: isInviting, error: invitementError }] = useInviteVisitorMutation();
+    const [inviteAppointment, { isLoading: isInviting }] = useInviteVisitorMutation();
 
     // Utility function to convert base64 to File
     const base64ToFile = (base64String, fileName) => {
-        const arr = base64String.split(',');
-        const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
-        const bstr = atob(arr[1]); // Decode base64 string
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-
-        // Convert the decoded data into a Uint8Array
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
+        try {
+            const arr = base64String.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            
+            return new File([u8arr], fileName, { type: mime });
+        } catch (error) {
+            console.error('Error converting base64 to file:', error);
+            return null;
         }
-
-        // Create and return a File object
-        return new File([u8arr], fileName, { type: mime });
     };
 
     // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validate required fields
-        if (!visitorDetails.MobileNo || !visitorDetails.VisitorName || !visitorDetails.Email) {
-            toast.error('Please fill in all required fields.');
+        // Validation
+        if (!visitorDetails.MobileNo) {
+            toast.error('Please enter mobile number');
+            return;
+        }
+        if (!visitorDetails.VisitorName) {
+            toast.error('Please enter visitor name');
+            return;
+        }
+        if (!visitorDetails.Email) {
+            toast.error('Please enter email');
+            return;
+        }
+        if (!/^\S+@\S+\.\S+$/.test(visitorDetails.Email)) {
+            toast.error('Please enter a valid email');
             return;
         }
 
@@ -135,36 +140,28 @@ const InviteAppointment = () => {
         formData.append('AppDateFrom', `${fromDate}T${fromTime}:00`);
         formData.append('AppDateTo', `${toDate}T${toTime}:00`);
         formData.append('Purpose', visitorDetails.Purpose);
-        formData.append('CreatedByUserID', id); // Replace with actual user ID
-        formData.append('AppToEmpID', EmployeeId); // Replace with actual employee ID
+        formData.append('CreatedByUserID', id);
+        formData.append('AppToEmpID', EmployeeId);
 
         // Append the photo if available
         if (image) {
-            ///  let finalImage;
-
-            // If the image is a base64 string, convert it to a File object
-            if (typeof image === "string" && image.startsWith("data:image")) {
-                const file = base64ToFile(image, "visitor_photo.jpg");
-                // Append the image file to FormData
+            const file = base64ToFile(image, "visitor_photo.jpg");
+            if (file) {
                 formData.append('Photo', file);
             } else {
-                console.error("Unsupported image format:", image);
-                toast.error("Unsupported image format. Please upload a valid image.");
+                toast.error("Failed to process image. Please try again.");
                 return;
             }
-
-          
         }
 
         try {
-            // Call the API
             const response = await inviteAppointment(formData).unwrap();
             console.log('API Response:', response);
             toast.success('Visitor invited successfully!');
             setTimeout(() => navigate('/VMSDashboard'), 3000);
         } catch (error) {
-            console.error('Failed to invite visitor:', error);
-            toast.error('Failed to invite visitor. Please try again.');
+            console.error('API Error:', error);
+            toast.error(error.data?.message || 'Failed to invite visitor. Please try again.');
         }
     };
 
@@ -177,10 +174,7 @@ const InviteAppointment = () => {
         return date.toTimeString().slice(0, 5);
     }
 
-    // State for modal visibility
-    const [isemployeeImgModalOpen, setIsEmployeeImgModalOpen] = useState(false);
-
-    // Functions to open and close the modal
+    // Modal functions
     const openModal = () => setIsEmployeeImgModalOpen(true);
     const closeModal = () => setIsEmployeeImgModalOpen(false);
 
@@ -193,12 +187,11 @@ const InviteAppointment = () => {
 
                     {/* Image Upload Frame */}
                     <div className="invite-appointment-image-upload-frame">
-                        {image ? (
-                            <img src={image} alt="visitor" />
-                        ) : (
-                            <img src={visitorDetails.image} alt="visitor" className="invite-appointment-uploaded-image" />
-                        )}
-
+                        <img 
+                            src={image || visitorDetails.image} 
+                            alt="visitor" 
+                            className="invite-appointment-uploaded-image" 
+                        />
                         <div className="invite-appointment-camera-icon" onClick={openModal}>
                             <CameraAltIcon />
                         </div>
@@ -212,36 +205,40 @@ const InviteAppointment = () => {
                                 <div className="invite-appointment-input-field">
                                     <input
                                         type="number"
+                                        name="MobileNo"
                                         placeholder="Visitor Contact No"
-                                        value={MobileNo}
-                                        onChange={handleVisitorMobileNumberChange}
-                                        onBlur={handleMobileNoBlur} // Add onBlur handler
+                                        value={visitorDetails.MobileNo}
+                                        onChange={handleInputChange}
+                                        onBlur={handleMobileNoBlur}
                                         required
                                     />
                                 </div>
                                 <div className="invite-appointment-input-field">
                                     <input
                                         type="text"
+                                        name="VisitorName"
                                         placeholder="Visitor Name"
                                         value={visitorDetails.VisitorName}
-                                        onChange={(e) => setVisitorDetails({ ...visitorDetails, VisitorName: e.target.value })}
+                                        onChange={handleInputChange}
                                         required
                                     />
                                 </div>
                                 <div className="invite-appointment-input-field">
                                     <input
                                         type="email"
+                                        name="Email"
                                         placeholder="Visitor Email"
                                         value={visitorDetails.Email}
-                                        onChange={(e) => setVisitorDetails({ ...visitorDetails, Email: e.target.value })}
+                                        onChange={handleInputChange}
                                         required
                                     />
                                 </div>
                                 <div className="invite-appointment-input-field">
                                     <textarea
+                                        name="AddressLine1"
                                         placeholder="Visitor Address"
                                         value={visitorDetails.AddressLine1}
-                                        onChange={(e) => setVisitorDetails({ ...visitorDetails, AddressLine1: e.target.value })}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -253,8 +250,9 @@ const InviteAppointment = () => {
                             <div className="invite-appointment-form-row">
                                 <div className="invite-appointment-input-field">
                                     <select
+                                        name="IdentityType"
                                         value={visitorDetails.IdentityType}
-                                        onChange={handleIdentityTypeChange}
+                                        onChange={handleInputChange}
                                     >
                                         <option value="Aadhaar">Aadhaar</option>
                                         <option value="Voter">Voter</option>
@@ -264,17 +262,19 @@ const InviteAppointment = () => {
                                 <div className="invite-appointment-input-field">
                                     <input
                                         type="text"
+                                        name="IdentityNo"
                                         placeholder={visitorDetails.IdentityType}
                                         value={visitorDetails.IdentityNo}
-                                        onChange={(e) => setVisitorDetails({ ...visitorDetails, IdentityNo: e.target.value })}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
                             <div className="invite-appointment-form-row">
                                 <div className="invite-appointment-input-field">
                                     <select
+                                        name="Purpose"
                                         value={visitorDetails.Purpose}
-                                        onChange={handlePurposeChange}
+                                        onChange={handleInputChange}
                                     >
                                         <option value="Personal">Personal</option>
                                         <option value="Official">Official</option>
@@ -283,9 +283,10 @@ const InviteAppointment = () => {
                                 <div className="invite-appointment-input-field">
                                     <input
                                         type="text"
+                                        name="VisitorCompany"
                                         placeholder="Visit Company Name"
                                         value={visitorDetails.VisitorCompany}
-                                        onChange={(e) => setVisitorDetails({ ...visitorDetails, VisitorCompany: e.target.value })}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -299,6 +300,7 @@ const InviteAppointment = () => {
                                     <label htmlFor="from-date">From Date</label>
                                     <input
                                         type="date"
+                                        id="from-date"
                                         value={fromDate}
                                         onChange={(e) => setFromDate(e.target.value)}
                                         required
@@ -308,6 +310,7 @@ const InviteAppointment = () => {
                                     <label htmlFor="to-date">To Date</label>
                                     <input
                                         type="date"
+                                        id="to-date"
                                         value={toDate}
                                         onChange={(e) => setToDate(e.target.value)}
                                         required
@@ -319,6 +322,7 @@ const InviteAppointment = () => {
                                     <label htmlFor="from-time">From Time</label>
                                     <input
                                         type="time"
+                                        id="from-time"
                                         value={fromTime}
                                         onChange={(e) => setFromTime(e.target.value)}
                                         required
@@ -328,6 +332,7 @@ const InviteAppointment = () => {
                                     <label htmlFor="to-time">To Time</label>
                                     <input
                                         type="time"
+                                        id="to-time"
                                         value={toTime}
                                         onChange={(e) => setToTime(e.target.value)}
                                         required
@@ -337,7 +342,11 @@ const InviteAppointment = () => {
                         </fieldset>
 
                         <div className="invite-appointment-btn-container">
-                            <button type="submit" className="invite-appointment-submit-btn" disabled={isInviting}>
+                            <button 
+                                type="submit" 
+                                className="invite-appointment-submit-btn" 
+                                disabled={isInviting}
+                            >
                                 {isInviting ? 'Inviting...' : 'Invite'}
                             </button>
                         </div>

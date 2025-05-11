@@ -1,213 +1,248 @@
-import React, { useState ,useContext} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './MyAttendanceReport.css';
-
 import Header from '../../../Components/Header/Header';
-
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
+import { Tooltip, IconButton } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import { UserContext } from '../../../StoreContext/UserContext';
-import config from '../../../secrect';
+import { useGetEmployeeAttendanceMutation } from '../../../Redux/api/ess/employeeAttendance';
+import { format, parseISO, startOfMonth } from 'date-fns';
 
 const MyAttendanceReport = () => {
-     const { userInfo } = useContext(UserContext);
-        const id = userInfo.EmployeeId;
-        console.log(userInfo)
-        const {url}=config
-    const AttendanceStatus = [
-        'Present',
-        'Absent',
-        'Late',
-        'Early Exit',
-        'Week off',
-        'Leave',
-        'Holiday',
-        'Tour',
-    ];
+  const { userInfo } = useContext(UserContext);
+  const [getEmployeeAttendance, { data, isLoading, error }] = useGetEmployeeAttendanceMutation();
 
-    const [selectedStatus, setSelectedStatus] = useState('');
-    const [fromDate, setFromDate] = useState(''); // State for "From" date
-    const [toDate, setToDate] = useState('');     // State for "To" date
+  const AttendanceStatus = [
+    'Present',
+    'Absent',
+    'Late',
+    'Early Exit',
+    'Week off',
+    'Leave',
+    'Holiday',
+    'Tour',
+  ];
 
-    const attendanceData = {
-        empPhoto: '/images/profile.png',
-        empNo: 'E011',
-        ticketNo: 'T011',
-        empName: 'Megha',
-        department: 'IT',
-        designation: 'Developer',
-        PresentDays: '6',
-        AbsentDays: '1',
-        LeaveDays: '1',
-        Holidays: '1',
-        WeekOff: '1',
-        Data: [
-            { date: '2024-12-01', inTime: '09:00', outTime: '17:00', late: '00:13', earlyExit: '00:10', workHour: '8:00', status: 'Absent', shift: 'GE' },
-            { date: '2024-12-02', inTime: '09:15', outTime: '17:15', late: '00:10', earlyExit: '00:13', workHour: '7:75', status: 'Present', shift: 'EV' },
-            { date: '2024-12-03', inTime: '09:10', outTime: '17:10', late: '', earlyExit: '', workHour: '8:00', status: 'Leave', shift: 'AB' },
-            { date: '2024-12-04', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '', workHour: '8:00', status: 'Holiday', shift: 'GE' },
-            { date: '2024-12-05', inTime: '09:05', outTime: '17:05', late: '00:10', earlyExit: '', workHour: '8:00', status: 'WeekOff', shift: 'EV' },
-            { date: '2024-12-06', inTime: '08:50', outTime: '16:50', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'AB' },
-            { date: '2024-12-07', inTime: '09:10', outTime: '17:10', late: '00:13', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'GE' },
-            { date: '2024-12-08', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'MN' },
-            { date: '2024-12-09', inTime: '09:20', outTime: '17:20', late: '00:13', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'AB' },
-            { date: '2024-12-10', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '00:50', workHour: '8:00', status: 'Present', shift: 'GE' },
-            { date: '2024-12-11', inTime: '09:05', outTime: '17:05', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'EV' },
-            { date: '2024-12-12', inTime: '09:10', outTime: '17:10', late: '00:05', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'AB' },
-            { date: '2024-12-13', inTime: '09:00', outTime: '17:00', late: '00:10', earlyExit: '00:30', workHour: '7:90', status: 'Absent', shift: 'GE' },
-            { date: '2024-12-14', inTime: '08:55', outTime: '16:55', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'MN' },
-            { date: '2024-12-15', inTime: '09:20', outTime: '17:20', late: '00:15', earlyExit: '', workHour: '7:90', status: 'Leave', shift: 'EV' },
-            { date: '2024-12-16', inTime: '09:05', outTime: '17:05', late: '', earlyExit: '', workHour: '8:00', status: 'Holiday', shift: 'AB' },
-            { date: '2024-12-17', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '00:20', workHour: '7:80', status: 'Present', shift: 'GE' },
-            { date: '2024-12-18', inTime: '09:10', outTime: '17:10', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'MN' },
-            { date: '2024-12-19', inTime: '08:50', outTime: '16:50', late: '00:15', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'AB' },
-            { date: '2024-12-20', inTime: '09:15', outTime: '17:15', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'EV' },
-            { date: '2024-12-21', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '', workHour: '8:00', status: 'Absent', shift: 'GE' },
-            { date: '2024-12-22', inTime: '09:05', outTime: '17:05', late: '', earlyExit: '00:15', workHour: '7:85', status: 'Present', shift: 'AB' },
-            { date: '2024-12-23', inTime: '09:10', outTime: '17:10', late: '00:12', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'EV' },
-            { date: '2024-12-24', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'AB' },
-            { date: '2024-12-25', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '', workHour: '8:00', status: 'Holiday', shift: 'GE' },
-            { date: '2024-12-26', inTime: '09:20', outTime: '17:20', late: '', earlyExit: '', workHour: '8:00', status: 'WeekOff', shift: 'MN' },
-            { date: '2024-12-27', inTime: '09:10', outTime: '17:10', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'EV' },
-            { date: '2024-12-28', inTime: '09:00', outTime: '17:00', late: '', earlyExit: '00:30', workHour: '7:80', status: 'Absent', shift: 'AB' },
-            { date: '2024-12-29', inTime: '09:10', outTime: '17:10', late: '00:10', earlyExit: '', workHour: '8:00', status: 'Leave', shift: 'EV' },
-            { date: '2024-12-30', inTime: '09:05', outTime: '17:05', late: '', earlyExit: '', workHour: '8:00', status: 'Present', shift: 'AB' }
-        ]
-    };
+  const [selectedStatus, setSelectedStatus] = useState('');
 
+  const today = new Date();
+  const firstDayOfMonth = startOfMonth(today);
 
-    // Filtering the data based on selectedStatus
-    const filteredData = selectedStatus
-        ? attendanceData.Data.filter((data) => data.status === selectedStatus)
-        : attendanceData.Data;
+  const [displayFromDate, setDisplayFromDate] = useState(format(firstDayOfMonth, 'yyyy-MM-dd'));
+  const [displayToDate, setDisplayToDate] = useState(format(today, 'yyyy-MM-dd'));
+  const [apiFromDate, setApiFromDate] = useState(format(firstDayOfMonth, 'dd-MMM-yyyy'));
+  const [apiToDate, setApiToDate] = useState(format(today, 'dd-MMM-yyyy'));
 
-    return (
-        <div className="MyAttendanceReport">
-            <Header />
-            <div className="myAttendanceReport-Container">
-                <div className="myAttendanceReport-header-container">
-                    <h1 className="myAttendanceReport-heading">My Attendance Report</h1>
-                    <div className="myAttendanceReport-icon-container">
-                        <Tooltip title="Export in Excel">
-                            <IconButton>
-                                <FileDownloadIcon className="myAttendanceReport-header-icon" />
-                            </IconButton>
-                        </Tooltip>
-                        <div className="myAttendanceReport-date-range">
-                            <Tooltip title="Select From Date">
-                                <IconButton>
-                                    <input
-                                        type="date"
-                                        value={fromDate}
-                                        onChange={(e) => setFromDate(e.target.value)}
-                                        className="myAttendanceReport-date-input"
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Select To Date">
-                                <IconButton>
-                                    <input
-                                        type="date"
-                                        value={toDate}
-                                        onChange={(e) => setToDate(e.target.value)}
-                                        className="myAttendanceReport-date-input"
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                        <FormControl className="myAttendanceReport-filter-dropdown">
-                            <InputLabel id="filter-label">Filter</InputLabel>
-                            <Select
-                                labelId="filter-label"
-                                value={selectedStatus}
-                                onChange={(e) => setSelectedStatus(e.target.value)}
-                                className="myAttendanceReport-filter-select"
-                            >
-                                {AttendanceStatus.map((status, index) => (
-                                    <MenuItem key={index} value={status}>
-                                        {status}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </div>
-                </div>
+  const [filteredData, setFilteredData] = useState([]);
+  const ITEMS_PER_PAGE = 10;
+  const [currentPage, setCurrentPage] = useState(1);
 
-                {/* Employee Details Container */}
-                <div className="MyAttendanceReport-Emp-deatils">
-                    <div className="MyAttendanceReport-Emp-img-container">
-                        <img
-                            src={attendanceData.empPhoto}
-                            className="employee-photo"
-                            alt="Employee"
-                        />
-                    </div>
+  const formatDisplayDate = (dateString) => {
+    try {
+      return format(parseISO(dateString), 'yyyy-MM-dd');
+    } catch {
+      return dateString;
+    }
+  };
 
-                    <div className="MyAttendanceReport-Emp-dept-container">
-                        <div className="MyAttendanceReport-Emp-dept-container-left">
-                            <div className="MyAttendanceReport-Emp-dept-container-left-top">
-                                <label>EmpNo: {attendanceData.empNo}</label>
-                            </div>
-                            <div className="MyAttendanceReport-Emp-dept-container-left-bottom">
-                                <label>Emp Name: {attendanceData.empName}</label>
-                            </div>
-                        </div>
-                        <div className="MyAttendanceReport-Emp-dept-container-right">
-                            <div className="MyAttendanceReport-Emp-dept-container-right-top">
-                                <label>Designation: {attendanceData.designation}</label>
-                            </div>
-                            <div className="MyAttendanceReport-Emp-dept-container-right-bottom">
-                                <label>Department: {attendanceData.department}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  const statusMap = {
+    'PP': 'Present',
+    'AA': 'Absent',
+    'Lt': 'Late',
+    'EE': 'Early Exit',
+    'WO': 'Week off',
+    'LV': 'Leave',
+    'HO': 'Holiday',
+    'TR': 'Tour'
+  };
 
-                {/* Attendance Table */}
-                <div className="myAttendanceReport-table-container">
-                    <table className="myAttendanceReport-Table">
-                        <thead>
-                            <tr>
-                                <th>Shift</th>
-                                <th>Date</th>
-                                <th>In Time</th>
-                                <th>Out Time</th>
-                                <th>Late</th>
-                                <th>Early Exit</th>
-                                <th>Work Hour</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+  useEffect(() => {
+    fetchAttendanceData();
+  }, [apiFromDate, apiToDate]);
 
-                {/* Scrollable area for additional rows */}
-                <div className="scrollable-table-container">
-                    <table className="myAttendanceReport-Table">
-                        <tbody>
-                            {filteredData.slice(0).map((data, index) => (
-                                <tr key={index}>
-                                    <td>{data.shift}</td>
-                                    <td>{data.date}</td>
-                                    <td>{data.inTime}</td>
-                                    <td>{data.outTime}</td>
-                                    <td>{data.late}</td>
-                                    <td>{data.earlyExit}</td>
-                                    <td>{data.workHour}</td>
-                                    <td>{data.status}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+  useEffect(() => {
+    if (data?.attendanceData) {
+      filterData();
+      setCurrentPage(1);
+    }
+  }, [data, selectedStatus]);
 
+  const fetchAttendanceData = async () => {
+    try {
+      await getEmployeeAttendance({
+        EmployeeID: userInfo.EmployeeId,
+        FromDate: apiFromDate,
+        ToDate: apiToDate
+      });
+    } catch (err) {
+      console.error('Error fetching attendance data:', err);
+    }
+  };
+
+  const filterData = () => {
+    if (!data?.attendanceData) return;
+
+    const filtered = data.attendanceData.map(item => ({
+      date: formatDisplayDate(item.date),
+      inTime: item.inTime || '-',
+      outTime: item.outTime || '-',
+      late: item.late || '-',
+      earlyExit: item.early || '-',
+      workHour: item.WorkHour || '-',
+      status: statusMap[item.status] || item.status,
+      shift: item.shiftCode || '-'
+    }));
+
+    if (selectedStatus) {
+      const statusKey = Object.keys(statusMap).find(key => statusMap[key] === selectedStatus);
+      setFilteredData(filtered.filter(item => item.status === selectedStatus ||
+        (statusKey && item.status === statusMap[statusKey])));
+    } else {
+      setFilteredData(filtered);
+    }
+  };
+
+  const handleExport = () => {
+    console.log('Exporting data:', filteredData);
+  };
+
+  const handleDateChange = (type, value) => {
+    const date = new Date(value);
+    if (type === 'from') {
+      setDisplayFromDate(value);
+      setApiFromDate(format(date, 'dd-MMM-yyyy'));
+    } else {
+      setDisplayToDate(value);
+      setApiToDate(format(date, 'dd-MMM-yyyy'));
+    }
+  };
+
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+  if (isLoading) return <div className="loading">Loading attendance data...</div>;
+  if (error) return <div className="error">Error loading attendance data</div>;
+
+  return (
+    <div className="MyAttendanceReport">
+      <Header />
+      <div className="myAttendanceReport-Container">
+        <div className="myAttendanceReport-header-container">
+          <h1 className="myAttendanceReport-heading">My Attendance Report</h1>
+          <div className="myAttendanceReport-icon-container">
+            <Tooltip title="Export in Excel">
+              <IconButton onClick={handleExport}>
+                <FileDownloadIcon className="myAttendanceReport-header-icon" />
+              </IconButton>
+            </Tooltip>
+            <div className="myAttendanceReport-date-range">
+              <Tooltip title="Select From Date">
+                <input
+                  type="date"
+                  value={displayFromDate}
+                  onChange={(e) => handleDateChange('from', e.target.value)}
+                  className="myAttendanceReport-date-input"
+                />
+              </Tooltip>
+              <Tooltip title="Select To Date">
+                <input
+                  type="date"
+                  value={displayToDate}
+                  onChange={(e) => handleDateChange('to', e.target.value)}
+                  className="myAttendanceReport-date-input"
+                />
+              </Tooltip>
             </div>
+            <select
+              className="myAttendanceReport-filter-dropdown"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
+              <option value="">All Statuses</option>
+              {AttendanceStatus.map((status, index) => (
+                <option key={index} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-    );
+
+        {data && (
+          <div className="attendance-summary">
+            <div className="summary-item"><span className="summary-label">Present:</span><span className="summary-value">{data.Present || 0}</span></div>
+            <div className="summary-item"><span className="summary-label">Absent:</span><span className="summary-value">{data.Absent || 0}</span></div>
+            <div className="summary-item"><span className="summary-label">Late:</span><span className="summary-value">{data.Late || 0}</span></div>
+            <div className="summary-item"><span className="summary-label">Early:</span><span className="summary-value">{data.Early || 0}</span></div>
+            <div className="summary-item"><span className="summary-label">Week-off:</span><span className="summary-value">{data['Week-off'] || 0}</span></div>
+            <div className="summary-item"><span className="summary-label">Leave:</span><span className="summary-value">{data.Leave || 0}</span></div>
+            <div className="summary-item"><span className="summary-label">Holiday:</span><span className="summary-value">{data.Holiday || 0}</span></div>
+            <div className="summary-item"><span className="summary-label">Tour:</span><span className="summary-value">{data.Tour || 0}</span></div>
+          </div>
+        )}
+
+        <div className="myAttendanceReport-table-container">
+          <table className="myAttendanceReport-Table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Shift</th>
+                <th>In Time</th>
+                <th>Out Time</th>
+                <th>Late</th>
+                <th>Early Exit</th>
+                <th>Work Hour</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.length > 0 ? (
+                paginatedData.map((data, index) => (
+                  <tr key={index}>
+                    <td>{data.date}</td>
+                    <td>{data.shift}</td>
+                    <td>{data.inTime}</td>
+                    <td>{data.outTime}</td>
+                    <td>{data.late}</td>
+                    <td>{data.earlyExit}</td>
+                    <td>{data.workHour}</td>
+                    <td>{data.status}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="no-data">
+                    No attendance records found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {filteredData.length > 0 && (
+          <div className="pagination-controls">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default MyAttendanceReport;

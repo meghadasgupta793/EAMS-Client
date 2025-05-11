@@ -8,27 +8,22 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { useGetOccasionsQuery } from '../../../Redux/api/ess/essDashBoardAPI';
+import config from '../../../secrect';
 
 const ITEMS_PER_PAGE = 3;
 
 const Anniversaries = () => {
+  const { ImgUrl } = config;
   const [selectedOccasion, setSelectedOccasion] = useState('birthday');
   const [page, setPage] = useState(1);
+  const { data, isLoading, error } = useGetOccasionsQuery();
 
-  const employeeData = [
-    { id: 1, img: '/images/profile.png', name: 'John Doe', date: '22 Oct', occasion: 'birthday' },
-    { id: 2, img: '/images/profile.png', name: 'Jane Smith', date: '15 Sep', occasion: 'work anniversary' },
-    { id: 3, img: '/images/profile.png', name: 'Sam Brown', date: '10 Aug', occasion: 'birthday' },
-    { id: 4, img: '/images/profile.png', name: 'Alice Johnson', date: '5 Nov', occasion: 'work anniversary' },
-    { id: 5, img: '/images/profile.png', name: 'Michael Lee', date: '30 Oct', occasion: 'birthday' },
-    { id: 6, img: '/images/profile.png', name: 'Sara Connor', date: '19 Nov', occasion: 'work anniversary' },
-    { id: 7, img: '/images/profile.png', name: 'Tom Wilson', date: '12 Jul', occasion: 'birthday' },
-    { id: 8, img: '/images/profile.png', name: 'Emma Brown', date: '22 Jan', occasion: 'work anniversary' },
-    { id: 9, img: '/images/profile.png', name: 'Alex Green', date: '5 Dec', occasion: 'birthday' },
-    { id: 10, img: '/images/profile.png', name: 'Olivia Black', date: '14 Feb', occasion: 'work anniversary' },
-  ];
+  const employeeData = data?.data || [];
 
-  const filteredData = employeeData.filter((employee) => employee.occasion === selectedOccasion);
+  const filteredData = employeeData.filter(
+    (employee) => employee.occasion === selectedOccasion
+  );
 
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -79,46 +74,59 @@ const Anniversaries = () => {
         </div>
       </div>
 
-      <table className="anniversaries-table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.length > 0 ? (
-            paginatedData.map((employee) => (
-              <tr key={employee.id}>
-                <td>
-                  <img src={employee.img} alt={employee.name} className="employee-img" />
-                </td>
-                <td className="employee-name">{employee.name}</td>
-                <td className="anniversary-date">{employee.date}</td>
+      {isLoading ? (
+        <p style={{ textAlign: 'center' }}>Loading...</p>
+      ) : error ? (
+        <p style={{ textAlign: 'center', color: 'red' }}>Failed to load data</p>
+      ) : (
+        <>
+          <table className="anniversaries-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Date</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={3} style={{ textAlign: 'center' }}>No anniversaries or birthdays found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {paginatedData.length > 0 ? (
+                paginatedData.map((employee) => (
+                  <tr key={employee.id}>
+                    <td>
+                      <img
+                       src={`${ImgUrl}/${employee.img}`}
+                       // src={employee.img?.startsWith('/') ? `${ImgUrl}/${employee.img}` : `/uploads/${employee.img}`}
+                        alt={employee.name}
+                        className="employee-img"
+                      />
+                    </td>
+                    <td className="employee-name">{employee.name}</td>
+                    <td className="anniversary-date">{employee.date}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3} style={{ textAlign: 'center' }}>No {selectedOccasion}s found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
 
-      <div className='pagination-container'>
-        {page > 1 && (
-          <IconButton onClick={handlePrevious}>
-            <KeyboardDoubleArrowLeftIcon className='pagination-btn' />
-          </IconButton>
-        )}
-        <span>{page}</span>
-        {endIndex < filteredData.length && (
-          <IconButton onClick={handleNext}>
-            <KeyboardDoubleArrowRightIcon className='pagination-btn' />
-          </IconButton>
-        )}
-      </div>
+          <div className='pagination-container'>
+            {page > 1 && (
+              <IconButton onClick={handlePrevious}>
+                <KeyboardDoubleArrowLeftIcon className='pagination-btn' />
+              </IconButton>
+            )}
+            <span>{page}</span>
+            {endIndex < filteredData.length && (
+              <IconButton onClick={handleNext}>
+                <KeyboardDoubleArrowRightIcon className='pagination-btn' />
+              </IconButton>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

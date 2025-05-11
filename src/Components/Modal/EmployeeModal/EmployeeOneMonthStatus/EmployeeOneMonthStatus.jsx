@@ -9,66 +9,92 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CancelIcon from '@mui/icons-material/Cancel';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-
-
 import { useNavigate } from 'react-router-dom';
-
+import { format, parseISO } from 'date-fns';
 
 const ITEMS_PER_PAGE = 5;
 
-const EmployeeOneMonthStatus = ({ status, onClose }) => {
+const EmployeeOneMonthStatus = ({ status, onClose, attendanceData = [] }) => {
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
-  const data = [
-    { date: '2024-11-01', inTime: '9:00 AM', outTime: '6:00 PM', workHour: 8, late: 0, early: 0, status: 'Present' },
-    { date: '2024-11-02', inTime: '9:00 AM', outTime: '6:00 PM', workHour: 8, late: 0, early: 0, status: 'Present' },
-    { date: '2024-11-04', inTime: '9:30 AM', outTime: '6:00 PM', workHour: 7.5, late: 0.5, early: 0, status: 'Absent' },
-    { date: '2024-11-04', inTime: '9:30 AM', outTime: '6:00 PM', workHour: 7.5, late: 0.5, early: 0, status: 'Absent' },
-    { date: '2024-11-02', inTime: '9:15 AM', outTime: '6:00 PM', workHour: 7.75, late: 0.25, early: 0, status: 'Late' },
-    { date: '2024-11-02', inTime: '9:15 AM', outTime: '6:00 PM', workHour: 7.75, late: 0.25, early: 0, status: 'Late' },
-    { date: '2024-11-05', inTime: '9:00 AM', outTime: '6:00 PM', workHour: 8, late: 0, early: 0, status: 'Early' },
-    { date: '2024-11-05', inTime: '9:00 AM', outTime: '6:00 PM', workHour: 8, late: 0, early: 0, status: 'Early' },
-    { date: '2024-11-08', inTime: null, outTime: null, workHour: '0:00', late: '00:00', early: '00:00', status: 'Holiday' },
-    { date: '2024-11-09', inTime: null, outTime: null, workHour: '0:00', late: '00:00', early: '00:00', status: 'Tour' },
-    { date: '2024-11-10', inTime: null, outTime: null, workHour: '0:00', late: '00:00', early: '00:00', status: 'WeekOff' }
-  ];
+  // Status mapping to display text
+  const statusDisplayMap = {
+    'PP': 'Present',
+    'AA': 'Absent',
+    'Lt': 'Late',
+    'EE': 'Early',
+    'WO': 'Week-off',
+    'HO': 'Holiday',
+    'LV': 'Leave',
+    'TR': 'Tour'
+  };
 
-  const handleNext = () => setPage((prev) => prev + 1);
-  const handlePrevious = () => setPage((prev) => prev - 1);
+  // Filter data based on selected status
+  const filteredData = attendanceData
+    .filter(item => {
+      const statusKey = Object.keys(statusDisplayMap).find(
+        key => statusDisplayMap[key] === status
+      );
+      return item.status === statusKey;
+    })
+    .map(item => ({
+      date: format(parseISO(item.date), 'yyyy-MM-dd'),
+      inTime: item.inTime || '-',
+      outTime: item.outTime || '-',
+      workHour: item.WorkHour || '00:00:00',
+      late: item.late || '00:00:00',
+      early: item.early || '00:00:00',
+      status: statusDisplayMap[item.status] || item.status,
+      rawStatus: item.status,
+      shiftCode: item.shiftCode || '-'
+    }));
 
+  const handleNext = () => setPage(prev => Math.min(prev + 1, totalPages));
+  const handlePrevious = () => setPage(prev => Math.max(prev - 1, 1));
+
+  const totalItems = filteredData.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedData = data.slice(startIndex, endIndex);
+  const paginatedData = filteredData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  // Determine action icons based on status
-  const getActionIcons = (status) => {
-    switch (status) {
-      case 'Absent':
+  // Action icons based on status
+  const getActionIcons = (rawStatus, date) => {
+    const day = new Date(date).getDay(); // 0 = Sunday, 6 = Saturday
+    const isWeekend = day === 0 || day === 6;
+
+    switch (rawStatus) {
+      case 'AA': // Absent
         return (
           <>
-            <Tooltip title="Apply Tour">
-              <IconButton onClick={() => navigate('/ApplyTour')}>
-              <EventAvailableIcon className="action-icon apply-tour-icon" />
-              </IconButton>
-            </Tooltip>
+            {!isWeekend && (
+              <Tooltip title="Apply Tour">
+                <IconButton onClick={() => navigate('/ApplyTour')}>
+                  <EventAvailableIcon className="action-icon apply-tour-icon" />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Apply Leave">
               <IconButton onClick={() => navigate('/MyLeave')}>
-              <AddIcon className="action-icon apply-leave-icon" /></IconButton>
+                <AddIcon className="action-icon apply-leave-icon" />
+              </IconButton>
             </Tooltip>
           </>
         );
-      case 'Late':
+      case 'Lt': // Late
         return (
           <Tooltip title="Late Regularized">
             <IconButton onClick={() => navigate('/my-Late-Regularization')}>
-            <ScheduleIcon className="action-icon late-regularize-icon" /></IconButton>
+              <ScheduleIcon className="action-icon late-regularize-icon" />
+            </IconButton>
           </Tooltip>
         );
-      case 'Early':
+      case 'EE': // Early
         return (
           <Tooltip title="Early Regularized">
             <IconButton onClick={() => navigate('/my-Early-Regularization')}>
-            <ScheduleIcon className="action-icon early-regularize-icon" /></IconButton>
+              <ScheduleIcon className="action-icon early-regularize-icon" />
+            </IconButton>
           </Tooltip>
         );
       default:
@@ -76,23 +102,21 @@ const EmployeeOneMonthStatus = ({ status, onClose }) => {
     }
   };
 
-
-  const navigate = useNavigate();
-
+  const handleExport = () => {
+    // Implement export functionality here
+    console.log('Exporting data:', filteredData);
+  };
 
   return (
     <div className="employeeOneMonthStatus-table-container">
       <div className="employeeOneMonthStatus-header-container">
-        <h1 className="employeeOneMonthStatus-heading">Employee Monthly {status} Status</h1>
+        <h1 className="employeeOneMonthStatus-heading">
+          {status} Records ({totalItems})
+        </h1>
         <div className="employeeOneMonthStatus-icon-container">
           <Tooltip title="Export Status in Excel">
-            <IconButton>
+            <IconButton onClick={handleExport}>
               <FileDownloadIcon className="employeeOneMonthStatus-header-icon" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="View All">
-            <IconButton>
-              <VisibilityIcon className="employeeOneMonthStatus-header-icon" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Close">
@@ -107,44 +131,60 @@ const EmployeeOneMonthStatus = ({ status, onClose }) => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>InTime</th>
-            <th>OutTime</th>
-            <th>WorkHour</th>
+            <th>Shift</th>
+            <th>In Time</th>
+            <th>Out Time</th>
+            <th>Work Hours</th>
             <th>Late</th>
             <th>Early</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {paginatedData.map((item, index) => (
-            <tr key={index}>
-              <td>{item.date}</td>
-              <td>{item.inTime}</td>
-              <td>{item.outTime}</td>
-              <td>{item.workHour}</td>
-              <td>{item.late}</td>
-              <td>{item.early}</td>
-              <td>{item.status}</td>
-              <td>{getActionIcons(item.status)}</td>
+          {paginatedData.length > 0 ? (
+            paginatedData.map((item, index) => (
+              <tr key={`${item.date}-${index}`}>
+                <td>{item.date}</td>
+                <td>{item.shiftCode}</td>
+                <td>{item.inTime}</td>
+                <td>{item.outTime}</td>
+                <td>{item.workHour}</td>
+                <td>{item.late}</td>
+                <td>{item.early}</td>
+                <td>{item.status}</td>
+                <td>{getActionIcons(item.rawStatus, item.date)}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="9" className="no-records">
+                No {status.toLowerCase()} records found
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
 
-      <div className="pagination-container">
-        {page > 1 && (
-          <IconButton onClick={handlePrevious}>
+      {totalPages > 1 && (
+        <div className="pagination-container">
+          <IconButton 
+            onClick={handlePrevious} 
+            disabled={page === 1}
+          >
             <KeyboardDoubleArrowLeftIcon className="pagination-btn" />
           </IconButton>
-        )}
-        <span>{page}</span>
-        {endIndex < data.length && (
-          <IconButton onClick={handleNext}>
+          
+          <span>Page {page} of {totalPages}</span>
+          
+          <IconButton 
+            onClick={handleNext} 
+            disabled={page === totalPages}
+          >
             <KeyboardDoubleArrowRightIcon className="pagination-btn" />
           </IconButton>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

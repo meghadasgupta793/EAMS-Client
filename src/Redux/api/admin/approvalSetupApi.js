@@ -13,13 +13,13 @@ export const approvalSetupApi = createApi({
       providesTags: ['ReportingListsById'],
     }),
 
-       // ✅ Fetch MyTeamToday by EmployeeID
-       myTeamToday: builder.query({
-        query: (id) => ({
-          url: `/approval/myTeamToday/${id}`,
-        }),
-        providesTags: ['MyTeamToday'],
+    // ✅ Fetch MyTeamToday by EmployeeID
+    myTeamToday: builder.query({
+      query: (id) => ({
+        url: `/approval/myTeamToday/${id}`,
       }),
+      providesTags: ['MyTeamToday'],
+    }),
 
     // ✅ Fetch appointment status details
     approverMapping: builder.mutation({
@@ -30,12 +30,21 @@ export const approvalSetupApi = createApi({
       }),
       invalidatesTags: ['ReportingListsById'], // Invalidate cache for this endpoint
     }),
+
+    // ✅ Fetch unassigned reportee list
+    unAssignedReporteeList: builder.mutation({
+      query: (body) => ({
+        url: '/approval/unAssignedReporteeList',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-// Export hooks for usage in components
 export const {
   useApproverMappingMutation,
-  useGetReportingListsQuery, // Updated to use query instead of mutation
-  useMyTeamTodayQuery
+  useGetReportingListsQuery,
+  useMyTeamTodayQuery,
+  useUnAssignedReporteeListMutation, // ✅ Export the hook here
 } = approvalSetupApi;

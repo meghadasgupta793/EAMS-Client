@@ -141,11 +141,7 @@ const ApprovalSetup = () => {
                                         <CloudDownloadIcon className='reporting-to-header-icon' />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title='Add Reporting Head'>
-                                    <IconButton onClick={handleModalOpen}>
-                                        <AddCircleOutlineIcon className='reporting-to-header-icon' />
-                                    </IconButton>
-                                </Tooltip>
+                               
                             </div>
                         </div>
                         <table className="reportingTo-table">
@@ -276,7 +272,11 @@ const ApprovalSetup = () => {
                     </div>
                 </div>
             </div>
-            <AddReportingHeadOrReportee open={modalOpen} handleClose={handleModalClose} />
+            <AddReportingHeadOrReportee
+    employeeData={employeeData}  // Pass employeeData here
+    open={modalOpen}              // This controls the modal visibility
+    handleClose={handleModalClose}  // This handles closing the modal
+/>
         </div>
     );
 };

@@ -20,15 +20,33 @@ import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import TourIcon from '@mui/icons-material/Tour';
 import EmployeeOneMonthStatus from '../../../Components/Modal/EmployeeModal/EmployeeOneMonthStatus/EmployeeOneMonthStatus'
 import { UserContext } from '../../../StoreContext/UserContext';
+import { useGetEmployeeAttendanceMutation } from '../../../Redux/api/ess/employeeAttendance';
+import { startOfMonth, endOfMonth, format } from 'date-fns';
 
 const EmployeeDashboard = () => {
-   const { userRole } = useContext(UserContext);
+  const { userRole, userInfo } = useContext(UserContext);
+  console.log(userInfo)
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
 
+  const [getEmployeeAttendance, { data, isLoading, error }] = useGetEmployeeAttendanceMutation();
+  const fetchAttendance = (month) => {
+    const FromDate = format(startOfMonth(month), 'yyyy-MM-dd');
+    const ToDate = format(endOfMonth(month), 'yyyy-MM-dd');
+    getEmployeeAttendance({
+      EmployeeID: userInfo.EmployeeId,
+      FromDate,
+      ToDate,
+    });
+  };
+  useEffect(() => {
+    if (userInfo?.EmployeeId) {
+      fetchAttendance(currentMonth);
+    }
+  }, [currentMonth]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('');
-
 
   const handleStatusClick = (statusTitle) => {
     setSelectedStatus(statusTitle);
@@ -56,88 +74,107 @@ const EmployeeDashboard = () => {
     return <div className='no-permission'>You do not have permission to access this dashboard.</div>;
   }
 
+  // Get the attendance counts from the API response
+  const attendanceCounts = data ? {
+    Present: data.Present,
+    Absent: data.Absent,
+    Late: data.Late,
+    Early: data.Early,
+    "Week-off": data["Week-off"],
+    Holiday: data.Holiday,
+    Leave: data.Leave,
+    Tour: data.Tour
+  } : {
+    Present: 0,
+    Absent: 0,
+    Late: 0,
+    Early: 0,
+    "Week-off": 0,
+    Holiday: 0,
+    Leave: 0,
+    Tour: 0
+  };
 
   return (
-
-  
     <div className='employeeDashboard'>
       <Header />
 
       <div className='emp-dashboard'>
-        <div className='emp-box emp-box1'> <MyAttendanceCalendar /> </div>
-
+        <div className='emp-box emp-box1'>
+          <MyAttendanceCalendar
+            attendanceData={data?.attendanceData || []}
+            currentMonth={currentMonth}
+            setCurrentMonth={setCurrentMonth}
+          />
+        </div>
 
         <div className='emp-box emp-box2'>
           <MyAttendanceStatus
             Icon={EventAvailableIcon}
             title="Present"
-            value="12"
+            value={attendanceCounts.Present.toString()}
             onClick={() => handleStatusClick("Present")}
           />
           <MyAttendanceStatus
             Icon={EventBusyIcon}
             title="Absent"
-            value="18"
+            value={attendanceCounts.Absent.toString()}
             onClick={() => handleStatusClick("Absent")}
           />
           <MyAttendanceStatus
             Icon={HourglassBottomIcon}
             title="Late"
-            value="6"
+            value={attendanceCounts.Late.toString()}
             onClick={() => handleStatusClick("Late")}
           />
           <MyAttendanceStatus
             Icon={TimelapseIcon}
             title="Early"
-            value="2"
+            value={attendanceCounts.Early.toString()}
             onClick={() => handleStatusClick("Early")}
           />
           <MyAttendanceStatus
             Icon={TodayIcon}
             title="Week-off"
-            value="4"
+            value={attendanceCounts["Week-off"].toString()}
             onClick={() => handleStatusClick("Week-off")}
           />
           <MyAttendanceStatus
             Icon={HolidayVillageIcon}
             title="Holiday"
-            value="2"
+            value={attendanceCounts.Holiday.toString()}
             onClick={() => handleStatusClick("Holiday")}
           />
           <MyAttendanceStatus
             Icon={TimeToLeaveIcon}
             title="Leave"
-            value="12"
+            value={attendanceCounts.Leave.toString()}
             onClick={() => handleStatusClick("Leave")}
           />
           <MyAttendanceStatus
             Icon={TourIcon}
             title="Tour"
-            value="12"
+            value={attendanceCounts.Tour.toString()}
             onClick={() => handleStatusClick("Tour")}
           />
-
         </div>
 
-
-
-
-        
         <div className='emp-box emp-box3'><MyLeaveBalance /></div>
         <div className='emp-box emp-box4'><UpComingHoliday /></div>
         <div className='emp-box emp-box5'><RequestedProposal /></div>
         <div className='emp-box emp-box6'><Anniversaries /></div>
-        <div className='emp-box emp-box7'>  </div>
-        <div className='emp-box emp-box8'> <TeamAttendance /></div>
-
-
+        <div className='emp-box emp-box7'></div>
+        <div className='emp-box emp-box8'><TeamAttendance /></div>
       </div>
-
 
       {isModalOpen && (
         <div className="custom-modal-overlay" onClick={handleCloseModal}>
           <div className="custom-modal" onClick={(e) => e.stopPropagation()}>
-            <EmployeeOneMonthStatus status={selectedStatus} onClose={handleCloseModal} />
+            <EmployeeOneMonthStatus
+              status={selectedStatus}
+              onClose={handleCloseModal}
+              attendanceData={data?.attendanceData || []}
+            />
           </div>
         </div>
       )}

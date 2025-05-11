@@ -1,8 +1,8 @@
 // secrect.js
 const config = {
-   // url: 'http://localhost:3005',
-   // ImgUrl: 'http://localhost:3005/images/Employee',
-   // VisitorImgUrl: 'http://localhost:3005/images/visitor',
+ //  url: 'http://localhost:3005',
+  //   ImgUrl: 'http://localhost:3005/images/Employee',
+  //  VisitorImgUrl: 'http://localhost:3005/images/visitor',
     MODEL_URL: '/models',
     CompanyName: 'NM Solution',
     CompanyAddress: '6/15, Aalay, Opp. Bus Stop, Vastrapur, Ahmedabad - 380 015. Gujarat, India.',
