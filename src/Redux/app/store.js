@@ -20,6 +20,7 @@ import { approvalSetupApi } from '../api/admin/approvalSetupApi';
 import { rawReportApi } from '../api/report/rawReportApi';
 import { attendanceReportApi } from '../api/report/attendanceReportApi';
 import { essDashBoardApi } from '../api/ess/essDashBoardAPI';
+import { requestProposalApi } from '../api/ess/requestProposalAPI';
 
 
 
@@ -44,7 +45,8 @@ export const store = configureStore({
     [approvalSetupApi.reducerPath]:approvalSetupApi.reducer,
     [rawReportApi.reducerPath]:rawReportApi.reducer,
     [attendanceReportApi.reducerPath]:attendanceReportApi.reducer,
-    [essDashBoardApi.reducerPath]:essDashBoardApi.reducer
+    [essDashBoardApi.reducerPath]:essDashBoardApi.reducer,
+    [requestProposalApi.reducerPath]: requestProposalApi.reducer,
 
   },
 
@@ -67,7 +69,8 @@ export const store = configureStore({
       approvalSetupApi.middleware,
       rawReportApi.middleware,
       attendanceReportApi.middleware,
-      essDashBoardApi.middleware
+      essDashBoardApi.middleware,
+      requestProposalApi.middleware
 
     ),
 });

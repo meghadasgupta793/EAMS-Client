@@ -26,10 +26,13 @@ export const essAttendanceApi = createApi({
       }),
     }),
 
+
+
   }),
 });
 
 export const {
   useMarkAttendanceMutation,
-  useGetEmployeeAttendanceMutation,
+  useGetEmployeeAttendanceMutation
+
 } = essAttendanceApi;
